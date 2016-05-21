@@ -21,6 +21,10 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!-- https://github.com/jenkinsci/acceptance-test-harness -->
+    <jenkins.acceptance.testharness.version>1.30</jenkins.acceptance.testharness.version>
+    
     <selenium.version>2.53.0</selenium.version>
     <aether.version>0.9.0.v20140226</aether.version>
     <maven.version>3.1.0</maven.version>
@@ -42,7 +46,7 @@
     <dependency>
       <groupId>org.jenkins-ci</groupId>
       <artifactId>acceptance-test-harness</artifactId>
-      <version>1.30</version>
+      <version>${jenkins.acceptance.testharness.version}</version>
     </dependency>
   </dependencies>
 
