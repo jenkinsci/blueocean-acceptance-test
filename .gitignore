@@ -1,0 +1,14 @@
+#Ignore all dot files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+**/.settings/
+**/.project
+**/.classpath
+
+target/
+work
+
+wars/
