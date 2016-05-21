@@ -2,9 +2,9 @@ Acceptance test harness for Blue Ocean
 
 # Running
 This acceptance test harness builds directly on the main Jenkins [acceptance-test-harness](https://github.com/jenkinsci/acceptance-test-harness),
-so running it works as per the instrictions on the README.md there.
+so running it works as per the instructions on the README.md there.
 
-We also added a shortcut script here for running:
+We also added a shortcut script for easy running:
 
 ```sh
 ./run.sh
@@ -12,7 +12,8 @@ We also added a shortcut script here for running:
 
 That script will download a recent version of Jenkins from the download mirror (see script) and will run the acceptance
 tests. Alternatively, you can specify the the version of Jenkins that you want to test against e.g. to run the tests
-against Jenkins version `2.4`:
+against Jenkins version `2.4` (again, it will download that version of Jenkins if it doesn't already have it in the
+`wars` directory):
  
 ```sh
 ./run.sh 2.4
