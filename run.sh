@@ -1,14 +1,21 @@
 #!/bin/bash
 
-# ---------------------------------------------------------
-# Takes the Jenkins version against which the tests are
-# to be run as a single arg. Will download if needed.
+# ------------------------------------------------------------------------------------------------------------------
+# Run acceptance tests.
 # 
-# e.g. to run against version 2.5
+# args:
 # 
-# ./run.sh --version=2.5
+#   -a  Blue Ocean aggregator plugin path
+#       e.g. ./run.sh -a=/Users/tfennelly/projects/blueocean/blueocean-plugin
+#   -v  Jenkins version
+#       e.g. ./run.sh -v=2.5 
+#   -s  Install local SNAPSHOTS. See https://github.com/jenkinsci/acceptance-test-harness/blob/master/docs/SUT-VERSIONS.md#install-plugins-from-local-maven-repository  
+#       e.g.  ./run.sh -s
 # 
-# ---------------------------------------------------------
+#   All other args are assumed to be customs plugins ala https://github.com/jenkinsci/acceptance-test-harness/blob/master/docs/SUT-VERSIONS.md#use-custom-plugin-file
+#   e.g. ./run.sh blueocean-plugin.jpi=/Users/tfennelly/projects/blueocean/blueocean-plugin/target/blueocean-plugin.hpi
+# 
+# ------------------------------------------------------------------------------------------------------------------
 
 JENKINS_VERSION=2.5
 LOCAL_SNAPSHOTS=false
@@ -19,14 +26,14 @@ AGGREGATOR_ENV=""
 for i in "$@"
 do
 case $i in
+    -a=*|--aggregator=*)
+    AGGREGATOR_DIR="${i#*=}"
+    ;;
     -v=*|--version=*)
     JENKINS_VERSION="${i#*=}"
     ;;
     -s|--snaps|--snapshots)
     LOCAL_SNAPSHOTS=true
-    ;;
-    -a=*|--aggregator=*)
-    AGGREGATOR_DIR="${i#*=}"
     ;;
     --default)
     ;;
