@@ -15,9 +15,9 @@ DOWNTO="wars/jenkins-${VERSION}.war"
 
 do_download() {
     if [ -f "$DOWNTO" ]; then
-        echo "***********"
-        echo "${DOWNTO} already downloaded. Skipping download."
-        echo "***********"
+        echo ""
+        echo "***** ${DOWNTO} already downloaded. Skipping download."
+        echo ""
         return
     fi    
 

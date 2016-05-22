@@ -31,9 +31,9 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-public class SimpleHomeTest extends AbstractJUnitTest {
+public class SimpleSmokeTest extends AbstractJUnitTest {
 
-    @WithPlugins("workflow-aggregator@1.1")
+    @WithPlugins({"workflow-aggregator@2.1"})
     @Test
     public void helloWorld() throws Exception {
         WorkflowJob job = jenkins.jobs.create(WorkflowJob.class);
