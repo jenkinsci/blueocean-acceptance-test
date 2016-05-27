@@ -93,17 +93,6 @@
 
   <profiles>
     <profile>
-      <id>all-tests</id>
-      <activation>
-        <property>
-          <name>!test</name>
-        </property>
-      </activation>
-      <properties>
-        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
-      </properties>
-    </profile>
-    <profile>
       <id>BROWSER</id>
       <activation>
         <property>
@@ -164,6 +153,43 @@
       </build>
     </profile>
     <!-- TODO could be laboriously repeated for $TYPE, etc. (seems Maven provides no generic way to do this) -->
+
+    <profile>
+      <id>runTests</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*Test.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+      </properties>
+    </profile>
+    <profile>
+      <id>runDevRunner</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/DevRunner.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
   
 </project>
