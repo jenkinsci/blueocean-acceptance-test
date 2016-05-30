@@ -1,17 +1,11 @@
 #!/bin/bash
 
-if [ ! -d wars ]; then
-    mkdir wars
+if [ ! -d bin ]; then
+    mkdir bin
 fi
 
-VERSION=$1
-
-if [ "${VERSION}" == "" ]; then
-    VERSION=2.5
-fi
-
-URL="http://mirrors.jenkins-ci.org/war/${VERSION}/jenkins.war"
-DOWNTO="wars/jenkins-${VERSION}.war"
+URL=$1
+DOWNTO=$2
 
 do_download() {
     if [ -f "$DOWNTO" ]; then
@@ -22,7 +16,7 @@ do_download() {
     fi    
 
     echo ""
-    echo "Downloading jenkins.war version ${VERSION} to ${DOWNTO} ..."
+    echo "Downloading ${URL} to ${DOWNTO} ..."
     echo ""
 
     # Try for curl, then wget, or fail

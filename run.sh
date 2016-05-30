@@ -22,6 +22,8 @@
 # ------------------------------------------------------------------------------------------------------------------
 
 JENKINS_VERSION=2.5
+SELENIUM_VERSION=2.53
+
 LOCAL_SNAPSHOTS=false
 PLUGINS=""
 AGGREGATOR_DIR=""
@@ -120,7 +122,7 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
-EXECUTION="env BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} JENKINS_WAR=./wars/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES}"
+EXECUTION="env BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES}"
 
 echo ""
 echo "> ${EXECUTION}"
@@ -129,7 +131,9 @@ echo ""
 echo "------------------------------------------------"
 
 # Download the jenkins war
-source download_war.sh "${JENKINS_VERSION}"
+source download.sh "http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war" 
+# Download Selenium standalone
+source download.sh "http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" 
 
 # Run the tests
 eval "${EXECUTION}"
