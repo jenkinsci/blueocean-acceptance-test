@@ -3,7 +3,10 @@ module.exports = {
         var job = require('../api/job');
         
         job.newPipeline(browser, 'my-pipeline', 'three-stages.groovy', function() {
-            browser.pause(5000).end();
+            var pipelinePage = browser.page.pipeline().forJob('my-pipeline');
+            pipelinePage.click('@build', function() {
+                browser.pause(10000).end();
+            });
         });
     }
 };
