@@ -5,6 +5,10 @@ var fs = require('fs');
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 var commands = {
+    forJob: function(jobName) {
+        var jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
+        return this.navigate(jobUrl);
+    },
     setPipelineScript: function (script) {
         var scriptText = readTestScript(script);
 

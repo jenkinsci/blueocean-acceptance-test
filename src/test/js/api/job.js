@@ -7,7 +7,7 @@ exports.newPipeline = function(browser, jobName, script, oncreated) {
         newPipeline.setValue('@nameInput', jobName);
         newPipeline.click('@pipelineJobType');
         newPipeline.click('@submit', function () {
-            exports.configurePipeline(browser, jobName)
+            browser.page.pipelineConfig().forJob(jobName)
                 .setPipelineScript(script)
                 .click('@save', oncreated);
         });
@@ -17,9 +17,4 @@ exports.newPipeline = function(browser, jobName, script, oncreated) {
 exports.deletePipeline = function(browser, jobName, ondeleted) {
     var deleteUrl = browser.launchUrl + 'job/' + jobName + '/doDelete';
     request.post(deleteUrl, ondeleted);
-};
-
-exports.configurePipeline = function(browser, jobName) {
-    var jobUrl = browser.launchUrl + 'job/' + jobName + '/configure';
-    return browser.page.pipelineConfig().navigate(jobUrl);
 };
