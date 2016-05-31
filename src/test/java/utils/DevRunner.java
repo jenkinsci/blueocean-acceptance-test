@@ -27,6 +27,7 @@ import org.jenkinsci.test.acceptance.junit.AbstractJUnitTest;
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
 import org.junit.Test;
 
+import java.io.FileWriter;
 import java.io.PrintStream;
 
 /**
@@ -37,6 +38,11 @@ public class DevRunner extends AbstractJUnitTest {
     @WithPlugins("workflow-aggregator@2.1")
     @Test
     public void runAndStayRunning() throws Exception {
+        FileWriter fileWriter = new FileWriter("./target/.jenkins_url");
+        fileWriter.write(jenkins.getCurrentUrl());
+        fileWriter.flush();
+        fileWriter.close();
+        
         System.out.println("");
         System.out.println("------------------------------------------------------------------------------------");
         System.out.println("    A clean dev instance of Jenkins is running now.");

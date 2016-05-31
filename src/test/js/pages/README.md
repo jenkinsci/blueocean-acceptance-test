@@ -1,0 +1,1 @@
+This folder contains Nightwatch [page objects](http://nightwatchjs.org/guide#page-objects).

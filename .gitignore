@@ -8,7 +8,11 @@
 **/.project
 **/.classpath
 
+selenium-debug.log
+
 target/
 work
 
-wars/
+bin/
+
+node_modules/
