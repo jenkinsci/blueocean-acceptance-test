@@ -115,10 +115,7 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     pushd "${AGGREGATOR_DIR}"
     mvn hpi:assemble-dependencies
     popd
-    # Need to manually copy the admin plugin because it's only a test
-    # dependency in the aggregator plugin.
-    # See https://github.com/cloudbees/blueocean/pull/187
-    cp "${AGGREGATOR_DIR}/../blueocean-admin/target/blueocean-admin.hpi" "${AGGREGATOR_DIR}/target/plugins"
+
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
