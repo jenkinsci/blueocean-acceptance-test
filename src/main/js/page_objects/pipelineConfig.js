@@ -37,7 +37,7 @@ module.exports = {
 };
 
 function readTestScript(script) {
-    var fileName = 'src/test/js/specs/test_pipelines_scripts/' + script;
+    var fileName = 'src/test/js/test_pipelines_scripts/' + script;
     
     if (!fs.existsSync(fileName)) {
         // It's not a script file.

@@ -9,4 +9,4 @@ module.exports = (function (settings) {
     settings.test_settings.default.launch_url = fs.readFileSync(jenkins_url_file, 'utf8');
     
     return settings;
-})(require('./src/test/js/nightwatch.json'));
+})(require('./src/main/nightwatch.json'));
