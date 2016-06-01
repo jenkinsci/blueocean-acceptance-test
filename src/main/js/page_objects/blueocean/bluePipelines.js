@@ -5,8 +5,8 @@ module.exports = {
         return this.api.launchUrl + '/blue/pipelines';
     },
     elements: {
-        pipelines: {
-            selector: '.pipelines-table'
-        }
+        pipelinesNav: '.global-header nav a[href="/blue/pipelines"]',
+        newPipelineButton: '.page-title a[href="/view/All/newJob"]',
+        pipelinesTable: '.pipelines-table',
     }
 };

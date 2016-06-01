@@ -2,39 +2,34 @@
 
 var fs = require('fs');
 
+exports.elements = {
+    scriptInput: '#workflow-editor-1 .ace_text-input',
+    save: 'span.yui-button[name="Submit"]'
+};
+
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
-var commands = {
-    forJob: function(jobName) {
-        var jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
-        return this.navigate(jobUrl);
-    },
-    setPipelineScript: function (script) {
-        var scriptText = readTestScript(script);
-
-        // Need to wait for the ACE Editor to fully render on the page
-        this.waitForElementPresent('@scriptInput', 5000);
-        this.api.execute(function (selector, scriptText) {
-            var targets = document.getElementsBySelector(selector);
-            targets[0].aceEditor.setValue(scriptText);
-            return true;
-        }, ['#workflow-editor-1', scriptText]);
-        
-        return this;
-    }
-};
-
-module.exports = {
-    commands: [commands],
-    elements: {
-        scriptInput: {
-            selector: '#workflow-editor-1 .ace_text-input'
+exports.commands = [
+    {
+        forJob: function(jobName) {
+            var jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
+            return this.navigate(jobUrl);
         },
-        save: {
-            selector: 'span.yui-button[name="Submit"]'
+        setPipelineScript: function (script) {
+            var scriptText = readTestScript(script);
+    
+            // Need to wait for the ACE Editor to fully render on the page
+            this.waitForElementPresent('@scriptInput', 5000);
+            this.api.execute(function (selector, scriptText) {
+                var targets = document.getElementsBySelector(selector);
+                targets[0].aceEditor.setValue(scriptText);
+                return true;
+            }, ['#workflow-editor-1', scriptText]);
+            
+            return this;
         }
     }
-};
+];
 
 function readTestScript(script) {
     var fileName = 'src/test/js/test_pipelines_scripts/' + script;

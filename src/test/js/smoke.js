@@ -15,5 +15,15 @@ module.exports = {
             pipelinePage.waitForElementVisible('@builds', 1000);
             browser.end();
         });
+    },
+
+    'Check Blue Ocean Pipelines Page': function (browser) {
+        var pipelinesPage = browser.page.bluePipelines().navigate();
+        
+        pipelinesPage.waitForElementVisible('@pipelinesNav', 1000);
+        pipelinesPage.waitForElementVisible('@newPipelineButton', 1000);
+        pipelinesPage.waitForElementVisible('@pipelinesTable', 1000);
+        
+        browser.end();
     }
 };

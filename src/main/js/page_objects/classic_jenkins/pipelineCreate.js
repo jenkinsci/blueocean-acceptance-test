@@ -5,14 +5,8 @@ module.exports = {
         return this.api.launchUrl + '/view/All/newJob';
     },
     elements: {
-        nameInput: {
-            selector: '#name'
-        },
-        pipelineJobType: {
-            selector: 'li.org_jenkinsci_plugins_workflow_job_WorkflowJob'
-        },
-        submit: {
-            selector: '#ok-button'
-        }
+        nameInput: '#name',
+        pipelineJobType: 'li.org_jenkinsci_plugins_workflow_job_WorkflowJob',
+        submit: '#ok-button'
     }
 };
