@@ -114,6 +114,12 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     echo ""
     pushd "${AGGREGATOR_DIR}"
     mvn hpi:assemble-dependencies
+    if [ $? != 0 ];then
+        echo "*****"
+        echo "***** Error assembling dependencies from aggregator plugin. Maybe you need to rebuild everything."
+        echo "*****"
+        exit 1
+    fi
     popd
 
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
