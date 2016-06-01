@@ -65,7 +65,7 @@ public class GulpRunner {
         System.out.println("-------------- GulpRunner <<End>> --------------");
     }
     
-    public void runIntegrationSpec(String specName) throws TaskRunnerException {
-        run(String.format("test --test %s --testFileSuffix ispec", specName));
+    public static void runIntegrationSpec(String testFile) throws TaskRunnerException {
+        run(String.format("--test %s", "src/test/js/" + testFile));
     }
 }

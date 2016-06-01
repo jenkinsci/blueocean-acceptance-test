@@ -149,9 +149,6 @@
           </plugin>
         </plugins>
       </build>
-      <properties>
-        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
-      </properties>
     </profile>
     <profile>
       <id>runDevRunner</id>

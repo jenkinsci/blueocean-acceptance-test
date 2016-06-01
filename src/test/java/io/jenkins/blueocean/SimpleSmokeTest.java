@@ -29,12 +29,11 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-public class SimpleSmokeTest { //extends AbstractJUnitTest {
+public class SimpleSmokeTest extends BOJUnitTest {
 
     @WithPlugins({"workflow-aggregator@2.1"})
     @Test
     public void test() throws Exception {
-        NpmRunner.run("nightwatch src/test/js/smoke.js");
+        GulpRunner.runIntegrationSpec("smoke.js");
     }
-    
 }
