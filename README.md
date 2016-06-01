@@ -32,7 +32,7 @@ run. The downside to this however is that it's not such an easy model to use whe
 because of the overhead of starting a new Jenkins every time.
 
 For this we have a "dev" mode option which allows you to run a Jenkins in the background, keep it
-running and then, in another terminal, to run [nightwatch] (a Selenium JS framework) commands to
+running and then, in another terminal, to run [nightwatch] commands (a Selenium JS framework) to
 run tests quickly as you are writing them.
 
 To run in dev mode, simply add the `--dev` (or just `-d`) switch e.g.
