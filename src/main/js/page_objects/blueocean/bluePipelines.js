@@ -13,13 +13,17 @@ module.exports = {
 
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
+// Seems like we could use a Nightwatch assertions for some of these, but then that would be global.
+// Prefer it this way, local to the page.
 module.exports.commands = [{
     assertBasicLayoutOkay: function() {
-        // Seems like we could use a Nightwatch assertion for this, but then that would be global.
-        // Prefer it this way, local to the page.
-        
         this.waitForElementVisible('@pipelinesNav', 1000);
         this.waitForElementVisible('@newPipelineButton', 1000);
         this.waitForElementVisible('@pipelinesTable', 1000);
+    },
+    assertJob: function(jobName) {
+        // Would be nice if the job row/tr had something on it that allowed
+        // it to be selected.
+        this.waitForElementVisible('.pipelines-table td a[href="/blue/pipelines/' + jobName + '/activity"]', 1000);
     }
 }];
