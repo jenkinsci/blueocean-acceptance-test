@@ -1,4 +1,4 @@
-var sseClient = require('@jenkins-cd/sse-gateway/non-browser-client');
+var sseClient = require('@jenkins-cd/sse-gateway/headless-client');
 var jobChannel = undefined;
 var jobEventListeners = [];
 

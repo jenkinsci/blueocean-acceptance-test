@@ -9,16 +9,10 @@ var commands = {
         return this.navigate(jobUrl);
     },
     build: function(onBuildComplete) {
+        this.click('@build');
         if (onBuildComplete) {
-            // Ok, we want to know when the build completes and call the callback.
-            // We'll use SSE Event notifications for this.
-            var sseClient = require('../api/sse');
-            sseClient.onJobRunEnded(this.jobName, onBuildComplete);
-            this.click('@build');
-        } else {
-            this.click('@build');
+            this.api.waitForJobRunEnded(this.jobName, onBuildComplete);
         }
-        
         return this;
     }
 };

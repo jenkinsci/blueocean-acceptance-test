@@ -5,8 +5,8 @@ module.exports = {
         job.newPipeline(browser, 'my-pipeline', 'three-stages.groovy', function() {
             var pipelinePage = browser.page.pipeline().forJob('my-pipeline');
             pipelinePage.build(function(event) {
-                pipelinePage.api.pause(1000);
-                pipelinePage.api.end();
+                browser.pause(1000);
+                browser.end();
             });
         });
     }
