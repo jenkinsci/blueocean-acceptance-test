@@ -23,24 +23,18 @@
  */
 package io.jenkins.blueocean;
 
-import org.jenkinsci.test.acceptance.junit.AbstractJUnitTest;
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
-import org.jenkinsci.test.acceptance.po.WorkflowJob;
 import org.junit.Test;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-public class SimpleSmokeTest extends AbstractJUnitTest {
+public class SimpleSmokeTest { //extends AbstractJUnitTest {
 
     @WithPlugins({"workflow-aggregator@2.1"})
     @Test
-    public void helloWorld() throws Exception {
-        WorkflowJob job = jenkins.jobs.create(WorkflowJob.class);
-        job.script.set("echo 'hello from Workflow'");
-        job.sandbox.check();
-        job.save();
-        job.startBuild().shouldSucceed().shouldContainsConsoleOutput("hello from Workflow");
+    public void test() throws Exception {
+        NpmRunner.run("nightwatch src/test/js/smoke.js");
     }
     
 }
