@@ -6,7 +6,10 @@
   "custom_commands_path": "src/main/js/custom_commands",
   "custom_assertions_path": "",
   "globals_path": "src/main/js/globals.js",
-  "page_objects_path": "src/main/js/page_objects",
+  "page_objects_path": [
+    "src/main/js/page_objects/classic_jenkins",
+    "src/main/js/page_objects/blueocean"
+  ],
   "selenium": {
     "start_process": true,
     "server_path": "bin/selenium-server-standalone-2.53.0.jar",

@@ -23,6 +23,9 @@ module.exports = {
         build: {
             selector: '//a[text()="Build Now"]',
             locateStrategy: 'xpath' 
+        },
+        builds: {
+            selector: '#buildHistory .build-row-cell .icon-blue'
         }
     }
 };
