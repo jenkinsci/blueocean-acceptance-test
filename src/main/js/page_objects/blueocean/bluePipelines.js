@@ -10,3 +10,16 @@ module.exports = {
         pipelinesTable: '.pipelines-table',
     }
 };
+
+// Nightwatch commands.
+// http://nightwatchjs.org/guide#writing-commands
+module.exports.commands = [{
+    assertBasicLayoutOkay: function() {
+        // Seems like we could use a Nightwatch assertion for this, but then that would be global.
+        // Prefer it this way, local to the page.
+        
+        this.waitForElementVisible('@pipelinesNav', 1000);
+        this.waitForElementVisible('@newPipelineButton', 1000);
+        this.waitForElementVisible('@pipelinesTable', 1000);
+    }
+}];
