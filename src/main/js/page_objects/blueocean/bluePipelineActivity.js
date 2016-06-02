@@ -21,5 +21,10 @@ module.exports.commands = [{
         this.waitForElementVisible('nav.page-tabs a[href="/blue/pipelines/' + this.jobName + '/activity"]', 1000);
         this.waitForElementVisible('nav.page-tabs a[href="/blue/pipelines/' + this.jobName + '/branches"]', 1000);
         this.waitForElementVisible('nav.page-tabs a[href="/blue/pipelines/' + this.jobName + '/pr"]', 1000);
+    },
+    waitForRunVisible: function(runName) {
+        this.waitForElementVisible('.activity-table tr#' + runName, 1000);
+        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus', 1000);
+        this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.success', 1000);
     }
 }];

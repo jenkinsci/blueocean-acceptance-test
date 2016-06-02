@@ -38,10 +38,7 @@ module.exports = {
         blueActivityPage.expect.element('@emptyStateShoes').to.not.be.present.before(1000);
         
         // Check the run itself
-        blueActivityPage.waitForElementVisible('.activity-table tr#my-pipeline-1', 1000);
-        blueActivityPage.waitForElementVisible('.activity-table tr#my-pipeline-1 svg.svgResultStatus', 1000);
-        blueActivityPage.waitForElementPresent('.activity-table tr#my-pipeline-1 svg circle.success', 1000);
-        
+        blueActivityPage.waitForRunVisible('my-pipeline-1');
     },
 
     'Check Job Blue Ocean Pipeline run detail page': function (browser) {
