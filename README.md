@@ -42,7 +42,7 @@ To run in dev mode, simply add the `--dev` (or just `-d`) switch e.g.
 ```
 
 An example of one of the [nightwatch] test scripts is [smoke.js](src/test/js/smoke.js). It is hooked into
-the main (maven) build via [SimpleSmokeTest.java](src/test/java/io/jenkins/blueocean/SimpleSmokeTest.java),
+the main (maven) build via [SmokeTest.java](src/test/java/io/jenkins/blueocean/SmokeTest.java),
 but to run [smoke.js](src/test/js/smoke.js) while running in dev mode, simply run:
 
 ```sh

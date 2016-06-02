@@ -1,3 +1,8 @@
+// Using Gulp to run Nightwatch test suites from inside JUnit tests.
+// Using Gulp because frontend (see maven deps) provides an easy way
+// of running it.
+// See NightwatchTest and it's impls.
+
 var gulp  = require('gulp');
 var shell = require('gulp-shell');
 

@@ -27,13 +27,25 @@ import org.jenkinsci.test.acceptance.junit.WithPlugins;
 import org.junit.Test;
 
 /**
+ * <a href="http://nightwatchjs.org/">Nightwatch.js</a> abstract test.
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-public class SimpleSmokeTest extends BOJUnitTest {
+public abstract class NightwatchTest extends BOJUnitTest {
+
+    private final String testFile;
+
+    /**
+     * Public constructor.
+     * @param testFile The path tot he nightwatch test suite file to run. This path
+     *                 is relative to {@code src/test/js}.
+     */
+    public NightwatchTest(String testFile) {
+        this.testFile = testFile;
+    }
 
     @WithPlugins({"workflow-aggregator@2.1"})
     @Test
-    public void test() throws Exception {
-        GulpRunner.runIntegrationSpec("smoke.js");
+    public final void nightwatchTestRun() throws Exception {
+        NightwatchRunner.runIntegrationSpec(testFile);
     }
 }

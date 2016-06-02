@@ -39,7 +39,7 @@ import java.util.Map;
  * 
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-public class GulpRunner {
+public class NightwatchRunner {
     
     private static File workDir;
     
@@ -50,19 +50,19 @@ public class GulpRunner {
         }
     }
     
-    private GulpRunner() {
+    private NightwatchRunner() {
     }
     
     public static void run(String command) throws TaskRunnerException {
         FrontendPluginFactory frontendPluginFactory = new FrontendPluginFactory(workDir, workDir);
         Map<String, String> env = new HashMap<>();
 
-        System.out.println("------------- GulpRunner <<Start>> -------------");
+        System.out.println("------------- NightwatchRunner <<Start>> -------------");
         System.out.println(" command: [" + command + "]");
         System.out.println(" env: " + env);
         System.out.println();
         frontendPluginFactory.getGulpRunner().execute(command, env);
-        System.out.println("-------------- GulpRunner <<End>> --------------");
+        System.out.println("-------------- NightwatchRunner <<End>> --------------");
     }
     
     public static void runIntegrationSpec(String testFile) throws TaskRunnerException {
