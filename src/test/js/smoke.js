@@ -1,8 +1,7 @@
 module.exports = {
     'Create Pipeline Job': function (browser) {
-        var job = require('../../main/js/api/job');
-                
-        job.newPipeline(browser, 'my-pipeline', 'three-stages.groovy', function() {
+        var pipelinesCreate = browser.page.pipelineCreate().navigate();
+        pipelinesCreate.createPipeline('my-pipeline', 'three-stages.groovy', function() {
             browser.end();
         });
     },
