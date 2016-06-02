@@ -44,13 +44,13 @@ have in this project for running on Linux/MacOS. Feel like you'd be interested i
 
 # Running in dev mode
 
-When running in normal mode, tests are run via JUnit and `BOJUnitTest`
-(which uses the `JenkinsAcceptanceTestRule`) from the main acceptance test harness. This is good
-when running all of the tests because it launches a clean Jenkins (clean `JENKINS_HOME` etc) for every
-run. The downside to this however is that it's not such an easy model to use when developing tests
-because of the overhead of starting a new Jenkins every time.
+When running in normal mode, tests are run via JUnit and `NightwatchTest`
+(which uses the `JenkinsAcceptanceTestRule` from the main acceptance test harness). This is good
+when running all of the tests (e.g. CI builds) because it launches a clean Jenkins (clean `JENKINS_HOME` etc) for every
+run/suite. The downside to this however is that it's not such an easy model to use when developing tests
+because of the overhead of starting a new Jenkins every time (30+ seconds every time).
 
-For this we have a "dev" mode option which allows you to run a Jenkins in the background, keep it
+For this we have a "dev" mode option which allows you to run a Jenkins instance in the background, keeping it
 running and then, in another terminal, to run [nightwatch] commands (a Selenium JS framework) to
 run tests quickly as you are writing them.
 
