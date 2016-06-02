@@ -1,5 +1,17 @@
 Acceptance tests for Blue Ocean
 
+# Building
+
+To build:
+
+```sh
+mvn clean install -DskipTests
+```
+
+For now, you __must__ build with the `-DskipTests` switch. We'll be able to change this once the Blue Ocean
+plugins are in the Update Center.
+
+
 # Running
 Builds directly on the main Jenkins [acceptance-test-harness](https://github.com/jenkinsci/acceptance-test-harness),
 so running it works as per the instructions on the README.md there.
@@ -13,6 +25,8 @@ We also added a shortcut script for easy running:
 The `-a` (or `--aggregator`) switch is the path to the Blue Ocean aggregator plugin
 (e.g. `/Users/tfennelly/projects/blueocean/blueocean-plugin`). This switch is needed until such time as the
 Blue Ocean plugins are in the Update Center.
+
+> __NOTE:__ You __must__ build the [blueocean-plugin repo](https://github.com/jenkinsci/blueocean-plugin) code before running.
 
 That script will download a recent version of Jenkins from the download mirror (see script) and will run the acceptance
 tests. Alternatively, you can specify the the version of Jenkins that you want to test against e.g. to run the tests
