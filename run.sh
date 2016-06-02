@@ -125,7 +125,7 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
-EXECUTION="env BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES}"
+EXECUTION="env BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES}"
 
 echo ""
 echo "> ${EXECUTION}"
