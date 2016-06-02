@@ -71,4 +71,6 @@ nightwatch src/test/js/smoke.js
 Of course this assumes you have the [nightwatch] package globally installed (`npm install -g nightwatch`).
 Alternatively, you can just run `npm test` to run all [nightwatch] tests.
 
+[![Video](http://img.youtube.com/vi/o8r4ztgpm8E/maxresdefault.jpg)](https://youtu.be/o8r4ztgpm8E)
+
 [nightwatch]: http://nightwatchjs.org/
