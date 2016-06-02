@@ -43,7 +43,6 @@ public abstract class NightwatchTest extends BOJUnitTest {
         this.testFile = testFile;
     }
 
-    @WithPlugins({"workflow-aggregator@2.1"})
     @Test
     public final void nightwatchTestRun() throws Exception {
         NightwatchRunner.runIntegrationSpec(testFile);
