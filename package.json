@@ -17,9 +17,6 @@
   ],
   "author": "Tom Fennelly <tom.fennelly@gmail.com> (https://github.com/tfennelly)",
   "license": "MIT",
-  "bugs": {
-    "pageUrl": "https://github.com/cloudbees/blueocean-acceptance-test/issues"
-  },
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {
     "@jenkins-cd/sse-gateway": "0.0.5-beta1",
