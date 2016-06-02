@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cloudbees/blueocean-acceptance-test.git"
+    "pageUrl": "git+https://github.com/cloudbees/blueocean-acceptance-test.git"
   },
   "keywords": [
     "Jenkins",
@@ -18,7 +18,7 @@
   "author": "Tom Fennelly <tom.fennelly@gmail.com> (https://github.com/tfennelly)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cloudbees/blueocean-acceptance-test/issues"
+    "pageUrl": "https://github.com/cloudbees/blueocean-acceptance-test/issues"
   },
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {

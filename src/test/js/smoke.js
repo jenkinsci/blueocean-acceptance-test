@@ -42,6 +42,13 @@ module.exports = {
         blueActivityPage.waitForElementVisible('.activity-table tr#my-pipeline-1 svg.svgResultStatus', 1000);
         blueActivityPage.waitForElementPresent('.activity-table tr#my-pipeline-1 svg circle.success', 1000);
         
+    },
+
+    'Check Job Blue Ocean Pipeline run detail page': function (browser) {
+        var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 1);
+        
+        blueRunDetailPage.assertBasicLayoutOkay();
+        
         browser.end();
     }
 };
