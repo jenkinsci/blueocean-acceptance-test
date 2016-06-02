@@ -1,5 +1,7 @@
 Acceptance tests for Blue Ocean
 
+> __[HOSTING-109](https://issues.jenkins-ci.org/browse/HOSTING-109)__: We have a request in to move this repo to [jenkinsci](https://github.com/jenkinsci). 
+
 # Building
 
 To build:
