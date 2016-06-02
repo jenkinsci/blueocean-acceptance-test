@@ -26,7 +26,7 @@ against Jenkins version `2.4` (again, it will download that version of Jenkins i
 # Running on Windows
 
 Sorry, this is not supported at the moment. We'd need to create equivalents of the shell scripts we already
-have in this project for running on Linux/MacOS. Fell like you'd be interested in doing that?
+have in this project for running on Linux/MacOS. Feel like you'd be interested in doing that?
 
 # Running in dev mode
 
