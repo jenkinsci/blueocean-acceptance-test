@@ -96,7 +96,7 @@ fi
 pushd "${AGGREGATOR_DIR}"
 AGGREGATOR_GROUP_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:parent/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`
 AGGREGATOR_ARTIFACT_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`
-
+popd
 if [ "${AGGREGATOR_GROUP_ID}" != "io.jenkins.blueocean" ] || [ "${AGGREGATOR_ARTIFACT_ID}" != "blueocean" ]; then
     echo ""
     echo " *********************************************************************"
