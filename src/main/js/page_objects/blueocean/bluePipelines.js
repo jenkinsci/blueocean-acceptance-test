@@ -1,11 +1,15 @@
 // Blue Ocean pipelines page object (http://nightwatchjs.org/guide#page-objects)
 
+var url = require('../../util/url');
+var pipelinesUrl = url.viewAllPipelines();
+
 module.exports = {
+
     url: function () {
-        return this.api.launchUrl + '/blue/pipelines';
+        return this.api.launchUrl + pipelinesUrl;
     },
     elements: {
-        pipelinesNav: '.global-header nav a[href="/blue/pipelines"]',
+        pipelinesNav: '.global-header nav a[href="'+pipelinesUrl+'"]',
         newPipelineButton: '.page-title a[href="/view/All/newJob"]',
         pipelinesTable: '.pipelines-table',
     }

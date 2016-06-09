@@ -1,5 +1,7 @@
 // Blue Ocean pipeline run detail page object (http://nightwatchjs.org/guide#page-objects)
 
+var url = require('../../util/url');
+
 module.exports = {
     elements: {
         logHeader: '.dialog .log-header',
@@ -17,7 +19,11 @@ module.exports.commands = [{
         return this.navigate(this.pageUrl());
     },
     pageUrl: function(relative) {
-        return (!relative ? this.api.launchUrl : '/') + 'blue/organizations/' + this.orgName + '/' + this.jobName + '/detail/' + this.branchName + '/' + this.buildNumber;
+        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.branchName, this.buildNumber));
+        
+        return !relative ?
+            this.api.launchUrl + runUrl :
+            runUrl;
     },
     tabUrl: function(tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
