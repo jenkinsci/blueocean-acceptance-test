@@ -41,7 +41,7 @@ module.exports = {
     },
 
     'Check Job Blue Ocean Pipeline run detail page': function (browser) {
-        var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 1);
+        var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 'jenkins', 1);
         
         blueRunDetailPage.assertBasicLayoutOkay();
         
