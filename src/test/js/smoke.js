@@ -14,7 +14,7 @@ module.exports = {
     },
 
     'Check Job Blue Ocean Pipeline Activity Page is empty': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline');
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         
         blueActivityPage.assertBasicLayoutOkay();
         blueActivityPage.waitForElementVisible('@emptyStateShoes', 1000);
@@ -31,7 +31,7 @@ module.exports = {
     },
 
     'Check Job Blue Ocean Pipeline Activity Page has run': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline');
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         
         blueActivityPage.assertBasicLayoutOkay();
         blueActivityPage.expect.element('@emptyStateShoes').to.not.be.present.before(1000);

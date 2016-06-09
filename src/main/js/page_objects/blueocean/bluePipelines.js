@@ -22,8 +22,6 @@ module.exports.commands = [{
         this.waitForElementVisible('@pipelinesTable', 1000);
     },
     assertJob: function(jobName) {
-        // Would be nice if the job row/tr had something on it that allowed
-        // it to be selected.
-        this.waitForElementVisible('.pipelines-table td a[href="/blue/pipelines/' + jobName + '/activity"]', 1000);
+        this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]', 1000);
     }
 }];
