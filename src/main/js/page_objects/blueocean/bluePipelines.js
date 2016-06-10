@@ -1,11 +1,15 @@
 // Blue Ocean pipelines page object (http://nightwatchjs.org/guide#page-objects)
 
+var url = require('../../util/url');
+var pipelinesUrl = url.viewAllPipelines();
+
 module.exports = {
+
     url: function () {
-        return this.api.launchUrl + '/blue/pipelines';
+        return this.api.launchUrl + pipelinesUrl;
     },
     elements: {
-        pipelinesNav: '.global-header nav a[href="/blue/pipelines"]',
+        pipelinesNav: '.global-header nav a[href="'+pipelinesUrl+'"]',
         newPipelineButton: '.page-title a[href="/view/All/newJob"]',
         pipelinesTable: '.pipelines-table',
     }
@@ -22,8 +26,6 @@ module.exports.commands = [{
         this.waitForElementVisible('@pipelinesTable', 1000);
     },
     assertJob: function(jobName) {
-        // Would be nice if the job row/tr had something on it that allowed
-        // it to be selected.
-        this.waitForElementVisible('.pipelines-table td a[href="/blue/pipelines/' + jobName + '/activity"]', 1000);
+        this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]', 1000);
     }
 }];
