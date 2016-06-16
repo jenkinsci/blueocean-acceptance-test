@@ -21,11 +21,11 @@ module.exports = {
 // Prefer it this way, local to the page.
 module.exports.commands = [{
     assertBasicLayoutOkay: function() {
-        this.waitForElementVisible('@pipelinesNav', 1000);
-        this.waitForElementVisible('@newPipelineButton', 1000);
-        this.waitForElementVisible('@pipelinesTable', 1000);
+        this.waitForElementVisible('@pipelinesNav');
+        this.waitForElementVisible('@newPipelineButton');
+        this.waitForElementVisible('@pipelinesTable');
     },
     assertJob: function(jobName) {
-        this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]', 1000);
+        this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]');
     }
 }];

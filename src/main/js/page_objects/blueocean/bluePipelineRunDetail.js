@@ -32,11 +32,11 @@ module.exports.commands = [{
         return 'nav.page-tabs a[href="' + this.tabUrl(tabName, true) + '"]';
     },
     assertBasicLayoutOkay: function() {
-        this.waitForElementVisible(this.tabSelector('pipeline'), 5000); // Give a bit more time to initially appear
-        this.waitForElementVisible(this.tabSelector('changes'), 1000);
-        this.waitForElementVisible(this.tabSelector('tests'), 1000);
-        this.waitForElementVisible(this.tabSelector('artifacts'), 1000);
-        this.waitForElementVisible('@logHeader', 1000);
+        this.waitForElementVisible(this.tabSelector('pipeline'));
+        this.waitForElementVisible(this.tabSelector('changes'));
+        this.waitForElementVisible(this.tabSelector('tests'));
+        this.waitForElementVisible(this.tabSelector('artifacts'));
+        this.waitForElementVisible('@logHeader');
         // TODO: add class info to the page content so we can test it
         // Atm there's very little on the page that will allow us to test it.
         // E.g. nothing on the pipeline graph that allows us to find it.

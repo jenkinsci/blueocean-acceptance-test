@@ -21,14 +21,14 @@ module.exports.commands = [{
     },
     assertBasicLayoutOkay: function() {
         var baseHref = url.viewPipeline(this.orgName, this.jobName);
-        this.waitForElementVisible('@pipelinesNav', 1000);
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/activity"]', 1000);
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/branches"]', 1000);
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/pr"]', 1000);
+        this.waitForElementVisible('@pipelinesNav');
+        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/activity"]');
+        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/branches"]');
+        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/pr"]');
     },
     waitForRunVisible: function(runName) {
-        this.waitForElementVisible('.activity-table tr#' + runName, 1000);
-        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus', 1000);
-        this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.success', 1000);
+        this.waitForElementVisible('.activity-table tr#' + runName);
+        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
+        this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.success');
     }
 }];

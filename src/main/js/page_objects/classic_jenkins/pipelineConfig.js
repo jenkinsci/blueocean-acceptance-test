@@ -19,7 +19,7 @@ exports.commands = [
             var scriptText = readTestScript(script);
     
             // Need to wait for the ACE Editor to fully render on the page
-            this.waitForElementPresent('@scriptInput', 5000);
+            this.waitForElementPresent('@scriptInput');
             this.api.execute(function (selector, scriptText) {
                 var targets = document.getElementsBySelector(selector);
                 targets[0].aceEditor.setValue(scriptText);

@@ -17,7 +17,7 @@ module.exports = {
         var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         
         blueActivityPage.assertBasicLayoutOkay();
-        blueActivityPage.waitForElementVisible('@emptyStateShoes', 1000);
+        blueActivityPage.waitForElementVisible('@emptyStateShoes');
     },
 
     'Build Pipeline Job': function (browser) {
@@ -25,7 +25,7 @@ module.exports = {
         pipelinePage.build(function() {
             // Reload the job page and check that there was a build done.
             pipelinePage = browser.page.pipeline().forJob('my-pipeline');
-            pipelinePage.waitForElementVisible('@builds', 1000);
+            pipelinePage.waitForElementVisible('@builds');
             browser.end();
         });
     },
