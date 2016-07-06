@@ -26,9 +26,14 @@ module.exports.commands = [{
         this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/branches"]');
         this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/pr"]');
     },
-    waitForRunVisible: function(runName) {
+    waitForRunSuccessVisible: function(runName) {
         this.waitForElementVisible('.activity-table tr#' + runName);
         this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
         this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.success');
+    },
+    waitForRunRunningVisible: function(runName) {
+        this.waitForElementVisible('.activity-table tr#' + runName);
+        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
+        this.waitForElementPresent('.activity-table tr#' + runName + ' svg path.running');
     }
 }];

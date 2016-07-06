@@ -52,17 +52,31 @@ exports.onJobRunEnded = function(jobName, callback) {
     });
 };
 
+exports.onJobRunStarted = function(jobName, callback) {
+    console.log('111111ththt')
+    jobEventListeners.push({
+        jenkins_event: 'job_run_started',
+        job_name: jobName,
+        callback: callback
+    });
+
+    console.log('111111ththt', jobEventListeners)
+};
+
 function callJobEventListeners(event) {
     // Precheck the event type.
-    if (event.jenkins_event !== 'job_run_ended') {
+    console.log('sse', event.jenkins_event !== 'job_run_ended' && event.jenkins_event !== 'job_run_started')
+    if (event.jenkins_event !== 'job_run_ended' && event.jenkins_event !== 'job_run_started') {
         return;
-    }                
-
+    }
+console.log(jobEventListeners.length, jobEventListeners)
     var newListenerList = [];
     for (var i = 0; i < jobEventListeners.length; i++) {
         var jobEventListener = jobEventListeners[i];
+        console.log(jobEventListener.jenkins_event, event.jenkins_event)
         if (jobEventListener.jenkins_event === event.jenkins_event && jobEventListener.job_name === event.job_name) {
             try {
+                console.log('callback', event)
                 jobEventListener.callback(event);
             } catch(e) {
                 console.log();

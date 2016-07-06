@@ -1,0 +1,15 @@
+node {
+    echo 'first Branch start'
+    sh 'sleep 3; echo `date` xxx;sleep 3; echo `date` xxx;'
+    echo 'first Branch end'
+    sh 'sleep 3; echo `date` xxx;sleep 3; echo `date` xxx;'
+    echo 'bla'
+    sh 'echo something'
+    sh 'sleep 3; echo `date` xxx;sleep 10; echo `date` xxx;'
+    echo 'second Branch start'
+    sh 'sleep 3; echo `date` xxx;sleep 3; echo `date` xxx;'
+    echo 'first Branch end'
+    sh 'sleep 3; echo `date` xxx;sleep 3; echo `date` xxx;'
+    echo 'bla'
+    sh 'echo something'
+}
