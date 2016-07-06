@@ -1,5 +1,15 @@
 Acceptance tests for Blue Ocean
 
+# Prepare your system
+
+You need to install xmllint prior of running the server!
+
+In debian:
+
+```
+apt-get install libxml2-utils
+```
+
 # Building
 
 To build:
@@ -23,7 +33,7 @@ We also added a shortcut script for easy running:
 ```
 
 The `-a` (or `--aggregator`) switch is the path to the Blue Ocean aggregator plugin
-(e.g. `/Users/tfennelly/projects/blueocean/blueocean-plugin`). This switch is needed until such time as the
+(e.g. `/Users/tfennelly/projects/blueocean/blueocean-plugin/blueocean-plugin`). This switch is needed until such time as the
 Blue Ocean plugins are in the Update Center.
 
 > __NOTE:__ You __must__ build the [blueocean-plugin repo](https://github.com/jenkinsci/blueocean-plugin) code before running.
