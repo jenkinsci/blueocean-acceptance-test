@@ -44,30 +44,23 @@ exports.disconnect = function() {
     console.log('Disconnected from the Jenkins SSE Gateway.');
 };
 
-exports.onJobRunEnded = function(jobName, callback) {
+exports.onJobEvent = function(eventName, jobName, callback) {
     jobEventListeners.push({
-        jenkins_event: 'job_run_ended',
+        jenkins_event: eventName,
         job_name: jobName,
         callback: callback
     });
 };
 
 exports.onJobRunStarted = function(jobName, callback) {
-    jobEventListeners.push({
-        jenkins_event: 'job_run_started',
-        job_name: jobName,
-        callback: callback
-    });
+    exports.onJobEvent('job_run_started', jobName, callback);
+};
 
+exports.onJobRunEnded = function(jobName, callback) {
+    exports.onJobEvent('job_run_ended', jobName, callback);
 };
 
 function callJobEventListeners(event) {
-    // Precheck the event type.
-    console.log('sse', event.jenkins_event !== 'job_run_ended' && event.jenkins_event !== 'job_run_started')
-    if (event.jenkins_event !== 'job_run_ended' && event.jenkins_event !== 'job_run_started') {
-        return;
-    }
-console.log(jobEventListeners.length, jobEventListeners)
     var newListenerList = [];
     for (var i = 0; i < jobEventListeners.length; i++) {
         var jobEventListener = jobEventListeners[i];
@@ -75,7 +68,7 @@ console.log(jobEventListeners.length, jobEventListeners)
             try {
                 jobEventListener.callback(event);
             } catch(e) {
-                console.log();
+                console.error(e);
             }
         } else {
             // Only add the handlers that were not called.
