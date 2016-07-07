@@ -9,7 +9,7 @@ module.exports = {
     'Build Pipeline Job': function (browser) {
         var pipelinePage = browser.page.pipeline().forJob('stages');
         pipelinePage.buildStarted(function() {
-            console.log('xxxxx')
+            console.log('xxxxx build started *****')
             // Reload the job page and check that there was a build done.
             this
                 .waitForElementVisible('div#pipeline-box')
