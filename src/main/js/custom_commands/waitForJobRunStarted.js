@@ -16,7 +16,6 @@ Cmd.prototype.command = function (jobName, onBuildStarted) {
     var self = this;
 
     sseClient.onJobRunStarted(jobName, function(event) {
-        console.log('**** job ' + jobName + ' started !!');
         try {
             if (onBuildStarted) {
                 onBuildStarted(event);
