@@ -52,6 +52,21 @@ against Jenkins version `2.4` (again, it will download that version of Jenkins i
 Sorry, this is not supported at the moment. We'd need to create equivalents of the shell scripts we already
 have in this project for running on Linux/MacOS. Feel like you'd be interested in doing that?
 
+# Troubleshooting
+
+> (might move this section to an FAQ)
+
+## Tests/Browser hangs when running on my local development machine
+
+You need to determine if this is an issue with a change to the test harness itself, or as a result of a change to the
+local environment e.g. a browser version update (most common cause).
+
+Things to check:
+
+1. Are the acceptance tests passing on the CI server (https://ci.blueocean.io/). If they're failing there, then it might not be a local env issue.
+1. Did the browser auto-update to a version that has Selenium compatibility issues. We have seen issues with Firefox versions (e.g. Firefox 47.x and Selenium 2.53). As well as upgrading/downgrading the browser version to something that's compatible with the Selenium version, it might be a good idea to turn off browser auto-updates, otherwise there's a good chance of hitting issues again.
+1. If you have local changes, stash/revert them and try a version that was known to work previously.
+
 # Running in dev mode
 
 When running in normal mode, tests are run via JUnit and `NightwatchTest`
