@@ -31,11 +31,11 @@ exports.commands = [{
         }
         return this;
     },
-    // buildStarted: function(onBuildStarted) {
-    //     this.click('@build');
-    //     if (onBuildStarted) {
-    //         this.api.waitForJobRunStarted(this.jobName, onBuildStarted);
-    //     }
-    //     return this;
-    // }
+    buildStarted: function(onBuildStarted) {
+        this.click('@build');
+        if (onBuildStarted) {
+            this.api.waitForJobRunStarted(this.jobName, onBuildStarted);
+        }
+        return this;
+    }
 }];
