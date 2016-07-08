@@ -1,0 +1,10 @@
+echo `date` freeStyle start;
+sleep 2;
+echo `date` step 1;
+sleep 1;
+echo `date` step 2;
+sleep 2;
+echo `date` step 3;
+sleep 3;
+echo `date` freeStyle end;
+sleep 4; 
