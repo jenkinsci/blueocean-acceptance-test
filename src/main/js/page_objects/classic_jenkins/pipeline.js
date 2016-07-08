@@ -2,11 +2,11 @@
 exports.elements = {
     build: {
         selector: '//a[text()="Build Now"]',
-        locateStrategy: 'xpath' 
+        locateStrategy: 'xpath',
     },
     executer: {
         selector: '//span[text()="Started by anonymous user"]',
-        locateStrategy: 'xpath'
+        locateStrategy: 'xpath',
     },
     builds: '#buildHistory .build-row-cell .icon-blue'
 };

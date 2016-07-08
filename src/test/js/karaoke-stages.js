@@ -9,18 +9,13 @@ module.exports = {
     'Build Pipeline Job': function (browser) {
         var pipelinePage = browser.page.pipeline().forJob('stages');
         pipelinePage.buildStarted(function() {
-            console.log('xxxxx build started *****')
             // Reload the job page and check that there was a build done.
-            this
+            pipelinePage
                 .waitForElementVisible('div#pipeline-box')
                 .forRun(1)
                 .waitForElementVisible('@executer');
             browser.end();
         })
-        // pipelinePage.build()
-        //     .waitForElementVisible('div#pipeline-box')
-        //     .forRun(1)
-        //     .waitForElementVisible('@executer');
     },
 
     'Check Job Blue Ocean Pipeline Activity Page has run': function (browser) {
@@ -28,17 +23,19 @@ module.exports = {
         // Check the run itself
         blueActivityPage.waitForRunRunningVisible('stages-1');
     },
-
-    'Check Job Blue Ocean Pipeline run detail page - stop follow': function (browser) {
+    // need to click on an element so the up_arrow takes place in the window
+    'Check Job Blue Ocean Pipeline run detail page - stop karaoke': function (browser) {
         var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
         browser.waitForElementVisible('code')
+            .click('code')
             .keys(browser.Keys.UP_ARROW)
             .getText('code', function (result) {
                 var text = result.value;
-                this.pause(3000)
+                // we wait and see whether no more updates come through
+                this.pause(1000)
                     .waitForElementVisible('code')
                     .getText('code', function (result) {
-                        this.assert.equal(text, result.value)
+                        this.assert.equal(text, result.value);
                     });
 
             });
@@ -47,24 +44,34 @@ module.exports = {
         browser.end();
     },
 
-    'Check Job Blue Ocean Pipeline run detail page - follow': function (browser) {
+    'Check Job Blue Ocean Pipeline run detail page - karaoke': function (browser) {
         var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
         blueRunDetailPage.waitForElementVisible('code')
             .getText('code', function (result) {
                 var text = result.value;
+                //node change
                 this.waitForElementPresent('svg circle.success')
                     .waitForElementVisible('code')
                     .getText('code', function (result) {
                         this.assert.notEqual(text, result.value)
                     })
-
-                    .pause(1000)
-                    .waitForElementPresent('circle.success')
-                    .click('circle.success')
-                    .pause(1000)
                 ;
+            })
+        ;
+        // FIXME should be taken from somewhere dinamically
+        var nodeDetail =  blueRunDetailPage.forNode('5');
+        nodeDetail.waitForElementVisible('div.result-item')
+            .getText('div.result-item', function (result) {
+                this.assert.equal('Shell Script', result.value);
+            })
+        ;
+        // test whether the expand works
+        nodeDetail.waitForElementVisible('div.result-item')
+            .click('div.result-item')
+            .waitForElementVisible('code')
+            .getText('code', function (result) {
+                this.assert.notEqual(null, result.value);
             });
-
         browser.end();
     }
 };

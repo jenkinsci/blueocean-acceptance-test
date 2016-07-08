@@ -22,6 +22,7 @@ module.exports = {
     'Check Job Blue Ocean Pipeline run detail page - stop follow': function (browser) {
         var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         browser.waitForElementVisible('code')
+            .click('code')
             .keys(browser.Keys.UP_ARROW)
             .getText('code', function (result) {
                 var text = result.value;
