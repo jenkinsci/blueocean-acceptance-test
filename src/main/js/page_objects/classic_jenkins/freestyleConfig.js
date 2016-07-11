@@ -11,7 +11,10 @@ exports.elements = {
         selector: '//a[text()="Execute shell"]',
         locateStrategy: 'xpath',
     },
-    scriptInput: 'textarea.codemirror',
+    scriptHook: {
+        selector: '//textarea[@name="command"]',
+        locateStrategy: 'xpath',
+    },
     save: 'span.yui-button[name="Submit"]'
 };
 // Nightwatch commands.
@@ -19,29 +22,38 @@ exports.elements = {
 exports.commands = [
     {
         forJob: function(jobName) {
-            var jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
+            const jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
             return this.navigate(jobUrl);
         },
         setFreestyleScript: function (script) {
-            var scriptText = readTestScript(script);
+            const scriptText = readTestScript(script);
             this.waitForElementPresent('@button')
                 .click('@button')
                 .waitForElementPresent('@shell')
                 .click('@shell')
-                .waitForElementPresent('@scriptInput')
-            this.api.execute(function (scriptText) {
-                //FIXME talk to tfennelly how to fix it (the next is not working)
-                CodeMirror.setValue(scriptText);
+                .waitForElementPresent('@scriptHook');
+            // we need to do the following to inject the script based on
+            // https://github.com/jenkinsci/acceptance-test-harness/blob/master/src/main/java/org/jenkinsci/test/acceptance/po/CodeMirror.java
+            this.api.execute(function (selector, scriptText) {
+                const cmElem = document.evaluate(
+                    selector, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null
+                ).singleNodeValue;
+                const codemirror = cmElem.CodeMirror;
+                if (codemirror == null) {
+                    console.error('CodeMirror object not found!');
+                }
+                codemirror.setValue(scriptText);
+                codemirror.save();
                 return true;
-            }, [scriptText]);
-            
+            }, ['//*[@name="command"]/following-sibling::div', scriptText]);
+
             return this;
         }
     }
 ];
 
 function readTestScript(script) {
-    var fileName = 'src/test/js/test_pipelines_scripts/' + script;
+    const fileName = 'src/test/js/test_pipelines_scripts/' + script;
     
     if (!fs.existsSync(fileName)) {
         // It's not a script file.

@@ -11,13 +11,13 @@ module.exports = {
     }
 };
 
-var request = require('request');
+const request = require('request');
 
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
     createFreestyle: function(jobName, script, oncreated) {
-        var self = this;
+        const self = this;
         
         self.deleteFreestyle(jobName, function() {
             self.setValue('@nameInput', jobName);
@@ -30,7 +30,7 @@ module.exports.commands = [{
         });
     },
     deleteFreestyle: function(jobName, ondeleted) {
-        var deleteUrl = this.api.launchUrl + 'job/' + jobName + '/doDelete';
+        const deleteUrl = this.api.launchUrl + 'job/' + jobName + '/doDelete';
         request.post(deleteUrl, ondeleted);
     }
 }];
