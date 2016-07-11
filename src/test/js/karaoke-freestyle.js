@@ -26,20 +26,21 @@ module.exports = {
     // need to click on an element so the up_arrow takes place in the window
     'Check Job Blue Ocean run detail page - stop karaoke': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('hijo', 'jenkins', 1);
+        blueRunDetailPage.assertBasicLayoutOkay();
         browser.waitForElementVisible('code')
             .click('code')
             .keys(browser.Keys.UP_ARROW)
             .getText('code', function (result) {
                 const text = result.value;
                 // we wait and see whether no more updates come through
-                this.pause(1000)
+                this.pause(100)
                     .waitForElementVisible('code')
                     .getText('code', function (result) {
                         this.assert.equal(text, result.value);
                     });
             });
-        blueRunDetailPage.assertBasicLayoutOkay();
-
+        // wait for the success update via sse event
+        blueRunDetailPage.waitForElementVisible('div.header.success');
         browser.end();
     },
 
