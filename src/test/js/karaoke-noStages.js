@@ -8,9 +8,14 @@ module.exports = {
 
     'Build Pipeline Job': function (browser) {
         var pipelinePage = browser.page.pipeline().forJob('noStages');
-        pipelinePage.build();
-        pipelinePage.forRun(1);
-        pipelinePage.waitForElementVisible('@executer');
+        pipelinePage.buildStarted(function() {
+            // Reload the job page and check that there was a build done.
+            pipelinePage
+                .waitForElementVisible('div#pipeline-box')
+                .forRun(1)
+                .waitForElementVisible('@executer');
+            browser.end();
+        });
     },
 
     'Check Job Blue Ocean Pipeline Activity Page has run': function (browser) {

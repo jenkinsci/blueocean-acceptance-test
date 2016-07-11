@@ -15,7 +15,7 @@ module.exports = {
                 .forRun(1)
                 .waitForElementVisible('@executer');
             browser.end();
-        })
+        });
     },
 
     'Check Job Blue Ocean Pipeline Activity Page has run': function (browser) {
