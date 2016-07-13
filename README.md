@@ -2,12 +2,41 @@ Acceptance tests for Blue Ocean
 
 # Prepare your system
 
+## xmllint
+
 You need to install xmllint prior of running the server!
 
 In debian:
 
 ```
 apt-get install libxml2-utils
+
+
+```
+
+## selenium
+
+### Download Selenium
+
+Download the latest version of the selenium-server-standalone-{VERSION}.jar file from the [Selenium downloads page](http://selenium-release.storage.googleapis.com/index.html) and place it 
+on the computer with the browser you want to test. 
+
+In most cases this will be on your local machine and typically inside your project's source folder or general opt/ where you keep your system tools.
+
+### Running Selenium Manually
+
+To run the selenium server manually, from the directory with the jar run the following:
+
+Once:
+```sh
+echo 'java -jar selenium-server-standalone-2.53.1.jar' > start; chmod 755 start
+
+```
+
+then:
+```sh
+./start
+
 ```
 
 # Building
@@ -25,6 +54,8 @@ plugins are in the Update Center.
 # Running
 Builds directly on the main Jenkins [acceptance-test-harness](https://github.com/jenkinsci/acceptance-test-harness),
 so running it works as per the instructions on the README.md there.
+
+> __NOTE:__ If you are not running dev mode, we assume a running selenium instance! See above how to start selenium manually.
 
 We also added a shortcut script for easy running:
 
