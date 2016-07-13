@@ -1,6 +1,7 @@
 var sseClient = require('@jenkins-cd/sse-gateway/headless-client');
 var jobChannel = undefined;
 var jobEventListeners = [];
+var jobEventHistory = [];
 
 /**
  * Connect to the SSE Gateway.
@@ -40,37 +41,81 @@ exports.disconnect = function() {
         }
     } finally {
         sseClient.disconnect();
+        jobEventListeners = [];
+        jobEventHistory = [];
     }
     console.log('Disconnected from the Jenkins SSE Gateway.');
 };
 
-exports.onJobRunEnded = function(jobName, callback) {
-    jobEventListeners.push({
+exports.onJobEvent = function(filter, callback, checkEventHistory) {
+    if(typeof checkEventHistory === 'boolean' ? checkEventHistory : true) {
+        for (var i = 0; i < jobEventHistory.length; i++) {
+            if (isMatchingEvent(jobEventHistory[i], filter)) {
+                // If we find a matching event in the event history then we
+                // create a timeout to send the event to the callback and then
+                // bail immediately, without adding the listener to the list
+                // of job listeners.
+                setTimeout(function() {
+                    callback(jobEventHistory[i]);
+                }, 50);
+                return;
+            }
+        }
+    }
+
+    var listener = {
+        filter: filter,
+        callback: callback
+    };
+    
+    jobEventListeners.push(listener);
+};
+
+exports.onJobRunStarted = function(jobName, callback, runId) {
+    exports.onJobEvent({
+        jenkins_event: 'job_run_started',
+        job_name: jobName,
+        jenkins_object_id: (runId ? runId.toString() : '1')
+    }, callback);
+};
+
+exports.onJobRunEnded = function(jobName, callback, runId) {
+    exports.onJobEvent({
         jenkins_event: 'job_run_ended',
         job_name: jobName,
-        callback: callback
-    });
+        jenkins_object_id: (runId ? runId.toString() : '1')
+    }, callback);
 };
 
 function callJobEventListeners(event) {
-    // Precheck the event type.
-    if (event.jenkins_event !== 'job_run_ended') {
-        return;
-    }                
+    try {
+        var newListenerList = [];
+        for (var i = 0; i < jobEventListeners.length; i++) {
+            var jobEventListener = jobEventListeners[i];
 
-    var newListenerList = [];
-    for (var i = 0; i < jobEventListeners.length; i++) {
-        var jobEventListener = jobEventListeners[i];
-        if (jobEventListener.jenkins_event === event.jenkins_event && jobEventListener.job_name === event.job_name) {
-            try {
-                jobEventListener.callback(event);
-            } catch(e) {
-                console.log();
+            if (isMatchingEvent(event, jobEventListener.filter)) {
+                try {
+                    jobEventListener.callback(event);
+                } catch(e) {
+                    console.error(e);
+                }
+            } else {
+                // Only add the handlers that were not called.
+                newListenerList.push(jobEventListener);
             }
-        } else {
-            // Only add the handlers that were not called.
-            newListenerList.push(jobEventListener);
+        }
+        jobEventListeners = newListenerList;
+    } finally {
+        jobEventHistory.push(event);
+    }
+}
+
+// Check the event against the event filter.
+function isMatchingEvent(event, eventFilter) {
+    for (var prop in eventFilter) {
+        if (eventFilter.hasOwnProperty(prop) && eventFilter[prop] !== event[prop]) {
+            return false;
         }
     }
-    jobEventListeners = newListenerList;
+    return true;
 }

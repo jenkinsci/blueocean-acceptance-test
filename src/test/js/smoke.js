@@ -37,7 +37,7 @@ module.exports = {
         blueActivityPage.expect.element('@emptyStateShoes').to.not.be.present.before(1000);
         
         // Check the run itself
-        blueActivityPage.waitForRunVisible('my-pipeline-1');
+        blueActivityPage.waitForRunSuccessVisible('my-pipeline-1');
     },
 
     'Check Job Blue Ocean Pipeline run detail page': function (browser) {

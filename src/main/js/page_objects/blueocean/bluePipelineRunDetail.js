@@ -25,6 +25,10 @@ module.exports.commands = [{
             this.api.launchUrl + runUrl :
             runUrl;
     },
+    forNode: function(id) {
+        const baseUrl = this.pageUrl();
+        return this.navigate(baseUrl + '/pipeline/' + id);
+    },
     tabUrl: function(tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
     },

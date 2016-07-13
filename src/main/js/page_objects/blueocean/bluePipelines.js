@@ -1,7 +1,7 @@
 // Blue Ocean pipelines page object (http://nightwatchjs.org/guide#page-objects)
 
-var url = require('../../util/url');
-var pipelinesUrl = url.viewAllPipelines();
+const url = require('../../util/url');
+const pipelinesUrl = url.viewAllPipelines();
 
 module.exports = {
 
