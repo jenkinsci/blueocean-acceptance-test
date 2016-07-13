@@ -72,6 +72,8 @@ module.exports = {
             .getText('code', function (result) {
                 this.assert.notEqual(null, result.value);
             });
+        // wait for the success update via sse event
+        blueRunDetailPage.waitForElementVisible('div.header.success');
         browser.end();
     }
 };
