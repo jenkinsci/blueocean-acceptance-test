@@ -33,7 +33,7 @@ module.exports = {
             .getText('code', function (result) {
                 const text = result.value;
                 // we wait and see whether no more updates come through
-                this.pause(100)
+                this.pause(3000)
                     .waitForElementVisible('code')
                     .getText('code', function (result) {
                         this.assert.equal(text, result.value);
