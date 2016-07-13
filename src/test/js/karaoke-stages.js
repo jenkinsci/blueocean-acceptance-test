@@ -58,7 +58,7 @@ module.exports = {
                 ;
             })
         ;
-        // FIXME should be taken from somewhere dinamically
+        // FIXME should be taken from somewhere dynamically
         const nodeDetail =  blueRunDetailPage.forNode('5');
         nodeDetail.waitForElementVisible('div.result-item')
             .getText('div.result-item', function (result) {
@@ -72,6 +72,8 @@ module.exports = {
             .getText('code', function (result) {
                 this.assert.notEqual(null, result.value);
             });
+        // test whether the stage we seeing is highlighted
+        nodeDetail.waitForElementVisible('g.pipeline-node-selected');
         browser.end();
     }
 };
