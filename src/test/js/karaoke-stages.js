@@ -74,6 +74,8 @@ module.exports = {
             });
         // test whether the stage we seeing is highlighted
         nodeDetail.waitForElementVisible('g.pipeline-node-selected');
+        // wait for the success update via sse event
+        blueRunDetailPage.waitForElementVisible('div.header.success');
         browser.end();
     }
 };

@@ -52,7 +52,8 @@ module.exports = {
                     });
             });
         blueRunDetailPage.assertBasicLayoutOkay();
-
+        // wait for the success update via sse event
+        blueRunDetailPage.waitForElementVisible('div.header.success');
         browser.end();
     }
 };

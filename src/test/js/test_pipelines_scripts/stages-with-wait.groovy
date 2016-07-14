@@ -13,10 +13,6 @@ node {
     failFast: true
 }
 node {
-    stage 'deploy'
-    sh 'echo `date` deploy;sleep 3; echo `date` deploy;sleep 3; echo `date` deploy;sleep 3; echo `date` deploy;sleep 3; echo `date` deploy;sleep 3; echo `date` deploy;'
-}
-node {
     stage 'fin'
     sh 'echo `date` fin;sleep 3; echo `date` fin;sleep 3; echo `date` fin;sleep 3; echo `date` fin;sleep 3; echo `date` fin;sleep 3; echo `date` fin;'
 }
