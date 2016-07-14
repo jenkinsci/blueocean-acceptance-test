@@ -26,32 +26,14 @@ module.exports = {
         // Check the run itself
         blueActivityPage.waitForRunRunningVisible('stages-1');
     },
-    // need to click on an element so the up_arrow takes place in the window
-    'Check Job Blue Ocean Pipeline run detail page - stop karaoke': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
-        browser.waitForElementVisible('code')
-            .click('code')
-            .keys(browser.Keys.UP_ARROW)
-            .getText('code', function (result) {
-                const text = stringCleaner(result.value);
-                // we wait and see whether no more updates come through
-                this.pause(10)
-                    .waitForElementVisible('code')
-                    .getText('code', function (result) {
-                        this.assert.equal(text, stringCleaner(result.value));
-                    });
-
-            });
-        blueRunDetailPage.assertBasicLayoutOkay();
-
-        browser.end();
-    },
 
     'Check Job Blue Ocean Pipeline run detail page - karaoke': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
+        blueRunDetailPage.assertBasicLayoutOkay();
         // if we have the first stage finished we are sure in karaoke mode
         blueRunDetailPage.waitForElementPresent('svg circle.success');
         // FIXME should be taken from somewhere dynamically
+        // Stop karaoke and go back in graph and see the result
         const nodeDetail =  blueRunDetailPage.forNode('5');
         nodeDetail.waitForElementVisible('span.result-item-label')
             .getText('span.result-item-label', function (result) {
@@ -92,8 +74,11 @@ module.exports = {
             });
         // turn on css again
         browser.useCss();
+        // validate that karaoke has stopped but overall process still runs
+        nodeDetail.waitForElementVisible('g.progress-spinner.running')
         // wait for job to finish
         nodeDetail.waitForElementVisible('div.header.success');
         browser.end();
     }
+
 };
