@@ -28,7 +28,7 @@ module.exports = {
             .keys(browser.Keys.UP_ARROW)
             .getText('code', function (result) {
                 const text = result.value;
-                this.pause(10)
+                this.pause(1000)
                     .waitForElementVisible('code')
                     .getText('code', function (result) {
                         this.assert.equal(text, result.value)
@@ -42,18 +42,15 @@ module.exports = {
 
     'Check Job Blue Ocean Pipeline run detail page - follow': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
-        browser.waitForElementVisible('code')
-            .getText('code', function (result) {
-                const text = result.value;
-                this.pause(4000)
-                    .waitForElementVisible('code')
-                    .getText('code', function (result) {
-                        this.assert.notEqual(text, result.value)
-                    });
-            });
-        blueRunDetailPage.assertBasicLayoutOkay();
-        // wait for the success update via sse event
-        blueRunDetailPage.waitForElementVisible('div.header.success');
+        browser.elements('css selector', 'div.result-item.success', function (collection) {
+            const count = collection.value.length;
+            // wait for the success update via sse event
+            this.waitForElementVisible('div.header.success')
+                .elements('css selector', 'div.result-item.success', function (collection2) {
+                    const count2 = collection2.value.length;
+                    this.assert.notEqual(count, count2);
+                });
+        });
         browser.end();
     }
 };

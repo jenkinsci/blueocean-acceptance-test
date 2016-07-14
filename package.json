@@ -19,7 +19,7 @@
   "license": "MIT",
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {
-    "@jenkins-cd/sse-gateway": "0.0.5-beta1",
+    "@jenkins-cd/sse-gateway": "0.0.5",
     "events": "1.1.0",
     "eventsource": "0.2.1",
     "gulp": "^3.9.1",
