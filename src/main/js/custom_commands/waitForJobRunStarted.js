@@ -15,6 +15,7 @@ util.inherits(Cmd, events.EventEmitter);
 Cmd.prototype.command = function (jobName, onBuildStarted) {
     var self = this;
 
+    console.log('Waiting for job/pipeline "' + jobName + '" run to start.');
     sseClient.onJobRunStarted(jobName, function(event) {
         try {
             if (onBuildStarted) {

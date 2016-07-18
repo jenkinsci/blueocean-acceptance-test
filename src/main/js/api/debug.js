@@ -23,3 +23,8 @@ exports.disable = function(category) {
         setDEBUG();
     }
 };
+
+if (process.env.LOG_CONFIG) {
+    process.env.DEBUG = process.env.LOG_CONFIG;
+    diag.reloadConfig();
+}
