@@ -26,15 +26,19 @@ module.exports = {
         browser.waitForElementVisible('code')
             .click('code')
             .keys(browser.Keys.UP_ARROW)
-            .getText('code', function (result) {
-                const text = result.value;
-                this.pause(1000)
-                    .waitForElementVisible('code')
-                    .getText('code', function (result) {
-                        this.assert.equal(text, result.value)
-                    });
-
-            });
+            .elements('css selector', 'div.result-item', function (resutlItems) {
+                var results = resutlItems.value.length;
+                // to validate that we left follow, give it some time and then count the elements again
+                this.pause(3000)
+                    .elements('css selector', 'code', function (codeCollection) {
+                        // JENKINS-36700 there can only be one code view open in follow stopped
+                        this.assert.equal(codeCollection.value.length, 1);
+                    })
+                    .elements('css selector', 'div.result-item', function (resutlItemsCompare) {
+                        // there should not be more items then we had before
+                        this.assert.equal( resutlItemsCompare.value.length, results);
+                    })
+                });
         blueRunDetailPage.assertBasicLayoutOkay();
 
         browser.end();
@@ -49,7 +53,13 @@ module.exports = {
                 .elements('css selector', 'div.result-item.success', function (collection2) {
                     const count2 = collection2.value.length;
                     this.assert.notEqual(count, count2);
-                });
+                })
+                .elements('css selector', 'code', function (codeCollection) {
+                    // JENKINS-36700 in success all code should be closed,
+                    // however if the browser is too quick there can still be one open
+                    this.assert.equal(codeCollection.value.length < 2, true);
+                })
+            ;
         });
         browser.end();
     }
