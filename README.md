@@ -2,7 +2,7 @@ Acceptance tests for Blue Ocean
 
 # Prepare your system
 
-## xmllint
+## Install xmllint
 
 You need to install xmllint prior of running the server!
 
@@ -10,33 +10,6 @@ In debian:
 
 ```
 apt-get install libxml2-utils
-
-
-```
-
-## selenium
-
-### Download Selenium
-
-Download the latest version of the selenium-server-standalone-{VERSION}.jar file from the [Selenium downloads page](http://selenium-release.storage.googleapis.com/index.html) and place it 
-on the computer with the browser you want to test. 
-
-In most cases this will be on your local machine and typically inside your project's source folder or general opt/ where you keep your system tools.
-
-### Running Selenium Manually
-
-To run the selenium server manually, from the directory with the jar run the following:
-
-Once:
-```sh
-echo 'java -jar selenium-server-standalone-2.53.1.jar' > start; chmod 755 start
-
-```
-
-then:
-```sh
-./start
-
 ```
 
 # Building
@@ -128,5 +101,15 @@ Of course this assumes you have the [nightwatch] package globally installed (`np
 Alternatively, you can just run `npm test` to run all [nightwatch] tests.
 
 [![Video](http://img.youtube.com/vi/o8r4ztgpm8E/maxresdefault.jpg)](https://youtu.be/o8r4ztgpm8E)
+
+# Client code log output
+
+When running in `--dev` mode, it can be useful to turn on client code log output. To do this, simply set
+the `LOG_CONFIG` env variable e.g. to turn on SSE logging:
+
+```
+$ export LOG_CONFIG=sse
+$ nightwatch ./src/test/js/karaoke-*.js
+```
 
 [nightwatch]: http://nightwatchjs.org/

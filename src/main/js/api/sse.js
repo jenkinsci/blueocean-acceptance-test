@@ -9,22 +9,34 @@ var jobEventHistory = [];
  * DO NOT CALL: done automatically in the globals.
  */
 exports.connect = function(browser, done) {
-    sseClient.connect({
-        clientId: 'blueocean-acceptance-tests',
-        jenkinsUrl: browser.launchUrl,
-        onConnect: function() {
-            browser.sseClient = sseClient;
-            
-            // Subscribe to job channel so we have it ready to listen 
-            // before any tests start running.
-            jobChannel = sseClient.subscribe('job', function(event) {
-                callJobEventListeners(event);                
-            });
-            
-            console.log('Connected to the Jenkins SSE Gateway.');
-            done();
-        }
-    });
+    if (jobChannel) {
+        exports.disconnect(function() {
+            exports.connect(browser, done);
+        });
+    } else {
+        sseClient.connect({
+            clientId: 'blueocean-acceptance-tests',
+            jenkinsUrl: browser.launchUrl,
+            onConnect: function() {
+                browser.sseClient = sseClient;
+
+                console.log('Connected to the Jenkins SSE Gateway.');
+
+                // Subscribe to job channel so we have it ready to listen 
+                // before any tests start running.
+                jobChannel = sseClient.subscribe({
+                    channelName: 'job',
+                    onEvent: function (event) {
+                        callJobEventListeners(event);
+                    },
+                    onSubscribed: function () {
+                        console.log('Subscribed to the "job" event channel.');
+                        done();
+                    }
+                });
+            }
+        });
+    }
     browser.sseClient = sseClient;
 };
 
@@ -33,18 +45,28 @@ exports.connect = function(browser, done) {
  * <p>
  * DO NOT CALL: done automatically in the globals.
  */
-exports.disconnect = function() {
-    try {
-        if (jobChannel) {
-            sseClient.unsubscribe(jobChannel);
-            jobChannel = undefined;
-        }
-    } finally {
+exports.disconnect = function(onDisconnected) {
+    function clientDisconnect() {
         sseClient.disconnect();
         jobEventListeners = [];
         jobEventHistory = [];
+        console.log('Disconnected from the Jenkins SSE Gateway.');
     }
-    console.log('Disconnected from the Jenkins SSE Gateway.');
+
+    if (jobChannel) {
+        sseClient.unsubscribe(jobChannel, function() {
+            try {
+                jobChannel = undefined;
+                clientDisconnect();
+            } finally {
+                if (onDisconnected) {
+                    onDisconnected();
+                }
+            }
+        });
+    } else {
+        clientDisconnect();
+    }
 };
 
 exports.onJobEvent = function(filter, callback, checkEventHistory) {
