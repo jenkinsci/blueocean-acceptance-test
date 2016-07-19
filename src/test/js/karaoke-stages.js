@@ -35,6 +35,9 @@ module.exports = {
         // FIXME should be taken from somewhere dynamically
         // Stop karaoke and go back in graph and see the result
         const nodeDetail =  blueRunDetailPage.forNode('5');
+        // validate that karaoke has stopped but overall process still runs
+        nodeDetail.waitForElementVisible('g.progress-spinner.running');
+        // Validate the result of the node
         nodeDetail.waitForElementVisible('span.result-item-label')
             .getText('span.result-item-label', function (result) {
                 this.assert.equal('Shell Script', result.value);
@@ -74,8 +77,6 @@ module.exports = {
             });
         // turn on css again
         browser.useCss();
-        // validate that karaoke has stopped but overall process still runs
-        nodeDetail.waitForElementVisible('g.progress-spinner.running')
         // wait for job to finish
         nodeDetail.waitForElementVisible('div.header.success');
         browser.end();
