@@ -26,6 +26,7 @@ module.exports.commands = [{
             self.click('@pipelineJobType');
             
             // Add an event listener to catch the job created CRUD event.
+            console.log('Waiting on job "' + jobName + '" to be created.');
             sseClient.onJobCreated(jobName, function () {
                 console.log('Job "' + jobName + '" created. Navigating to config page.');
                 
