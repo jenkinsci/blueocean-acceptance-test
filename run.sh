@@ -30,7 +30,7 @@ AGGREGATOR_DIR=""
 AGGREGATOR_ENV=""
 DEV_JENKINS=false
 PROFILES="-P runTests"
-JENKINS_JAVA_OPTS="-Djava.util.logging.config.file=${PWD}/logging.properties"
+JENKINS_JAVA_OPTS="-Djava.util.logging.config.file=./logging.properties"
 
 for i in "$@"
 do
