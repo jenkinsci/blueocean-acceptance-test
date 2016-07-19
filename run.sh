@@ -30,6 +30,7 @@ AGGREGATOR_DIR=""
 AGGREGATOR_ENV=""
 DEV_JENKINS=false
 PROFILES="-P runTests"
+JENKINS_JAVA_OPTS="-Djava.util.logging.config.file=./logging.properties"
 
 for i in "$@"
 do
@@ -141,7 +142,7 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
-EXECUTION="env BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES}"
+EXECUTION="env JENKINS_JAVA_OPTS=${JENKINS_JAVA_OPTS} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES}"
 
 echo ""
 echo "> ${EXECUTION}"
