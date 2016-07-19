@@ -129,4 +129,14 @@ Alternatively, you can just run `npm test` to run all [nightwatch] tests.
 
 [![Video](http://img.youtube.com/vi/o8r4ztgpm8E/maxresdefault.jpg)](https://youtu.be/o8r4ztgpm8E)
 
+# Client code log output
+
+When running in `--dev` mode, it can be useful to turn on client code log output. To do this, simply set
+the `LOG_CONFIG` env variable e.g. to turn on SSE logging:
+
+```
+$ export LOG_CONFIG=sse
+$ nightwatch ./src/test/js/karaoke-*.js
+```
+
 [nightwatch]: http://nightwatchjs.org/
