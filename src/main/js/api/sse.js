@@ -93,6 +93,13 @@ exports.onJobEvent = function(filter, callback, checkEventHistory) {
     jobEventListeners.push(listener);
 };
 
+exports.onJobCreated = function(jobName, callback) {
+    exports.onJobEvent({
+        jenkins_event: 'job_crud_created',
+        job_name: jobName
+    }, callback);
+};
+
 exports.onJobRunStarted = function(jobName, callback, runId) {
     exports.onJobEvent({
         jenkins_event: 'job_run_started',
