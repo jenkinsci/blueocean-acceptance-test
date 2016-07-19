@@ -1,5 +1,7 @@
 // Pipeline create (new item) page object (http://nightwatchjs.org/guide#page-objects)
 
+var sseClient = require('../../api/sse');
+
 module.exports = {
     url: function () {
         return this.api.launchUrl + '/view/All/newJob';
@@ -22,11 +24,18 @@ module.exports.commands = [{
         self.deleteFreestyle(jobName, function() {
             self.setValue('@nameInput', jobName);
             self.click('@freestyleType');
-            self.click('@submit', function () {
+            
+            // Add an event listener to catch the job created CRUD event.
+            sseClient.onJobCreated(jobName, function () {
+                console.log('Job "' + jobName + '" created. Navigating to config page.');
+                
+                // Navigate to the job config page and set the freestyle script.
                 self.api.page.freestyleConfig().forJob(jobName)
                     .setFreestyleScript(script)
                     .click('@save', oncreated);
             });
+            
+            self.click('@submit');
         });
     },
     deleteFreestyle: function(jobName, ondeleted) {
