@@ -71,15 +71,18 @@ exports.disconnect = function(onDisconnected) {
 
 exports.onJobEvent = function(filter, callback, checkEventHistory) {
     if(typeof checkEventHistory === 'boolean' ? checkEventHistory : true) {
+        var sendHistoricalEvent = function(event) {
+            setTimeout(function() {
+                callback(event);
+            }, 1);
+        };
         for (var i = 0; i < jobEventHistory.length; i++) {
             if (isMatchingEvent(jobEventHistory[i], filter)) {
                 // If we find a matching event in the event history then we
                 // create a timeout to send the event to the callback and then
                 // bail immediately, without adding the listener to the list
                 // of job listeners.
-                setTimeout(function() {
-                    callback(jobEventHistory[i]);
-                }, 50);
+                sendHistoricalEvent(jobEventHistory[i]);
                 return;
             }
         }
