@@ -4,9 +4,7 @@ const stringCleaner = function (string) {
 module.exports = {
     'Create Pipeline Job "stages"': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline('stages', 'stages-with-wait.groovy', function () {
-            browser.end();
-        });
+        pipelinesCreate.createPipeline('stages', 'stages-with-wait.groovy');
     },
 
     'Build Pipeline Job': function (browser) {
@@ -17,7 +15,6 @@ module.exports = {
                 .waitForElementVisible('div#pipeline-box')
                 .forRun(1)
                 .waitForElementVisible('@executer');
-            browser.end();
         });
     },
 
@@ -75,17 +72,13 @@ module.exports = {
                     })
 
             });
-        // turn on css again
-        browser.useCss();
         // wait for job to finish
-        nodeDetail.waitForElementVisible('div.header.success');
-        browser.end();
+        nodeDetail.waitForJobRunEnded('stages');
     },
 
     'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
         blueRunDetailPage.waitForElementVisible('div.empty-state-content');
-        browser.end();
     },
 
 };

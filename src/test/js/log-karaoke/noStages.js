@@ -1,9 +1,7 @@
 module.exports = {
     'Create Pipeline Job "noStages"': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline('noStages', 'no-stages.groovy', function () {
-            browser.end();
-        });
+        pipelinesCreate.createPipeline('noStages', 'no-stages.groovy');
     },
 
     'Build Pipeline Job': function (browser) {
@@ -14,7 +12,6 @@ module.exports = {
                 .waitForElementVisible('div#pipeline-box')
                 .forRun(1)
                 .waitForElementVisible('@executer');
-            browser.end();
         });
     },
 
@@ -40,8 +37,6 @@ module.exports = {
                     })
                 });
         blueRunDetailPage.assertBasicLayoutOkay();
-
-        browser.end();
     },
 
     'Check Job Blue Ocean Pipeline run detail page - follow': function (browser) {
@@ -61,6 +56,5 @@ module.exports = {
                 })
             ;
         });
-        browser.end();
     }
 };

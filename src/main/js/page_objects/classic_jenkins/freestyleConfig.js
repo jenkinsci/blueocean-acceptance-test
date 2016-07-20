@@ -53,7 +53,7 @@ exports.commands = [
 ];
 
 function readTestScript(script) {
-    const fileName = 'src/test/js/test_pipelines_scripts/' + script;
+    const fileName = 'src/test/resources/test_scripts/' + script;
     
     if (!fs.existsSync(fileName)) {
         // It's not a script file.

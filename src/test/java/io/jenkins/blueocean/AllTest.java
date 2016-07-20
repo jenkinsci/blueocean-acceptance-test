@@ -29,8 +29,8 @@ import org.jenkinsci.test.acceptance.junit.WithPlugins;
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
 @WithPlugins({"workflow-aggregator@2.1"})
-public class KaraokeNoStagesTest extends NightwatchTest {
-    public KaraokeNoStagesTest() {
-        super("karaoke-noStages.js");
+public class AllTest extends NightwatchTest {
+    public AllTest() {
+        super(null);
     }
 }

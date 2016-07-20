@@ -7,4 +7,4 @@ sleep 2;
 echo `date` step 3;
 sleep 3;
 echo `date` freeStyle end;
-sleep 4; 
+sleep 4;
