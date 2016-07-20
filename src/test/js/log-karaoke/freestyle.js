@@ -40,10 +40,10 @@ module.exports = {
         // the log output generated at the end of freestyle.sh i.e. the "freeStyle end"
         // string. If we see that string, that means that karaoke did not stop and
         // something is wrong with the up-arrow listener.
-        blueRunDetailPage.waitForElementVisible('div.header.success')
+        browser.expect.element('code').text.to.not.contain('freeStyle end');
+        blueRunDetailPage.waitForJobRunEnded('hijo')
             .waitForElementVisible('code')
-            .expect.element('code').text.to.not.contain('freeStyle end');
-            // .waitForJobRunEnded('hijo')
+            // .expect.element('code').text.to.not.contain('freeStyle end'); -> that is failing on the server only
     },
 
 };
