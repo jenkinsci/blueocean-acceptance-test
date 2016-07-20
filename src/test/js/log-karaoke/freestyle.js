@@ -26,7 +26,8 @@ module.exports = {
         blueRunDetailPage.assertBasicLayoutOkay();
 
         // The log appears in the <code> window, of which there an be only one.
-        // Click on it to open it.
+        // Click on it to focus it so we make sure the key up is fired on the page and
+        // not directly on the browser
         browser.waitForElementVisible('code')
             .click('code');
 
@@ -39,9 +40,10 @@ module.exports = {
         // the log output generated at the end of freestyle.sh i.e. the "freeStyle end"
         // string. If we see that string, that means that karaoke did not stop and
         // something is wrong with the up-arrow listener.
-        blueRunDetailPage.waitForJobRunEnded('hijo')
+        blueRunDetailPage.waitForElementVisible('div.header.success')
             .waitForElementVisible('code')
             .expect.element('code').text.to.not.contain('freeStyle end');
+            // .waitForJobRunEnded('hijo')
     },
 
 };
