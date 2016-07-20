@@ -1,9 +1,7 @@
 module.exports = {
     'Create Pipeline Job': function (browser) {
         var pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline('my-pipeline', 'three-stages.groovy', function() {
-            browser.end();
-        });
+        pipelinesCreate.createPipeline('my-pipeline', 'three-stages.groovy');
     },
 
     'Check Job on Blue Ocean Pipelines Page': function (browser) {
@@ -26,7 +24,6 @@ module.exports = {
             // Reload the job page and check that there was a build done.
             pipelinePage = browser.page.pipeline().forJob('my-pipeline');
             pipelinePage.waitForElementVisible('@builds');
-            browser.end();
         });
     },
 
@@ -44,7 +41,5 @@ module.exports = {
         var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 'jenkins', 1);
         
         blueRunDetailPage.assertBasicLayoutOkay();
-        
-        browser.end();
     }
 };
