@@ -25,6 +25,13 @@ module.exports.commands = [{
 
         self.waitForJobCreated(jobName);
 
+        if (!oncreated) {
+            // If no oncreated function was supplied then we manufacture
+            // a dummy. This ensures that this function does not return
+            // immediately.
+            oncreated = function() {};
+        }
+
         // Navigate to the job config page and set the pipeline script.
         self.api.page.pipelineConfig().forJob(jobName)
             .setPipelineScript(script)

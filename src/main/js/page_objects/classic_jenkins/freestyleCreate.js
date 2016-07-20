@@ -25,6 +25,13 @@ module.exports.commands = [{
 
         self.waitForJobCreated(jobName);
 
+        if (!oncreated) {
+            // If no oncreated function was supplied then we manufacture
+            // a dummy. This ensures that this function does not return
+            // immediately.
+            oncreated = function() {};
+        }
+
         // Navigate to the job config page and set the freestyle script.
         self.api.page.freestyleConfig().forJob(jobName)
             .setFreestyleScript(script)
