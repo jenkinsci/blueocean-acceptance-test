@@ -31,6 +31,7 @@ AGGREGATOR_ENV=""
 DEV_JENKINS=false
 PROFILES="-P runTests"
 JENKINS_JAVA_OPTS="-Djava.util.logging.config.file=./logging.properties"
+TEST_TO_RUN="-Dtest=AllTest"
 
 for i in "$@"
 do
@@ -71,6 +72,7 @@ if [ "${DEV_JENKINS}" == "true" ]; then
     # allowing you to iterate on your acceptance test dode without constantly
     # having to restart Jenkins.
     PROFILES="-P runDevRunner"
+    TEST_TO_RUN=""
 fi
 
 # For now, the location of the aggregator plugin must be defined until we have
@@ -142,7 +144,7 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
-EXECUTION="env JENKINS_JAVA_OPTS=${JENKINS_JAVA_OPTS} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES} -Dtest=AllTest"
+EXECUTION="env JENKINS_JAVA_OPTS=${JENKINS_JAVA_OPTS} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES} ${TEST_TO_RUN}"
 
 echo ""
 echo "> ${EXECUTION}"
