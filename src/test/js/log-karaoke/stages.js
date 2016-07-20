@@ -4,9 +4,7 @@ const stringCleaner = function (string) {
 module.exports = {
     'Create Pipeline Job "stages"': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline('stages', 'stages-with-wait.groovy', function () {
-            browser.end();
-        });
+        pipelinesCreate.createPipeline('stages', 'stages-with-wait.groovy');
     },
 
     'Build Pipeline Job': function (browser) {
@@ -17,7 +15,6 @@ module.exports = {
                 .waitForElementVisible('div#pipeline-box')
                 .forRun(1)
                 .waitForElementVisible('@executer');
-            browser.end();
         });
     },
 
@@ -35,6 +32,9 @@ module.exports = {
         // FIXME should be taken from somewhere dynamically
         // Stop karaoke and go back in graph and see the result
         const nodeDetail =  blueRunDetailPage.forNode('5');
+        // validate that karaoke has stopped but overall process still runs
+        nodeDetail.waitForElementVisible('g.progress-spinner.running');
+        // Validate the result of the node
         nodeDetail.waitForElementVisible('span.result-item-label')
             .getText('span.result-item-label', function (result) {
                 this.assert.equal('Shell Script', result.value);
@@ -72,13 +72,15 @@ module.exports = {
                     })
 
             });
-        // turn on css again
-        browser.useCss();
-        // validate that karaoke has stopped but overall process still runs
-        nodeDetail.waitForElementVisible('g.progress-spinner.running')
         // wait for job to finish
-        nodeDetail.waitForElementVisible('div.header.success');
-        browser.end();
-    }
+        nodeDetail.waitForJobRunEnded('stages');
+    },
+
+    
+    // TODO: fix test ... timing out in wait for element 
+    //'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
+    //    const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
+    //    blueRunDetailPage.waitForElementVisible('div.empty-state-content');
+    //},
 
 };

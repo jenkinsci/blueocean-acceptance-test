@@ -9,9 +9,13 @@ module.exports = {
             sse.connect(browser, done);
         },
         afterEach: function (browser, done) {
-            sse.disconnect(function() {
-                done();
-            });
+            try {
+                browser.end();
+            } finally {
+                sse.disconnect(function() {
+                    done();
+                });
+            }
         }
     }
 };

@@ -11,26 +11,30 @@ module.exports = {
     }
 };
 
-const request = require('request');
-
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
     createFreestyle: function(jobName, script, oncreated) {
-        const self = this;
+        var self = this;
         
-        self.deleteFreestyle(jobName, function() {
-            self.setValue('@nameInput', jobName);
-            self.click('@freestyleType');
-            self.click('@submit', function () {
-                self.api.page.freestyleConfig().forJob(jobName)
-                    .setFreestyleScript(script)
-                    .click('@save', oncreated);
-            });
-        });
+        self.waitForJobDeleted(jobName);
+
+        self.setValue('@nameInput', jobName);
+        self.click('@freestyleType');
+        self.click('@submit');
+
+        self.waitForJobCreated(jobName);
+
+        if (!oncreated) {
+            // If no oncreated function was supplied then we manufacture
+            // a dummy. This ensures that this function does not return
+            // immediately.
+            oncreated = function() {};
+        }
+
+        // Navigate to the job config page and set the freestyle script.
+        self.api.page.freestyleConfig().forJob(jobName)
+            .setFreestyleScript(script)
+            .click('@save', oncreated);
     },
-    deleteFreestyle: function(jobName, ondeleted) {
-        const deleteUrl = this.api.launchUrl + 'job/' + jobName + '/doDelete';
-        request.post(deleteUrl, ondeleted);
-    }
 }];

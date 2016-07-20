@@ -1,5 +1,5 @@
 /**
- * Nightwatch command to wait for a job run to start.
+ * Nightwatch command to wait for a job be created.
  * See http://nightwatchjs.org/guide#writing-custom-commands
  */
 
@@ -12,27 +12,27 @@ function Cmd() {
 }
 util.inherits(Cmd, events.EventEmitter);
 
-Cmd.prototype.command = function (jobName, onBuildStarted, timeout) {
+Cmd.prototype.command = function (jobName, onCreated, timeout) {
     var self = this;
 
     var waitTimeout = setTimeout(function() {
-        var error = new Error('Timed out waiting for job/pipeline "' + jobName + '" run to start.');
+        var error = new Error('Timed out waiting for job "' + jobName + '" to be created. Something must have failed earlier and the job creation did not succeed.');
         self.emit('error', error);
     }, (typeof timeout === 'number' ? timeout : 20000));
     
-    console.log('Waiting for job/pipeline "' + jobName + '" run to start.');
-    sseClient.onJobRunStarted(jobName, function(event) {
+    console.log('Waiting on job "' + jobName + '" to be created.');
+    sseClient.onJobCreated(jobName, function () {
         clearTimeout(waitTimeout);
-        console.log('Job/pipeline "' + jobName + '" run started.');
+        console.log('Job "' + jobName + '" created.');
         try {
-            if (onBuildStarted) {
-                onBuildStarted(event);
+            if (onCreated) {
+                onCreated(event);
             }
         } finally {
             self.emit('complete');
         }
     });
-
+    
     return this;
 };
 
