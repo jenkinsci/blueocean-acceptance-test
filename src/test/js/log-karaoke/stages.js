@@ -72,15 +72,16 @@ module.exports = {
                     })
 
             });
+        // turn on css again
+        browser.useCss();
         // wait for job to finish
         nodeDetail.waitForJobRunEnded('stages');
     },
 
     
-    // TODO: fix test ... timing out in wait for element 
-    //'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
-    //    const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
-    //    blueRunDetailPage.waitForElementVisible('div.empty-state-content');
-    //},
+    'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
+       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
+       blueRunDetailPage.waitForElementVisible('div.empty-state');
+    },
 
 };
