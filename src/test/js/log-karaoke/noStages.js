@@ -15,15 +15,26 @@ module.exports = {
         });
     },
 
+    // need to click on an element so the up_arrow takes place in the window
     'Check Job Blue Ocean Pipeline Activity Page has run  - stop follow': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob('noStages', 'jenkins');
         // Check the run itself
         blueActivityPage.waitForRunRunningVisible('noStages-1');
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        // The log appears in the <code> window, of which there an be only one.
+        // Click on it to focus it so we make sure the key up is fired on the page and
+        // not directly on the browser
         browser.waitForElementVisible('code')
-            .click('code')
-            .keys(browser.Keys.UP_ARROW)
-            .elements('css selector', 'div.result-item', function (resutlItems) {
+            .click('code');
+
+        // Press the up-arrow key to tell karaoke mode to stop following the log i.e.
+        // after this point in time, the content of the <code> block should not change.
+        browser.keys(browser.Keys.UP_ARROW);
+        // So, because we have pressed the up-arrow (see above), the karaoke
+        // should stop. So if we now wait a bit, we should NOT see
+        // more elements then before. If we do, that means that karaoke did not stop and
+        // something is wrong with the up-arrow listener.
+        browser.elements('css selector', 'div.result-item', function (resutlItems) {
                 var results = resutlItems.value.length;
                 // to validate that we left follow, give it some time and then count the elements again
                 this.pause(3000)
