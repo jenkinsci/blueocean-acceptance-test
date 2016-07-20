@@ -41,9 +41,7 @@ module.exports = {
         // something is wrong with the up-arrow listener.
         blueRunDetailPage.waitForJobRunEnded('hijo')
             .waitForElementVisible('code')
-            .getText('code', function (result) {
-                this.assert.equal(result.value.includes('freeStyle end'), false);
-            });
+            .expect.element('code').text.to.not.contain('freeStyle end');
     },
 
 };
