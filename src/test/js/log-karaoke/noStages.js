@@ -67,5 +67,30 @@ module.exports = {
                 })
             ;
         });
-    }
+    },
+
+    'Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        // first turn on xpath to get the nodes we want
+        browser.useXpath();
+        var xPath = '//div[@class="logConsole"][14]';
+        browser
+            .waitForElementVisible(xPath);
+        browser.click(xPath);
+        // turn on css again
+        browser.useCss();
+        const path = 'p#step-18-log-0 a';
+        blueRunDetailPage
+            .waitForElementVisible(path);
+        // request full log
+        browser.click(path)
+            .url(function (response) {
+                this.assert.equal(typeof response, "object");
+                this.assert.equal(response.status, 0);
+                // is the "full log" link gone?
+                this.expect.element(path).to.not.be.present.before(1000);
+                // did we changed the url on  change?
+                this.assert.equal(response.value.includes('start=0'), true);
+            })
+    },
 };

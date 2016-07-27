@@ -9,7 +9,17 @@ node {
     echo '4th'
     sh 'sleep 4; echo `date` fourth;'
     echo 'last 5th'
-    sh 'sleep 5; echo `date` fith;'
+    sh 'echo `date` fifth;'
     echo 'and we are finished'
     sh 'echo end'
+    sh '''#!/bin/bash -l
+    echo $0
+    COUNTER=0
+    while [  $COUNTER -lt 10001 ]; do
+     echo The counter is $COUNTER
+     let COUNTER=COUNTER+1
+    done
+    sleep 2;
+    '''
+
 }

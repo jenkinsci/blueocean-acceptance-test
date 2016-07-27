@@ -30,4 +30,21 @@ module.exports = {
             .expect.element('code').text.to.contain('freeStyle end');
     },
 
+    'Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('hijo', 'jenkins', 1);
+        const path = 'p#log-0 a';
+        blueRunDetailPage
+            .waitForElementVisible(path);
+        // request full log
+        browser.click(path)
+            .url(function (response) {
+                this.assert.equal(typeof response, "object");
+                this.assert.equal(response.status, 0);
+                // is the "full log" link gone?
+                this.expect.element(path).to.not.be.present.before(1000);
+                // did we changed the url on  change?
+                this.assert.equal(response.value.includes('start=0'), true);
+            })
+    },
+
 };
