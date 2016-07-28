@@ -5,6 +5,7 @@ var url = require('../../util/url');
 module.exports = {
     elements: {
         logHeader: '.dialog .log-header',
+        fullLog: 'div.fullLog a',
     }
 };
 
@@ -44,5 +45,24 @@ module.exports.commands = [{
         // TODO: add class info to the page content so we can test it
         // Atm there's very little on the page that will allow us to test it.
         // E.g. nothing on the pipeline graph that allows us to find it.
+    },
+    clickFullLog: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@fullLog');
+        self.click('@fullLog')
+        browser.url(function (response) {
+                self.assert.equal(typeof response, "object");
+                self.assert.equal(response.status, 0);
+                // is the "full log" link gone?
+                self.fullLogButtonNotPresent();
+                // did we changed the url on  change?
+                self.assert.equal(response.value.includes('start=0'), true);
+                return self;
+            })
+    },
+    fullLogButtonNotPresent: function () {
+        // is the "full log" link gone?
+        this.expect.element('@fullLog').to.not.be.present.before(1000);
+        return this;
     }
 }];

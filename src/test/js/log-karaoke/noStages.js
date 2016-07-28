@@ -56,6 +56,8 @@ module.exports = {
             const count = collection.value.length;
             // wait for the success update via sse event
             this.waitForElementVisible('div.header.success')
+            blueRunDetailPage.fullLogButtonNotPresent();
+            this
                 .elements('css selector', 'div.result-item.success', function (collection2) {
                     const count2 = collection2.value.length;
                     this.assert.notEqual(count, count2);
@@ -67,5 +69,19 @@ module.exports = {
                 })
             ;
         });
-    }
+    },
+
+    'Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        // first turn on xpath to get the nodes we want
+        browser.useXpath();
+        var xPath = '//div[@class="logConsole"][14]';
+        browser
+            .waitForElementVisible(xPath);
+        browser.click(xPath);
+        // turn on css again
+        browser.useCss();
+        // request full log
+        blueRunDetailPage.clickFullLog(browser);
+    },
 };

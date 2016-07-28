@@ -78,7 +78,6 @@ module.exports = {
         nodeDetail.waitForJobRunEnded('stages');
     },
 
-    
     'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
        blueRunDetailPage.waitForElementVisible('div.empty-state');
