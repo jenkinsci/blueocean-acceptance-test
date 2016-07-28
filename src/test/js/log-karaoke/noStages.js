@@ -56,6 +56,8 @@ module.exports = {
             const count = collection.value.length;
             // wait for the success update via sse event
             this.waitForElementVisible('div.header.success')
+            blueRunDetailPage.fullLogButtonNotPresent();
+            this
                 .elements('css selector', 'div.result-item.success', function (collection2) {
                     const count2 = collection2.value.length;
                     this.assert.notEqual(count, count2);

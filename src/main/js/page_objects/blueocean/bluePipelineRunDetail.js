@@ -54,10 +54,15 @@ module.exports.commands = [{
                 self.assert.equal(typeof response, "object");
                 self.assert.equal(response.status, 0);
                 // is the "full log" link gone?
-                self.expect.element('@fullLog').to.not.be.present.before(1000);
+                self.fullLogButtonNotPresent();
                 // did we changed the url on  change?
                 self.assert.equal(response.value.includes('start=0'), true);
                 return self;
             })
+    },
+    fullLogButtonNotPresent: function () {
+        // is the "full log" link gone?
+        this.expect.element('@fullLog').to.not.be.present.before(1000);
+        return this;
     }
 }];

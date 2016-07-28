@@ -27,7 +27,8 @@ module.exports = {
 
         blueRunDetailPage.waitForJobRunEnded('hijo')
             .waitForElementVisible('code')
-            .expect.element('code').text.to.contain('freeStyle end');
+            .fullLogButtonNotPresent()
+            .expect.element('code').text.to.contain('freeStyle end');// this produces a long wait by big logs
     },
 
     'Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear': function (browser) {
