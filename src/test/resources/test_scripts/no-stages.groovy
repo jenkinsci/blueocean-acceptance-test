@@ -7,7 +7,7 @@ node {
     echo 'third now'
     sh 'sleep 1; echo `date` third;'
     echo '4th'
-    sh 'sleep 4; echo `date` fourth;'
+    sh 'sleep 2; echo `date` fourth;'
     echo 'last 5th'
     sh 'echo `date` fifth;'
     echo 'and we are finished'
@@ -19,7 +19,6 @@ node {
      echo The counter is $COUNTER
      let COUNTER=COUNTER+1
     done
-    sleep 2;
     '''
 
 }

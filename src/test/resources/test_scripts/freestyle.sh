@@ -6,7 +6,7 @@ sleep 1;
 echo `date` step 2;
 sleep 2;
 echo `date` step 3;
-sleep 3;
+sleep 2;
 echo `date` freeStyle end;
 COUNTER=0
 while [  $COUNTER -lt 10001 ]; do
