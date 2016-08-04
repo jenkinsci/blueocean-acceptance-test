@@ -1,13 +1,43 @@
 node {
     echo 'first step'
-    sh 'sleep 3; echo `date` first;'
+    // Have a long'ish sleep at the start so as to allow the test
+    // to start.
+    sh 'sleep 7; echo `date` first;'
+    // The following step is "step-7" in the flow... we wait for this node
+    // to appear before we stop the karaoke.
     echo 'first step end'
     echo 'Second coming up'
-    sh 'sleep 2; echo `date` second;'
+    // Then have a long'ish series of short sleeps. The accumulated
+    // time needs to be enough for the test pause (see noStages.js) to have
+    // the enough potential karaoke activity during the pause. This activity
+    // should not appear in the view when karaoke is stopped.
+    sh 'sleep 1; echo `date` second;'
     echo 'third now'
     sh 'sleep 1; echo `date` third;'
     echo '4th'
-    sh 'sleep 2; echo `date` fourth;'
+    sh 'sleep 1; echo `date`;'
+    echo '5th'
+    sh 'sleep 1; echo `date`;'
+    echo '6th'
+    sh 'sleep 1; echo `date`;'
+    echo '7th'
+    sh 'sleep 1; echo `date`;'
+    echo '8th'
+    sh 'sleep 1; echo `date`;'
+    echo '9th'
+    sh 'sleep 1; echo `date`;'
+    echo '10th'
+    sh 'sleep 1; echo `date`;'
+    echo '11th'
+    sh 'sleep 1; echo `date`;'
+    echo '12th'
+    sh 'sleep 1; echo `date`;'
+    echo '13th'
+    sh 'sleep 1; echo `date`;'
+    echo '14th'
+    sh 'sleep 1; echo `date`;'
+    echo '15th'
+    sh 'sleep 2; echo `date`;'
     echo 'last 5th'
     sh 'echo `date` fifth;'
     echo 'and we are finished'
