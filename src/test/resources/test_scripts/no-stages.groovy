@@ -36,10 +36,6 @@ node {
     sh 'sleep 1; echo `date`;'
     echo '14th'
     sh 'sleep 1; echo `date`;'
-    echo '15th'
-    sh 'sleep 2; echo `date`;'
-    echo 'last 5th'
-    sh 'echo `date` fifth;'
     echo 'and we are finished'
     sh 'echo end'
     sh '''#!/bin/bash -l
@@ -50,5 +46,6 @@ node {
      let COUNTER=COUNTER+1
     done
     '''
-
+    // add a step that does not produce a log
+    deleteDir()
 }
