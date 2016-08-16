@@ -4,6 +4,8 @@ var url = require('../../util/url');
 
 module.exports = {
     elements: {
+        code: 'code',
+        progressBar: 'div.loadingContainer',
         logHeader: '.dialog .log-header',
         fullLog: 'div.fullLog a',
         followAlongOn: '.step-scroll-area.follow-along-on',
@@ -57,6 +59,8 @@ module.exports.commands = [{
                 self.assert.equal(response.status, 0);
                 // is the "full log" link gone?
                 self.fullLogButtonNotPresent();
+                // is the progressbar visible and not the code?
+                self.validateLoading();
                 // did we changed the url on  change?
                 self.assert.equal(response.value.includes('start=0'), true);
                 return self;
@@ -66,5 +70,12 @@ module.exports.commands = [{
         // is the "full log" link gone?
         this.expect.element('@fullLog').to.not.be.present.before(1000);
         return this;
+    },
+    validateLoading: function () {
+        // when we are loading the code element should not be present
+        this.expect.element('@code').to.not.be.present.before(1000);
+        // but the progressBar should be
+        this.expect.element('@progressBar').to.be.present.before(1000);
+
     }
 }];
