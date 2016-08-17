@@ -104,12 +104,20 @@ module.exports = {
             // works in the browser, but not for nightwatch.
             // NOTE: if the pipeline script (no-stages.groovy) changes then the following
             // selector will need to be changed too.
-            var lastLogConsoleSelector = '.logConsole.step-40';
+            var lastLogConsoleSelector = '.logConsole.step-36';
             
             blueRunDetailPage.waitForElementVisible(lastLogConsoleSelector);
             blueRunDetailPage.click(lastLogConsoleSelector);
             // request full log
             blueRunDetailPage.clickFullLog(browser);
         });
+    },
+
+    'Check whether a step that does not has a log as well will have the expando disabled': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        // NOTE: if the pipeline script (no-stages.groovy) changes then the following
+        // selector will need to be changed too.
+        browser
+            .waitForElementVisible('div.step-37 svg.disabled.result-item-expando');
     },
 };
