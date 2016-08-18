@@ -9,7 +9,8 @@ module.exports = {
         logHeader: '.dialog .log-header',
         fullLog: 'div.fullLog a',
         followAlongOn: '.step-scroll-area.follow-along-on',
-        followAlongOff: '.step-scroll-area.follow-along-off'
+        followAlongOff: '.step-scroll-area.follow-along-off',
+        emptystate: 'div.empty-state',
     }
 };
 
@@ -25,7 +26,7 @@ module.exports.commands = [{
     },
     pageUrl: function(relative) {
         var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.branchName, this.buildNumber));
-        
+
         return !relative ?
             this.api.launchUrl + runUrl :
             runUrl;
@@ -50,6 +51,19 @@ module.exports.commands = [{
         // Atm there's very little on the page that will allow us to test it.
         // E.g. nothing on the pipeline graph that allows us to find it.
     },
+    clickTab: function(browser, tab) {
+        var self = this;
+        const tabSelector = this.tabSelector(tab);
+        self.waitForElementVisible(tabSelector);
+        self.click(tabSelector);
+        browser.url(function (response) {
+                self.assert.equal(typeof response, "object");
+                self.assert.equal(response.status, 0);
+                // did we changed the url on  change?
+                self.assert.equal(response.value.includes(tab), true);
+                return self;
+            })
+    },
     clickFullLog: function (browser) {
         var self = this;
         self.waitForElementVisible('@fullLog');
@@ -72,10 +86,17 @@ module.exports.commands = [{
         return this;
     },
     validateLoading: function () {
+        var self = this;
+        // when we are loading
+        // the progressBar should be present
+        self.waitForElementVisible('@progressBar');
         // when we are loading the code element should not be present
         this.expect.element('@code').to.not.be.present.before(1000);
-        // but the progressBar should be
-        this.expect.element('@progressBar').to.be.present.before(1000);
 
+    },
+    validateEmpty: function () {
+        var self = this;
+        self.waitForElementVisible('@emptystate');
+        return self;
     }
 }];

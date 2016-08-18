@@ -120,4 +120,22 @@ module.exports = {
         browser
             .waitForElementVisible('div.step-37 svg.disabled.result-item-expando');
     },
+
+    'Check whether the test tab shows an empty state hint': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        blueRunDetailPage.clickTab(browser, 'tests');
+        blueRunDetailPage.validateEmpty();
+    },
+
+    'Check whether the changes tab shows an empty state hint': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        blueRunDetailPage.clickTab(browser, 'changes');
+        blueRunDetailPage.validateEmpty();
+    },
+
+    'Check whether the artifacts tab shows an empty state hint': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        blueRunDetailPage.clickTab(browser, 'artifacts');
+        blueRunDetailPage.validateEmpty();
+    }
 };
