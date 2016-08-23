@@ -15,6 +15,7 @@ module.exports = {
             const freestylePage = browser.page.pipeline()
                 .forUrl(response.value, jobName);
 
+            // FIXME: Talk to Tom, why next lines are not working as expected
             // freestylePage.buildStarted(function () {
             //     // Reload the job page and check that there was a build done.
             //     freestylePage
