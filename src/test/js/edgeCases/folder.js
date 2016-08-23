@@ -11,12 +11,12 @@ module.exports = {
             const freestylePage = browser.page.pipeline()
                 .forUrl(response.value, jobName);
 
-            // freestylePage.buildStarted(function () {
-            //     // Reload the job page and check that there was a build done.
-            //     freestylePage
-            //         .forRun(1)
-            //         .waitForElementVisible('@executer');
-            // })
+            freestylePage.buildStarted(function () {
+                // Reload the job page and check that there was a build done.
+                freestylePage
+                    .forRun(1)
+                    .waitForElementVisible('@executer');
+            })
         })
     },
 
