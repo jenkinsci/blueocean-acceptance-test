@@ -1,0 +1,8 @@
+node {
+    stage 'Stage 1'
+    echo 'Stage 1'
+    sleep 5
+    stage 'Stage 2'
+    echo 'Stage 2'
+    sleep 5
+}
