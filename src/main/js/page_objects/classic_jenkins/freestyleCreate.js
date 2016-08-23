@@ -14,7 +14,7 @@ module.exports = {
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
-    createFreestyle: function(browser, jobName, script, oncreated) {
+    createFreestyle: function(jobName, script, oncreated) {
         var self = this;
         
         self.waitForJobDeleted(jobName);
