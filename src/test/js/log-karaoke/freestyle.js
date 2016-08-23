@@ -1,14 +1,14 @@
 module.exports = {
-    'Create frestyle Job "hijo"': function (browser) {
+    'Create freestyle Job "hijo"': function (browser) {
         const freestyleCreate = browser.page.freestyleCreate().navigate();
         freestyleCreate.createFreestyle('hijo', 'freestyle.sh');
     },
 
-    'Build frestyle Job': function (browser) {
-        const frestylePage = browser.page.pipeline().forJob('hijo');
-        frestylePage.buildStarted(function () {
+    'Build freestyle Job': function (browser) {
+        const freestylePage = browser.page.pipeline().forJob('hijo');
+        freestylePage.buildStarted(function () {
             // Reload the job page and check that there was a build done.
-            frestylePage
+            freestylePage
                 .forRun(1)
                 .waitForElementVisible('@executer');
         })

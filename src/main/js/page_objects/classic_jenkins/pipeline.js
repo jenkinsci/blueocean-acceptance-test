@@ -24,6 +24,10 @@ exports.commands = [{
         var runUrl = this.api.launchUrl + 'job/' + this.jobName + '/' + runId;
         return this.navigate(runUrl);
     },
+    forUrl: function (url, jobName) {
+        this.jobName = jobName;
+        return this.navigate(url);
+    },
     build: function(onBuildComplete) {
         this.click('@build');
         if (onBuildComplete) {
