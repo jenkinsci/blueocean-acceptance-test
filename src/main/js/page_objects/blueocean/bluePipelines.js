@@ -27,5 +27,10 @@ module.exports.commands = [{
     },
     assertJob: function(jobName) {
         this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]');
+    },
+    countJobToBeEqual: function(browser, jobName, count) {
+        browser.elements('.pipelines-table tr[data-name="' + jobName + '"]', function (codeCollection) {
+            this.assert.equal(codeCollection.value.length, count);
+        });
     }
 }];
