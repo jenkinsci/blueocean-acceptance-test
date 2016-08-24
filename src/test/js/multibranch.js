@@ -15,8 +15,8 @@ module.exports = {
     },
 
     'Create Multbranch Job': function (browser) {
-        const folderCreate = browser.page.multibranchCreate().navigate();
-        folderCreate.createBranch(browser, 'multiBranch', pathToRepo);
+        const branchCreate = browser.page.multibranchCreate().navigate();
+        branchCreate.createBranch('multiBranch', pathToRepo);
         browser.end();
     }
 };

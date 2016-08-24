@@ -1,3 +1,5 @@
+const url = require('../../../../main/js/util/url');
+
 // Pipeline page object (http://nightwatchjs.org/guide#page-objects)
 exports.elements = {
     build: {
@@ -16,12 +18,12 @@ exports.elements = {
 // http://nightwatchjs.org/guide#writing-commands
 exports.commands = [{
     forJob: function(jobName) {
-        var jobUrl = this.api.launchUrl + 'job/' + jobName;
+        var jobUrl = url.getJobUrl(this.api.launchUrl, jobName);
         this.jobName = jobName;
         return this.navigate(jobUrl);
     },
     forRun: function(runId) {
-        var runUrl = this.api.launchUrl + 'job/' + this.jobName + '/' + runId;
+        var runUrl = url.getJobUrl(this.api.launchUrl, this.jobName) + runId;
         return this.navigate(runUrl);
     },
     forUrl: function (url, jobName) {

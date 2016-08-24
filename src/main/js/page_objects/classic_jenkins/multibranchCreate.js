@@ -1,3 +1,5 @@
+const url = require('../../util/url');
+
 // Pipeline create (new item) page object (http://nightwatchjs.org/guide#page-objects)
 const suffix = 'newJob';
 
@@ -29,7 +31,13 @@ module.exports = {
 // http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
 
-    createBranch: function (browser, folderName, path) {
+    forJob: function(jobName) {
+        var jobUrl = url.getJobUrl(this.api.launchUrl, jobName) + suffix;
+        this.jobName = jobName;
+        return this.navigate(jobUrl);
+    },
+
+    createBranch: function (folderName, path) {
         var self = this;
 
         self.waitForJobDeleted(folderName);

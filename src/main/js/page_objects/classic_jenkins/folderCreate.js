@@ -1,3 +1,5 @@
+const url = require('../../util/url');
+
 // Pipeline create (new item) page object (http://nightwatchjs.org/guide#page-objects)
 const suffix = 'newJob';
 
@@ -17,53 +19,56 @@ module.exports = {
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
-    createFreestyle: function (browser, jobName, script) {
+    /*
+     @param basePath may be a nested path
+     @param jobName the name of the new job to be created
+      */
+
+    createFreestyle: function (browser, basePath, jobName, script) {
         var self = this;
-        browser.url(function (response) {
-            const url = response.value + suffix;
-            const jobName = 'Sohn';
-            self.navigate(url);
-            self.setValue('@nameInput', jobName);
-            self.click('@freestyleType');
-            self.click('@submit');
+        const fullProjectName = basePath+  '/' + jobName;
+        const link = url.getJobUrl(this.api.launchUrl, basePath);
+        self.navigate(link+ suffix);
+        self.setValue('@nameInput', jobName);
+        self.click('@freestyleType');
+        self.click('@submit');
 
-            // self.waitForJobCreated(jobName);
+        self.waitForJobCreated(fullProjectName);
 
-            // Navigate to the job config page and set the freestyle script.
-            self.api.page.freestyleConfig()
-                .setFreestyleScript(script)
-                .click('@save', function () {
-                });
-
-        });
+        // Navigate to the job config page and set the freestyle script.
+        self.api.page.freestyleConfig()
+            .setFreestyleScript(script)
+            .click('@save', function () {
+            });
     },
-    createFolder: function(browser, folderName, subfolders) {
+    createFolders: function(browser, folders) {
         var self = this;
+        // we do not want to modify the original array
+        const clone = folders.slice();
+        const firstChild = clone.shift();
+        // delete the root project/folder
+        self.waitForJobDeleted(firstChild);
 
-        self.waitForJobDeleted(folderName);
-
-        self.setValue('@nameInput', folderName);
+        self.setValue('@nameInput', firstChild);
         self.click('@folderType');
         self.click('@submit');
         self.waitForElementPresent('@save')
             .click('@save');
 
-        if (subfolders) {
-            subfolders.map(function(item) {
-                browser.url(function (response) {
-                    self.assert.equal(typeof response, "object");
-                    self.assert.equal(response.status, 0);
-                    const subFolderUrl = response.value + suffix;
-                    self.navigate(subFolderUrl);
-                    self.setValue('@nameInput', item);
-                    self.click('@folderType');
-                    self.click('@submit');
-                    self.waitForElementPresent('@save')
-                       .click('@save');
-                    return self;
-                })
+        clone.map(function(item) {
+            browser.url(function (response) {
+                self.assert.equal(typeof response, "object");
+                self.assert.equal(response.status, 0);
+                const subFolderUrl = response.value + suffix;
+                self.navigate(subFolderUrl);
+                self.setValue('@nameInput', item);
+                self.click('@folderType');
+                self.click('@submit');
+                self.waitForElementPresent('@save')
+                   .click('@save');
+                return self;
             })
-        }
+        })
 
     },
 }];

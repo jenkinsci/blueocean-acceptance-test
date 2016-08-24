@@ -8,7 +8,7 @@ module.exports = {
     },
 
     'Build Pipeline Job': function (browser) {
-        const pipelinePage = browser.page.pipeline().forJob('stages');
+        const pipelinePage = browser.page.jobUtils().forJob('stages');
         pipelinePage.buildStarted(function() {
             // Reload the job page and check that there was a build done.
             pipelinePage

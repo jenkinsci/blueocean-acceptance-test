@@ -5,7 +5,7 @@ module.exports = {
     },
 
     'Build freestyle Job': function (browser) {
-        const freestylePage = browser.page.pipeline().forJob('hijo');
+        const freestylePage = browser.page.jobUtils().forJob('hijo');
         freestylePage.buildStarted(function () {
             // Reload the job page and check that there was a build done.
             freestylePage

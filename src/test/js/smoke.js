@@ -19,10 +19,10 @@ module.exports = {
     },
 
     'Build Pipeline Job': function (browser) {
-        var pipelinePage = browser.page.pipeline().forJob('my-pipeline');
+        var pipelinePage = browser.page.jobUtils().forJob('my-pipeline');
         pipelinePage.build(function() {
             // Reload the job page and check that there was a build done.
-            pipelinePage = browser.page.pipeline().forJob('my-pipeline');
+            pipelinePage = browser.page.jobUtils().forJob('my-pipeline');
             pipelinePage.waitForElementVisible('@builds');
         });
     },
