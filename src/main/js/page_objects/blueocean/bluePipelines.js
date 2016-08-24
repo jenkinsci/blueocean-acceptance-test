@@ -29,7 +29,7 @@ module.exports.commands = [{
         this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]');
     },
     countJobToBeEqual: function(browser, jobName, count) {
-        browser.elements('.pipelines-table tr[data-name="' + jobName + '"]', function (codeCollection) {
+        browser.elements('css selector', '.pipelines-table tr[data-name="' + jobName + '"]', function (codeCollection) {
             this.assert.equal(codeCollection.value.length, count);
         });
     }

@@ -11,6 +11,11 @@ module.exports = {
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
         emptystate: 'div.empty-state',
+        detailTitle: 'section.table',
+        closeButton: 'a.closeButton',
+        activityTable: '.activity-table',
+        highlightedGraph: 'g.pipeline-selection-highlight',
+        steps: 'div.logConsole',
     }
 };
 
@@ -50,6 +55,33 @@ module.exports.commands = [{
         // TODO: add class info to the page content so we can test it
         // Atm there's very little on the page that will allow us to test it.
         // E.g. nothing on the pipeline graph that allows us to find it.
+    },
+    assertTitle: function (expected) {
+        var self = this;
+        self.waitForElementVisible('@detailTitle');
+        self.getText('@detailTitle', function (response) {
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            const urlProect = (response.value);
+            self.assert.equal(urlProect.indexOf(expected)>-1, true);
+            return self;
+        })
+
+    },
+    closeModal: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@closeButton');
+        self.click('@closeButton');
+        browser.url(function (response) {
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            this.pause(10000)
+            // FIXME JENKINS-36619 -> somehow the close in AT is not working as it should
+            // I debugged a bit and found out that the "previous" location is the same as
+            // current, this is the reason, why no url change is triggered. The question remains
+            // why that is happening
+            return self;
+        })
     },
     clickTab: function(browser, tab) {
         var self = this;
@@ -93,6 +125,18 @@ module.exports.commands = [{
         // when we are loading the code element should not be present
         this.expect.element('@code').to.not.be.present.before(1000);
 
+    },
+    validateGraph: function () {
+        var self = this;
+        self.waitForElementVisible('@highlightedGraph');
+        return self;
+    },
+    validateSteps: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@steps');
+        browser.elements('css selector', '.logConsole', function (codeCollection) {
+            this.assert.equal(codeCollection.value.length > 0, true);
+        });
     },
     validateEmpty: function () {
         var self = this;

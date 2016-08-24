@@ -22,7 +22,6 @@ Cmd.prototype.command = function (jobName, onBuildStarted, timeout) {
     
     console.log('Waiting for job/pipeline "' + jobName + '" run to start.');
     sseClient.onJobRunStarted(jobName, function(event) {
-        console.log('events', event)
         clearTimeout(waitTimeout);
         console.log('Job/pipeline "' + jobName + '" run started.');
         try {
