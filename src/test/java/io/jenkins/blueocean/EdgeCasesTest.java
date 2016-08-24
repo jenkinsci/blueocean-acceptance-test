@@ -25,12 +25,9 @@ package io.jenkins.blueocean;
 
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
 
-/**
- * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
- */
 @WithPlugins({"workflow-aggregator@2.1"})
-public class EdgeCaseTest extends NightwatchTest {
-    public EdgeCaseTest() {
+public class EdgeCasesTest extends NightwatchTest {
+    public EdgeCasesTest() {
         super("edgeCases/*.js");
     }
 }
