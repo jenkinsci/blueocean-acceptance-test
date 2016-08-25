@@ -1,6 +1,0 @@
-node {
-    stage 'Stage 1 - scm'
-    checkout scm
-    stage 'Stage test'
-    step([$class: 'JUnitResultArchiver', testResults: 'TEST-*.xml'])
-}
