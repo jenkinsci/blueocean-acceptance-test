@@ -104,7 +104,7 @@ module.exports = {
             // works in the browser, but not for nightwatch.
             // NOTE: if the pipeline script (no-stages.groovy) changes then the following
             // selector will need to be changed too.
-            var lastLogConsoleSelector = '.logConsole.step-36';
+            var lastLogConsoleSelector = '.logConsole.step-11';
             
             blueRunDetailPage.waitForElementVisible(lastLogConsoleSelector);
             blueRunDetailPage.click(lastLogConsoleSelector);
@@ -118,7 +118,7 @@ module.exports = {
         // NOTE: if the pipeline script (no-stages.groovy) changes then the following
         // selector will need to be changed too.
         browser
-            .waitForElementVisible('div.step-37 svg.disabled.result-item-expando');
+            .waitForElementVisible('div.step-29 svg.disabled.result-item-expando');
     },
 
     'Check whether the test tab shows an empty state hint': function (browser) {

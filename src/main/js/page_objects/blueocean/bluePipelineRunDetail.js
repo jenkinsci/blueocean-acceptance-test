@@ -16,6 +16,7 @@ module.exports = {
         activityTable: '.activity-table',
         highlightedGraph: 'g.pipeline-selection-highlight',
         steps: 'div.logConsole',
+        artifactTable: 'table.artifacts-table',
     }
 };
 
@@ -141,6 +142,11 @@ module.exports.commands = [{
     validateEmpty: function () {
         var self = this;
         self.waitForElementVisible('@emptystate');
+        return self;
+    },
+    validateNotEmpty: function () {
+        var self = this;
+        self.waitForElementVisible('@artifactTable');
         return self;
     }
 }];
