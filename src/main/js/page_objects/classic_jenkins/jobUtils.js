@@ -6,6 +6,10 @@ exports.elements = {
         selector: '//a[text()="Build Now"]',
         locateStrategy: 'xpath',
     },
+    indexing: {
+        selector: '//a[text()="Run Now"]',
+        locateStrategy: 'xpath',
+    },
     executer: {
         selector: '//span[text()="Started by anonymous user"]',
         locateStrategy: 'xpath',
@@ -17,10 +21,10 @@ exports.elements = {
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 exports.commands = [{
-    forJob: function(jobName) {
+    forJob: function(jobName, suffix) {
         var jobUrl = url.getJobUrl(this.api.launchUrl, jobName);
         this.jobName = jobName;
-        return this.navigate(jobUrl);
+        return this.navigate(suffix ? jobUrl + suffix : jobUrl);
     },
     forRun: function(runId) {
         var runUrl = url.getJobUrl(this.api.launchUrl, this.jobName) + runId;
@@ -42,6 +46,14 @@ exports.commands = [{
         this.click('@build');
         if (onBuildStarted) {
             this.api.waitForJobRunStarted(this.jobName, onBuildStarted);
+        }
+        return this;
+    },
+    indexingStarted: function(onIndexingStarted) {
+        this.waitForElementVisible('@indexing');
+        this.click('@indexing');
+        if (onIndexingStarted) {
+            this.api.waitForJobRunStarted(this.jobName, onIndexingStarted);
         }
         return this;
     }

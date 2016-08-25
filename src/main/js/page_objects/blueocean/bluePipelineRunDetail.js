@@ -16,7 +16,9 @@ module.exports = {
         activityTable: '.activity-table',
         highlightedGraph: 'g.pipeline-selection-highlight',
         steps: 'div.logConsole',
-        artifactTable: 'table.artifacts-table',
+        artifactTable: 'table.artifacts-table tr',
+        changes: 'table.changeset-table tr',
+        tests: 'div.new-failure-block div.result-item',
     }
 };
 
@@ -45,7 +47,7 @@ module.exports.commands = [{
         return this.pageUrl(relative) + '/' + tabName;
     },
     tabSelector: function(tabName) {
-        return 'nav.page-tabs a[href="' + this.tabUrl(tabName, true) + '"]';
+        return 'nav.page-tabs a.' + tabName;
     },
     assertBasicLayoutOkay: function() {
         this.waitForElementVisible(this.tabSelector('pipeline'));
@@ -144,9 +146,31 @@ module.exports.commands = [{
         self.waitForElementVisible('@emptystate');
         return self;
     },
-    validateNotEmpty: function () {
+    validateNotEmptyArtifacts: function (browser, expectedCount) {
         var self = this;
         self.waitForElementVisible('@artifactTable');
+        if (browser && expectedCount) {
+            browser.elements('css selector', 'table.artifacts-table tr', function (codeCollection) {
+                this.assert.equal(codeCollection.value.length, expectedCount + 1); // +1 because of the heading row
+                return self;
+            });
+        }
+        return self;
+    },
+    validateNotEmptyChanges: function (browser, expectedCount) {
+        var self = this;
+        self.waitForElementVisible('@changes');
+        if (browser && expectedCount) {
+            browser.elements('css selector', 'table.changeset-table tr', function (codeCollection) {
+                this.assert.equal(codeCollection.value.length, expectedCount + 1); // +1 because of the heading row
+                return self;
+            });
+        }
+        return self;
+    },
+    validateFailingTests: function () {
+        var self = this;
+        self.waitForElementVisible('@tests');
         return self;
     }
 }];

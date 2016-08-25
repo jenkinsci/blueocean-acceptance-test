@@ -2,7 +2,7 @@ var NodeGit = require("nodegit");
 var fse = require('fs-extra');
 var path = require("path");
 
-exports.init = function(pathToRepo, onInit) {
+exports.init = function (pathToRepo, onInit) {
     var pathToRepo = path.resolve(pathToRepo);
 
     fse.emptyDirSync(pathToRepo);
@@ -22,11 +22,11 @@ exports.init = function(pathToRepo, onInit) {
                 .then(function (oid) {
                     return repo.createCommit("HEAD", signature, signature, 'initial commit', oid, []);
                 })
-                .done(function() {
+                .done(function () {
                     if (onInit) {
                         onInit({
                             repo: repo,
-                            copyDirToRepo: function(dir) {
+                            copyDirToRepo: function (dir) {
                                 var pathToFiles = path.resolve(dir);
 
                                 if (!fse.existsSync(pathToFiles)) {
@@ -71,7 +71,7 @@ exports.init = function(pathToRepo, onInit) {
 
                                 return returnPromise;
                             },
-                            createRepo: function(fromDir, inDir) {
+                            createRepo: function (fromDir, inDir) {
                                 repo.copyDirToRepo(fromDir);
                                 return repo.commit('Added ');
                             }
@@ -82,8 +82,8 @@ exports.init = function(pathToRepo, onInit) {
         });
 };
 
-exports.createRepo = function(fromDir, inDir) {
-    return new Promise(function(resolve, reject) {
+exports.createRepo = function (fromDir, inDir) {
+    return new Promise(function (resolve, reject) {
         exports.init(inDir, function (repo) {
             repo.copyDirToRepo(fromDir);
             repo.commit('Copied files from ' + fromDir)
@@ -93,11 +93,11 @@ exports.createRepo = function(fromDir, inDir) {
     });
 };
 
-exports.createBranch = function(branchName, pathToRepo) {
+exports.createBranch = function (branchName, pathToRepo) {
     var pathToRepo = path.resolve(pathToRepo);
 
     return NodeGit.Repository.open(pathToRepo)
-        .then(function(repo) {
+        .then(function (repo) {
             return repo.getHeadCommit()
                 .then(function (commit) {
                     return repo.createBranch(
@@ -107,4 +107,45 @@ exports.createBranch = function(branchName, pathToRepo) {
                         'Created "' + branchName + '" branch on HEAD');
                 });
         });
+};
+
+exports.createCommit = function (pathToRepo, files) {
+
+    const signatureAuthor = NodeGit.Signature.now('Iron Thor', 'ironThor@avengers.com');
+    var repo, index, oid, remote;
+
+    return NodeGit.Repository.open(pathToRepo)
+        .then(function (repoResult) {
+            repo = repoResult;
+            return repo.refreshIndex();
+        })
+        .then(function (indexResult) {
+            index = indexResult;
+            // this file is in the root of the directory and doesn't need a full path
+            return files.map(function (fileName) {
+                console.log('++++Adding file +++', fileName);
+                index.addByPath(fileName);
+            })
+        })
+        .then(function() {
+            // this will write files to the index
+            return index.write();
+        })
+        .then(function() {
+            return index.writeTree();
+        })
+        .then(function (oidResult) {
+            oid = oidResult;
+            return NodeGit.Reference.nameToId(repo, "HEAD");
+        })
+        .then(function (head) {
+            return repo.getCommit(head);
+        })
+        .then(function (parent) {
+            return repo.createCommit("HEAD", signatureAuthor, signatureAuthor, 'testing commit tab', oid, [parent]);
+        })
+        .done(function (commitId) {
+            console.log("New Commit: ", commitId);
+        });
+
 };

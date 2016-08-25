@@ -1,5 +1,6 @@
 const git = require("../../../main/js/api/git");
 const path = require("path");
+var fse = require('fs-extra');
 
 const folders = ['firstFolder', '三百', 'ñba', '七'];
 const anotherFolders = ['anotherFolder', '三百', 'ñba', '七'];
@@ -14,13 +15,16 @@ function getProjectName(nameArray, seperator) {
     return nameArray.join(seperator) + seperator + jobName;
 }
 
+// here we need to escape the real projectName to a urlEncoded string
+const projectName = getProjectName(anotherFolders, '%2F');
+
 console.log('*** ', pathToRepo, 'jobName', jobName);
 
 module.exports = {
 
     before: function (browser, done) {
         git.createRepo('./src/test/resources/multibranch_1', pathToRepo)
-            .then(function() {
+            .then(function () {
                 git.createBranch('feature/1', pathToRepo)
                     .then(done);
             });
@@ -42,7 +46,7 @@ module.exports = {
 
     // JENKINS-36618 part 2 - verify
     'Jobs can have the same name in different folders, they should show up in the gui': function (browser) {
-        var bluePipelinesPage = browser.page.bluePipelines().navigate();
+        const bluePipelinesPage = browser.page.bluePipelines().navigate();
         bluePipelinesPage.assertBasicLayoutOkay();
         bluePipelinesPage.countJobToBeEqual(browser, jobName, 2);
     },
@@ -66,12 +70,10 @@ module.exports = {
     },
 
     'Jobs can have the same name in different folders, they should show up in the gui': function (browser) {
-        // here we need to escape the real projectName to a urlEncoded string
-        const projectName = getProjectName(anotherFolders, '%2F');
         // /JENKINS-36616 - Unable to load multibranch projects in a folder
-        var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
         // JENKINS-36773 / JENKINS-37605 verify encoding and spacing of details
-        blueRunDetailPage.assertTitle( 'jenkins / ' + anotherFolders.join(' / ') + ' / feature/1');
+        blueRunDetailPage.assertTitle('jenkins / ' + anotherFolders.join(' / ') + ' / feature/1');
         // FIXME JENKINS-36619 -> somehow the close in AT is not working
         //blueRunDetailPage.closeModal(browser);
         // JENKINS-36613 Unable to load steps for multibranch pipelines with / in them
@@ -79,5 +81,36 @@ module.exports = {
         blueRunDetailPage.validateSteps(browser);
     },
 
-    // NEXT JENKINS-36615 JENKINS-36619 JENKINS-36674 ...
+    'Check whether the artifacts tab shows artifacts': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+        blueRunDetailPage.clickTab(browser, 'artifacts');
+        blueRunDetailPage.validateNotEmptyArtifacts(browser, 2);
+    },
+
+    'Check whether the test tab shows failing tests': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+        blueRunDetailPage.clickTab(browser, 'tests');
+        blueRunDetailPage.validateFailingTests();
+    },
+
+    'Check whether the changes tab shows changes': function (browser) {
+        // create new files and a commit
+        fse.writeFile(path.join(pathToRepo, '666.txt'), '666');
+        git.createCommit(pathToRepo, ['666.txt']);
+        // now we have to index the branch
+        const masterJob = browser.page.jobUtils()
+            .forJob(getProjectName(anotherFolders), '/indexing');
+        // start a new build by starting indexing
+        masterJob.indexingStarted();
+        // test whether we have commit
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
+        blueRunDetailPage.clickTab(browser, 'changes');
+        blueRunDetailPage.validateNotEmptyChanges(browser, 1);
+    },
+
+    // JENKINS-36615 the multibranch project has the branch 'feature/1'
+    'Jobs can be started from branch tab. - RUN': function (browser) {
+    },
+
+    // NEXT JENKINS-36619 JENKINS-36674 ...
 };
