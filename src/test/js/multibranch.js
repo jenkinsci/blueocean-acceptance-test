@@ -16,7 +16,6 @@ module.exports = {
 
     'Create Multbranch Job': function (browser) {
         const branchCreate = browser.page.multibranchCreate().navigate();
-        branchCreate.createBranch('multiBranch', pathToRepo);
-        browser.end();
+        //branchCreate.createBranch('multiBranch', pathToRepo); -> if we start the job we have to wait for the finish
     }
 };
