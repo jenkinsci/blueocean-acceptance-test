@@ -69,7 +69,7 @@ module.exports = {
         })
     },
 
-    'Jobs can have the same name in different folders, they should show up in the gui': function (browser) {
+    'Validate correct encoding, pipeline graph and steps': function (browser) {
         // /JENKINS-36616 - Unable to load multibranch projects in a folder
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
         // JENKINS-36773 / JENKINS-37605 verify encoding and spacing of details
@@ -110,7 +110,10 @@ module.exports = {
 
     // JENKINS-36615 the multibranch project has the branch 'feature/1'
     'Jobs can be started from branch tab. - RUN': function (browser) {
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
+        blueActivityPage.assertActivitiesToBeEqual(browser, 3);
+        blueActivityPage.clickTab(browser, 'branches');
+        browser.page.bluePipelineBranch().clickRunButton();
     },
-
     // NEXT JENKINS-36619 JENKINS-36674 ...
 };

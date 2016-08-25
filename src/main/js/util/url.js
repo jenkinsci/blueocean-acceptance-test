@@ -24,5 +24,20 @@ module.exports = {
     },
     viewRunPipeline: function(orgName, jobName, branchName, buildNumber) {
         return '/blue/organizations/' + orgName + '/' + jobName + '/detail/' + branchName + '/' + buildNumber;
-    }
+    },
+    tabSelector: function(tabName) {
+        return 'nav.page-tabs a.' + tabName;
+    },
+    clickTab: function(browser, self, tab) {
+        const tabSelector = this.tabSelector(tab);
+        self.waitForElementVisible(tabSelector);
+        self.click(tabSelector);
+        browser.url(function (response) {
+                self.assert.equal(typeof response, "object");
+                self.assert.equal(response.status, 0);
+                // did we changed the url on  change?
+                self.assert.equal(response.value.includes(tab), true);
+                return self;
+            })
+    },
 };

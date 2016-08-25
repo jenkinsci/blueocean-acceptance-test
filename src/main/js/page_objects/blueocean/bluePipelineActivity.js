@@ -7,6 +7,7 @@ module.exports = {
         pipelinesNav: '.global-header nav a[href="/blue/pipelines"]',
         emptyStateShoes: '.empty-state .empty-state-icon.shoes',
         activityTable: '.activity-table',
+        activityTableEntries: 'table.activity-table tbody tr',
     }
 };
 
@@ -35,5 +36,16 @@ module.exports.commands = [{
         this.waitForElementVisible('.activity-table tr#' + runName);
         this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
         this.waitForElementPresent('.activity-table tr#' + runName + ' svg path.running');
+    },
+    clickTab: function (browser, tab) {
+        var self = this;
+        return url.clickTab(browser, self, tab);
+    },
+    assertActivitiesToBeEqual: function (browser, expected) {
+        var self = this;
+        self.waitForElementVisible('@activityTableEntries');
+        browser.elements('css selector', 'table.activity-table tbody tr', function (codeCollection) {
+            this.assert.equal(codeCollection.value.length, expected);
+        });
     }
 }];

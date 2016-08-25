@@ -46,14 +46,11 @@ module.exports.commands = [{
     tabUrl: function(tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
     },
-    tabSelector: function(tabName) {
-        return 'nav.page-tabs a.' + tabName;
-    },
     assertBasicLayoutOkay: function() {
-        this.waitForElementVisible(this.tabSelector('pipeline'));
-        this.waitForElementVisible(this.tabSelector('changes'));
-        this.waitForElementVisible(this.tabSelector('tests'));
-        this.waitForElementVisible(this.tabSelector('artifacts'));
+        this.waitForElementVisible(url.tabSelector('pipeline'));
+        this.waitForElementVisible(url.tabSelector('changes'));
+        this.waitForElementVisible(url.tabSelector('tests'));
+        this.waitForElementVisible(url.tabSelector('artifacts'));
         this.waitForElementVisible('@logHeader');
         // TODO: add class info to the page content so we can test it
         // Atm there's very little on the page that will allow us to test it.
@@ -88,16 +85,7 @@ module.exports.commands = [{
     },
     clickTab: function(browser, tab) {
         var self = this;
-        const tabSelector = this.tabSelector(tab);
-        self.waitForElementVisible(tabSelector);
-        self.click(tabSelector);
-        browser.url(function (response) {
-                self.assert.equal(typeof response, "object");
-                self.assert.equal(response.status, 0);
-                // did we changed the url on  change?
-                self.assert.equal(response.value.includes(tab), true);
-                return self;
-            })
+        return url.clickTab(browser, self, tab);
     },
     clickFullLog: function (browser) {
         var self = this;
