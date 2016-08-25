@@ -11,6 +11,7 @@ module.exports = {
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
         emptystate: 'div.empty-state',
+        artifactTable: 'table.artifacts-table',
     }
 };
 
@@ -97,6 +98,11 @@ module.exports.commands = [{
     validateEmpty: function () {
         var self = this;
         self.waitForElementVisible('@emptystate');
+        return self;
+    },
+    validateNotEmpty: function () {
+        var self = this;
+        self.waitForElementVisible('@artifactTable');
         return self;
     }
 }];
