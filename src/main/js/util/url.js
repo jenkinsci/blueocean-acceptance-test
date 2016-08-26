@@ -13,6 +13,9 @@ module.exports = {
             url.substr(1) :
             url;
     },
+    configureBuildExecutor: function () {
+        return '/computer/(master)/configure';
+    },
     viewAllPipelines: function() {
         return '/blue/pipelines';
     },

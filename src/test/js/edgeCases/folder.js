@@ -87,6 +87,7 @@ module.exports = {
         blueRunDetailPage.validateNotEmptyArtifacts(browser, 2);
     },
 
+    // JENKINS-36674 Tests are not being reported
     'Check whether the test tab shows failing tests': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
         blueRunDetailPage.clickTab(browser, 'tests');
@@ -110,10 +111,18 @@ module.exports = {
 
     // JENKINS-36615 the multibranch project has the branch 'feature/1'
     'Jobs can be started from branch tab. - RUN': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
         blueActivityPage.assertActivitiesToBeEqual(browser, 3);
         blueActivityPage.clickTab(browser, 'branches');
-        browser.page.bluePipelineBranch().clickRunButton();
+        browser.page.bluePipelineBranch().clickRunButton(browser);
     },
-    // NEXT JENKINS-36619 JENKINS-36674 ...
+
+    'Test queued jobs': function (browser) {
+        const configure = browser.page.computer().navigate();
+        configure.setNumber(0);
+        // now testing queued jobs
+        // first starting a freestyle
+        // now let us reset the executors again
+        configure.setNumber(2);
+    }
 };
