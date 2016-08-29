@@ -10,14 +10,12 @@ module.exports = {
     elements: {
         computer: 'img.icon-computer',
         noExecutors: 'input[path="/numExecutors"]',
+        labels: 'input[path="/labelString"]',
         save: {
             selector: '//button[.="Save"]',
             locateStrategy: 'xpath',
         },
-        form: {
-            selector: '//form[@name="config"]',
-            locateStrategy: 'xpath',
-        }
+        form: 'form[name="config"]'
     }
 };
 
@@ -27,10 +25,10 @@ module.exports.commands = [{
         self.waitForElementPresent('@noExecutors');
         self.clearValue('@noExecutors');
         self.setValue('@noExecutors', newNumber);
-        self.waitForElementPresent('@save');
-        self.click('@save', function (status) {
-            console.log(status);
-            self.waitForElementPresent('@computer')
+        self.clearValue('@labels');// to loose focus on the
+        self.waitForElementPresent('@form');
+        browser.submitForm('form[name="config"]', function (submitted) {
+            self.waitForElementPresent('@computer');
             browser.url(function (response) {
                 self.assert.equal(typeof response, "object");
                 self.assert.equal(response.status, 0);

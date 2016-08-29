@@ -6,6 +6,7 @@ exports.elements = {
         selector: '//a[text()="Build Now"]',
         locateStrategy: 'xpath',
     },
+    queued: 'div[title="Expected build number"]',
     indexing: {
         selector: '//a[text()="Run Now"]',
         locateStrategy: 'xpath',
@@ -35,6 +36,7 @@ exports.commands = [{
         return this.navigate(url);
     },
     build: function(onBuildComplete) {
+        this.waitForElementVisible('@build');
         this.click('@build');
         if (onBuildComplete) {
             this.api.waitForJobRunEnded(this.jobName, onBuildComplete);
@@ -47,6 +49,12 @@ exports.commands = [{
         if (onBuildStarted) {
             this.api.waitForJobRunStarted(this.jobName, onBuildStarted);
         }
+        return this;
+    },
+    buildQueued: function() {
+        this.waitForElementVisible('@build');
+        this.click('@build');
+        this.waitForElementVisible('@queued');
         return this;
     },
     indexingStarted: function(onIndexingStarted) {

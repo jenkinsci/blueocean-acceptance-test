@@ -29,10 +29,9 @@ import org.jenkinsci.test.acceptance.junit.WithPlugins;
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
 @WithPlugins({"workflow-aggregator@2.1"})
-public class MultibranchTest extends NightwatchTest {
+public class QueuedTest extends NightwatchTest {
 
-
-    public MultibranchTest() {
-        super("multibranch.js");
+    public QueuedTest() {
+        super("queued.js");
     }
 }

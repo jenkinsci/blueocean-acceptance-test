@@ -128,6 +128,12 @@ module.exports.commands = [{
         browser.elements('css selector', '.logConsole', function (codeCollection) {
             this.assert.equal(codeCollection.value.length > 0, true);
         });
+        return self;
+    },
+    validateLog: function () {
+        var self = this;
+        self.waitForElementVisible('@code');
+        return self;
     },
     validateEmpty: function () {
         var self = this;

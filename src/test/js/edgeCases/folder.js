@@ -115,14 +115,8 @@ module.exports = {
         blueActivityPage.assertActivitiesToBeEqual(browser, 3);
         blueActivityPage.clickTab(browser, 'branches');
         browser.page.bluePipelineBranch().clickRunButton(browser);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 2);
+        blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature%2F1');
     },
 
-    'Test queued jobs': function (browser) {
-        const configure = browser.page.computer().navigate();
-        configure.setNumber(0);
-        // now testing queued jobs
-        // first starting a freestyle
-        // now let us reset the executors again
-        configure.setNumber(2);
-    }
 };
