@@ -15,7 +15,7 @@ module.exports = {
         closeButton: 'a.closeButton',
         activityTable: '.activity-table',
         highlightedGraph: 'g.pipeline-selection-highlight',
-        steps: 'div.logConsole',
+        logConsole: 'div.logConsole',
         artifactTable: 'table.artifacts-table tr',
         changes: 'table.changeset-table tr',
         tests: 'div.new-failure-block div.result-item',
@@ -28,12 +28,12 @@ module.exports.commands = [{
     forRun: function(jobName, orgName, branchName, buildNumber) {
         this.jobName = jobName;
         this.orgName = orgName;
-        this.branchName = (typeof branchName === 'string' ? branchName : jobName);
+        this.multiBranchJob = (typeof branchName === 'string' ? branchName : jobName);
         this.buildNumber = (typeof branchName === 'number' ? branchName : buildNumber);
         return this.navigate(this.pageUrl());
     },
     pageUrl: function(relative) {
-        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.branchName, this.buildNumber));
+        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
 
         return !relative ?
             this.api.launchUrl + runUrl :
@@ -124,7 +124,7 @@ module.exports.commands = [{
     },
     validateSteps: function (browser) {
         var self = this;
-        self.waitForElementVisible('@steps');
+        self.waitForElementVisible('@logConsole');
         browser.elements('css selector', '.logConsole', function (codeCollection) {
             this.assert.equal(codeCollection.value.length > 0, true);
         });
@@ -160,5 +160,6 @@ module.exports.commands = [{
         var self = this;
         self.waitForElementVisible('@tests');
         return self;
-    }
+    },
+
 }];

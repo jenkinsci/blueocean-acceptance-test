@@ -8,19 +8,37 @@ module.exports = {
         return this.api.launchUrl + configureBuildExecutor;
     },
     elements: {
+        computer: 'img.icon-computer',
         noExecutors: 'input[path="/numExecutors"]',
-        save: 'button#yui-gen2-button',
+        save: {
+            selector: '//button[.="Save"]',
+            locateStrategy: 'xpath',
+        },
+        form: {
+            selector: '//form[@name="config"]',
+            locateStrategy: 'xpath',
+        }
     }
 };
 
 module.exports.commands = [{
-    setNumber: function (newNumber) {
+    setNumber: function (browser, newNumber) {
         var self = this;
         self.waitForElementPresent('@noExecutors');
         self.clearValue('@noExecutors');
         self.setValue('@noExecutors', newNumber);
-        self.waitForElementPresent('@save')
-            .click('@save');
+        self.waitForElementPresent('@save');
+        self.click('@save', function (status) {
+            console.log(status);
+            self.waitForElementPresent('@computer')
+            browser.url(function (response) {
+                self.assert.equal(typeof response, "object");
+                self.assert.equal(response.status, 0);
+                self.assert.equal(response.value.includes('configure'), false);
+                return self;
+            })
+
+        });
     }
 
 }];
