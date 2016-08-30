@@ -31,5 +31,8 @@
     "xmlhttprequest": "1.8.0",
     "fs-extra": "^0.30.0",
     "nodegit": "^0.13.2"
+  },
+  "dependencies": {
+    "async": "^2.0.1"
   }
 }

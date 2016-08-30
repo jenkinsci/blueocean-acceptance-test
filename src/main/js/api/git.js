@@ -146,6 +146,7 @@ exports.createCommit = function (pathToRepo, files) {
         })
         .done(function (commitId) {
             console.log("New Commit: ", commitId);
+            return commitId;
         });
 
 };

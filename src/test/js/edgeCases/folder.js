@@ -1,12 +1,14 @@
 const git = require("../../../main/js/api/git");
 const path = require("path");
-var fse = require('fs-extra');
+const fse = require('fs-extra');
+const async = require("async");
 
 const folders = ['firstFolder', '三百', 'ñba', '七'];
 const anotherFolders = ['anotherFolder', '三百', 'ñba', '七'];
 const jobName = 'Sohn';
 
 const pathToRepo = path.resolve('./target/test-project-folder');
+const soureRep = './src/test/resources/multibranch_1';
 
 function getProjectName(nameArray, seperator) {
     if (!seperator) {
@@ -23,7 +25,8 @@ console.log('*** ', pathToRepo, 'jobName', jobName);
 module.exports = {
 
     before: function (browser, done) {
-        git.createRepo('./src/test/resources/multibranch_1', pathToRepo)
+
+        git.createRepo(soureRep, pathToRepo)
             .then(function () {
                 git.createBranch('feature/1', pathToRepo)
                     .then(done);
@@ -95,18 +98,27 @@ module.exports = {
     },
 
     'Check whether the changes tab shows changes': function (browser) {
-        // create new files and a commit
-        fse.writeFile(path.join(pathToRepo, '666.txt'), '666');
-        git.createCommit(pathToRepo, ['666.txt']);
-        // now we have to index the branch
-        const masterJob = browser.page.jobUtils()
-            .forJob(getProjectName(anotherFolders), '/indexing');
-        // start a new build by starting indexing
-        masterJob.indexingStarted();
-        // test whether we have commit
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
-        blueRunDetailPage.clickTab(browser, 'changes');
-        blueRunDetailPage.validateNotEmptyChanges(browser, 1);
+        async.series([
+            function(callback) {
+                // create new files and a commit
+                fse.writeFile(path.join(pathToRepo, '666.txt'), '666');
+                git.createCommit(pathToRepo, ['666.txt']);
+                callback(null, null);
+            },
+            function(callback) {
+                // now we have to index the branch
+                const masterJob = browser.page.jobUtils()
+                    .forJob(getProjectName(anotherFolders), '/indexing');
+                // start a new build by starting indexing
+                masterJob.indexingStarted();
+                // test whether we have commit
+                const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
+                blueRunDetailPage.clickTab(browser, 'changes');
+                blueRunDetailPage.validateNotEmptyChanges(browser, 1);
+                callback(null, null);
+            }
+        ]);
+
     },
 
     // JENKINS-36615 the multibranch project has the branch 'feature/1'
