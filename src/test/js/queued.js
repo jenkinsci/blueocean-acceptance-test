@@ -15,6 +15,12 @@ module.exports = {
             });
     },
 
+    after: function (browser) {
+        const configure = browser.page.computer().navigate();
+        // now let us reset the executors again
+        configure.setNumber(browser, 2);
+    },
+
     'Test queued jobs - disable executors': function (browser) {
         const configure = browser.page.computer().navigate();
         configure.setNumber(browser, 0);
