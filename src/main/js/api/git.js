@@ -1,6 +1,7 @@
 var NodeGit = require("nodegit");
 var fse = require('fs-extra');
 var path = require("path");
+var faker = require('faker');
 
 exports.init = function (pathToRepo, onInit) {
     var pathToRepo = path.resolve(pathToRepo);
@@ -111,42 +112,49 @@ exports.createBranch = function (branchName, pathToRepo) {
 
 exports.createCommit = function (pathToRepo, files) {
 
-    const signatureAuthor = NodeGit.Signature.now('Iron Thor', 'ironThor@avengers.com');
-    var repo, index, oid, remote;
-
-    return NodeGit.Repository.open(pathToRepo)
-        .then(function (repoResult) {
-            repo = repoResult;
-            return repo.refreshIndex();
-        })
-        .then(function (indexResult) {
-            index = indexResult;
-            // this file is in the root of the directory and doesn't need a full path
-            return files.map(function (fileName) {
-                console.log('++++Adding file +++', fileName);
-                index.addByPath(fileName);
+    return new Promise(function (resolve, reject) {
+        const message = faker.lorem.sentence();
+        const signatureAuthor = NodeGit.Signature.now(faker.name.findName(), faker.internet.email());
+        const committerAuthor = NodeGit.Signature.now(faker.name.findName(), faker.internet.email());
+        var repo, index, oid, remote;
+        NodeGit.Repository.open(pathToRepo)
+            .then(function (repoResult) {
+                repo = repoResult;
+                return repo.refreshIndex();
             })
-        })
-        .then(function() {
-            // this will write files to the index
-            return index.write();
-        })
-        .then(function() {
-            return index.writeTree();
-        })
-        .then(function (oidResult) {
-            oid = oidResult;
-            return NodeGit.Reference.nameToId(repo, "HEAD");
-        })
-        .then(function (head) {
-            return repo.getCommit(head);
-        })
-        .then(function (parent) {
-            return repo.createCommit("HEAD", signatureAuthor, signatureAuthor, 'testing commit tab', oid, [parent]);
-        })
-        .done(function (commitId) {
-            console.log("New Commit: ", commitId);
-            return commitId;
-        });
+            .then(function (indexResult) {
+                index = indexResult;
+                // this file is in the root of the directory and doesn't need a full path
+                return files.map(function (fileName) {
+                    console.log('++++Adding file +++', fileName);
+                    index.addByPath(fileName);
+                })
+            })
+            .then(function() {
+                // this will write files to the index
+                return index.write();
+            })
+            .then(function() {
+                return index.writeTree();
+            })
+            .then(function (oidResult) {
+                oid = oidResult;
+                return NodeGit.Reference.nameToId(repo, "HEAD");
+            })
+            .then(function (head) {
+                return repo.getCommit(head);
+            })
+            .then(function (parent) {
+                return repo.createCommit("HEAD", signatureAuthor, committerAuthor, message, oid, [parent]);
+            })
+            .then(function (commitId) {
+                console.log("New Commit: ", commitId);
+                resolve(commitId);
+            })
+            .catch(function (err) {
+                reject(err);
+            })
+        ;
+    });
 
 };
