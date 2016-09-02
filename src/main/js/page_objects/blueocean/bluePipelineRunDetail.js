@@ -11,7 +11,14 @@ module.exports = {
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
         emptystate: 'div.empty-state',
-        artifactTable: 'table.artifacts-table',
+        detailTitle: 'section.table',
+        closeButton: 'a.closeButton',
+        activityTable: '.activity-table',
+        highlightedGraph: 'g.pipeline-selection-highlight',
+        logConsole: 'div.logConsole',
+        artifactTable: 'table.artifacts-table tr',
+        changes: 'table.changeset-table tr',
+        tests: 'div.new-failure-block div.result-item',
     }
 };
 
@@ -21,12 +28,12 @@ module.exports.commands = [{
     forRun: function(jobName, orgName, branchName, buildNumber) {
         this.jobName = jobName;
         this.orgName = orgName;
-        this.branchName = (typeof branchName === 'string' ? branchName : jobName);
+        this.multiBranchJob = (typeof branchName === 'string' ? branchName : jobName);
         this.buildNumber = (typeof branchName === 'number' ? branchName : buildNumber);
         return this.navigate(this.pageUrl());
     },
     pageUrl: function(relative) {
-        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.branchName, this.buildNumber));
+        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
 
         return !relative ?
             this.api.launchUrl + runUrl :
@@ -39,31 +46,46 @@ module.exports.commands = [{
     tabUrl: function(tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
     },
-    tabSelector: function(tabName) {
-        return 'nav.page-tabs a[href="' + this.tabUrl(tabName, true) + '"]';
-    },
     assertBasicLayoutOkay: function() {
-        this.waitForElementVisible(this.tabSelector('pipeline'));
-        this.waitForElementVisible(this.tabSelector('changes'));
-        this.waitForElementVisible(this.tabSelector('tests'));
-        this.waitForElementVisible(this.tabSelector('artifacts'));
+        this.waitForElementVisible(url.tabSelector('pipeline'));
+        this.waitForElementVisible(url.tabSelector('changes'));
+        this.waitForElementVisible(url.tabSelector('tests'));
+        this.waitForElementVisible(url.tabSelector('artifacts'));
         this.waitForElementVisible('@logHeader');
         // TODO: add class info to the page content so we can test it
         // Atm there's very little on the page that will allow us to test it.
         // E.g. nothing on the pipeline graph that allows us to find it.
     },
+    assertTitle: function (expected) {
+        var self = this;
+        self.waitForElementVisible('@detailTitle');
+        self.getText('@detailTitle', function (response) {
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            const urlProect = (response.value);
+            self.assert.equal(urlProect.indexOf(expected)>-1, true);
+            return self;
+        })
+
+    },
+    closeModal: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@closeButton');
+        self.click('@closeButton');
+        browser.url(function (response) {
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            this.pause(10000)
+            // FIXME JENKINS-36619 -> somehow the close in AT is not working as it should
+            // I debugged a bit and found out that the "previous" location is the same as
+            // current, this is the reason, why no url change is triggered. The question remains
+            // why that is happening
+            return self;
+        })
+    },
     clickTab: function(browser, tab) {
         var self = this;
-        const tabSelector = this.tabSelector(tab);
-        self.waitForElementVisible(tabSelector);
-        self.click(tabSelector);
-        browser.url(function (response) {
-                self.assert.equal(typeof response, "object");
-                self.assert.equal(response.status, 0);
-                // did we changed the url on  change?
-                self.assert.equal(response.value.includes(tab), true);
-                return self;
-            })
+        return url.clickTab(browser, self, tab);
     },
     clickFullLog: function (browser) {
         var self = this;
@@ -95,14 +117,55 @@ module.exports.commands = [{
         this.expect.element('@code').to.not.be.present.before(1000);
 
     },
+    validateGraph: function () {
+        var self = this;
+        self.waitForElementVisible('@highlightedGraph');
+        return self;
+    },
+    validateSteps: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@logConsole');
+        browser.elements('css selector', '.logConsole', function (codeCollection) {
+            this.assert.equal(codeCollection.value.length > 0, true);
+        });
+        return self;
+    },
+    validateLog: function () {
+        var self = this;
+        self.waitForElementVisible('@code');
+        return self;
+    },
     validateEmpty: function () {
         var self = this;
         self.waitForElementVisible('@emptystate');
         return self;
     },
-    validateNotEmpty: function () {
+    validateNotEmptyArtifacts: function (browser, expectedCount) {
         var self = this;
         self.waitForElementVisible('@artifactTable');
+        if (browser && expectedCount) {
+            browser.elements('css selector', 'table.artifacts-table tr', function (codeCollection) {
+                this.assert.equal(codeCollection.value.length, expectedCount + 1); // +1 because of the heading row
+                return self;
+            });
+        }
         return self;
-    }
+    },
+    validateNotEmptyChanges: function (browser, expectedCount) {
+        var self = this;
+        self.waitForElementVisible('@changes');
+        if (browser && expectedCount) {
+            browser.elements('css selector', 'table.changeset-table tr', function (codeCollection) {
+                this.assert.equal(codeCollection.value.length, expectedCount + 1); // +1 because of the heading row
+                return self;
+            });
+        }
+        return self;
+    },
+    validateFailingTests: function () {
+        var self = this;
+        self.waitForElementVisible('@tests');
+        return self;
+    },
+
 }];

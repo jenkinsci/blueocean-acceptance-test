@@ -8,7 +8,7 @@ module.exports = {
     },
 
     'Build Pipeline Job': function (browser) {
-        const pipelinePage = browser.page.pipeline().forJob('stages');
+        const pipelinePage = browser.page.jobUtils().forJob('stages');
         pipelinePage.buildStarted(function() {
             // Reload the job page and check that there was a build done.
             pipelinePage
@@ -86,6 +86,6 @@ module.exports = {
     'Check whether the artifacts tab shows artifacts': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
         blueRunDetailPage.clickTab(browser, 'artifacts');
-        blueRunDetailPage.validateNotEmpty();
+        blueRunDetailPage.validateNotEmptyArtifacts();
     }
 };
