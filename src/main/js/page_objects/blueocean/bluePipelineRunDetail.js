@@ -19,13 +19,14 @@ module.exports = {
         artifactTable: 'table.artifacts-table tr',
         changes: 'table.changeset-table tr',
         tests: 'div.new-failure-block div.result-item',
+        authors: 'a.authors',
     }
 };
 
 // Nightwatch commands.
 // http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
-    forRun: function(jobName, orgName, branchName, buildNumber) {
+    forRun: function (jobName, orgName, branchName, buildNumber) {
         this.jobName = jobName;
         this.orgName = orgName;
         this.multiBranchJob = (typeof branchName === 'string' ? branchName : jobName);
@@ -36,14 +37,14 @@ module.exports.commands = [{
         var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
 
         return !relative ?
-            this.api.launchUrl + runUrl :
+        this.api.launchUrl + runUrl :
             runUrl;
     },
-    forNode: function(id) {
+    forNode: function (id) {
         const baseUrl = this.pageUrl();
         return this.navigate(baseUrl + '/pipeline/' + id);
     },
-    tabUrl: function(tabName, relative) {
+    tabUrl: function (tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
     },
     assertBasicLayoutOkay: function() {
@@ -62,11 +63,10 @@ module.exports.commands = [{
         self.getText('@detailTitle', function (response) {
             self.assert.equal(typeof response, "object");
             self.assert.equal(response.status, 0);
-            const urlProect = (response.value);
-            self.assert.equal(urlProect.indexOf(expected)>-1, true);
-            return self;
+            const urlProject = (response.value);
+            self.assert.equal(urlProject.indexOf(expected) > -1, true);
         })
-
+        return self;
     },
     closeModal: function (browser) {
         var self = this;
@@ -75,15 +75,15 @@ module.exports.commands = [{
         browser.url(function (response) {
             self.assert.equal(typeof response, "object");
             self.assert.equal(response.status, 0);
-            this.pause(10000)
             // FIXME JENKINS-36619 -> somehow the close in AT is not working as it should
             // I debugged a bit and found out that the "previous" location is the same as
             // current, this is the reason, why no url change is triggered. The question remains
             // why that is happening
+            // this.pause(10000)
             return self;
         })
     },
-    clickTab: function(browser, tab) {
+    clickTab: function (browser, tab) {
         var self = this;
         return url.clickTab(browser, self, tab);
     },
@@ -92,16 +92,16 @@ module.exports.commands = [{
         self.waitForElementVisible('@fullLog');
         self.click('@fullLog')
         browser.url(function (response) {
-                self.assert.equal(typeof response, "object");
-                self.assert.equal(response.status, 0);
-                // is the "full log" link gone?
-                self.fullLogButtonNotPresent();
-                // is the progressbar visible and not the code?
-                self.validateLoading();
-                // did we changed the url on  change?
-                self.assert.equal(response.value.includes('start=0'), true);
-                return self;
-            })
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            // is the "full log" link gone?
+            self.fullLogButtonNotPresent();
+            // is the progressbar visible and not the code?
+            self.validateLoading();
+            // did we changed the url on  change?
+            self.assert.equal(response.value.includes('start=0'), true);
+            return self;
+        })
     },
     fullLogButtonNotPresent: function () {
         // is the "full log" link gone?
@@ -151,6 +151,55 @@ module.exports.commands = [{
         }
         return self;
     },
+    validateNotEmptyChanges: function (browser, expectedCount) {
+        var self = this;
+        self.waitForElementVisible('@changes');
+        if (browser) {
+            browser.elements('css selector', 'table.changeset-table tr', function (codeCollection) {
+                if (expectedCount) {
+                    this.assert.equal(codeCollection.value.length, expectedCount + 1); // +1 because of the heading row
+                } else {
+                    this.assert.equal(codeCollection.value.length > 1, true); // +1 because of the heading row
+                }
+                return self;
+            });
+        }
+        return self;
+    },
+    validateFailingTests: function () {
+        var self = this;
+        self.waitForElementVisible('@tests');
+        return self;
+    },
+    authorsIsCondensed: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@authors');
+        self.getText('@authors', function (response) {
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            const hint = (response.value);
+            console.log(hint)
+            self.assert.equal(hint.indexOf('Changes by') > -1, false);
+        });
+        return self;
+    },
+    authorsIsNotCondensed: function (browser) {
+        var self = this;
+        self.waitForElementVisible('@authors');
+        self.getText('@authors', function (response) {
+            self.assert.equal(typeof response, "object");
+            self.assert.equal(response.status, 0);
+            const hint = (response.value);
+        self.assert.equal(hint.indexOf('Changes by') > -1, true);
+        });
+        return self;
+    },
+    authorsIsNotSet: function (browser) {
+        var self = this;
+        self.expect.element('@authors').to.not.be.present.before(1000);
+        return self;
+    },
+
     validateNotEmptyChanges: function (browser, expectedCount) {
         var self = this;
         self.waitForElementVisible('@changes');

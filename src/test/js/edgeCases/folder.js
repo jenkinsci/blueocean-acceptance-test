@@ -82,6 +82,8 @@ module.exports = {
         // JENKINS-36613 Unable to load steps for multibranch pipelines with / in them
         blueRunDetailPage.validateGraph();
         blueRunDetailPage.validateSteps(browser);
+        // There should be no authors
+        blueRunDetailPage.authorsIsNotSet(browser);
     },
 
     'Check whether the artifacts tab shows artifacts': function (browser) {
@@ -97,34 +99,106 @@ module.exports = {
         blueRunDetailPage.validateFailingTests();
     },
 
-    'Check whether the changes tab shows changes': function (browser) {
-        async.series([
-            function(callback) {
-                // create new files and a commit
-                fse.writeFile(path.join(pathToRepo, '666.txt'), '666');
-                git.createCommit(pathToRepo, ['666.txt']);
-                callback(null, null);
-            },
-            function(callback) {
-                // now we have to index the branch
-                const masterJob = browser.page.jobUtils()
-                    .forJob(getProjectName(anotherFolders), '/indexing');
-                // start a new build by starting indexing
-                masterJob.indexingStarted();
-                // test whether we have commit
-                const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
-                blueRunDetailPage.clickTab(browser, 'changes');
-                blueRunDetailPage.validateNotEmptyChanges(browser, 1);
-                callback(null, null);
-            }
-        ]);
+    'Check whether the changes tab shows changes - one commit': function (browser) {
+        // magic number
+        const magic = 1;
+        // creating an array
+        const committs = Array.from(new Array(magic), function (x, i) {
+            return i;
+        });
+        var recordedCommits = 0;
+        // creating commits from that array with a mapSeries -> not parallel
+        async.mapSeries(committs, function (file, callback) {
+            const filename = file + '.txt';
+            // writeFile is async so we need to use callback
+            fse.writeFile(path.join(pathToRepo, filename), file, function (err) {
+                // when we get an error we call with error
+                if (err) {
+                    callback(err);
+                }
+                // createCommit returns a promise just passing it alone
+                return git.createCommit(pathToRepo, [filename])
+                    .then(function (commitId) {
+                        // if we reached here we have a commit
+                        console.log('commitId', commitId)
+                        /* We are sure that all async functions have finished.
+                         * Now we let async know about it by
+                         * callback without error and the commitId
+                         */
+                        callback(null, commitId);
+                    })
+            });
 
+        }, function(err, results) {
+            // results is an array of names
+            recordedCommits = results.length;
+            console.log(results.length, 'commits recorded')
+        });
+        console.log('Now starting the indexing', recordedCommits)
+        // now we have to index the branch
+        const masterJob = browser.page.jobUtils()
+            .forJob(getProjectName(anotherFolders), '/indexing');
+        // start a new build by starting indexing
+        masterJob.indexingStarted();
+        // test whether we have commit
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
+        blueRunDetailPage.clickTab(browser, 'changes');
+        blueRunDetailPage.validateNotEmptyChanges(browser);
+        blueRunDetailPage.authorsIsNotCondensed(browser);
+    },
+
+    'Check whether the changes tab shows changes - condensed': function (browser) {
+        // magic number
+        const magic = 15;
+        // creating an array
+        const committs = Array.from(new Array(magic), function (x, i) {
+            return i;
+        });
+        var recordedCommits = 0;
+        // creating commits from that array with a mapSeries -> not parallel
+        async.mapSeries(committs, function (file, callback) {
+            const filename = file + '.txt';
+            // writeFile is async so we need to use callback
+            fse.writeFile(path.join(pathToRepo, filename), file, function (err) {
+                // when we get an error we call with error
+                if (err) {
+                    callback(err);
+                }
+                // createCommit returns a promise just passing it alone
+                return git.createCommit(pathToRepo, [filename])
+                    .then(function (commitId) {
+                        // if we reached here we have a commit
+                        console.log('commitId', commitId)
+                        /* We are sure that all async functions have finished.
+                         * Now we let async know about it by
+                         * callback without error and the commitId
+                         */
+                        callback(null, commitId);
+                    })
+            });
+
+        }, function(err, results) {
+            // results is an array of names
+            recordedCommits = results.length;
+            console.log(results.length, 'commits recorded')
+        });
+        console.log('Now starting the indexing', recordedCommits)
+        // now we have to index the branch
+        const masterJob = browser.page.jobUtils()
+            .forJob(getProjectName(anotherFolders), '/indexing');
+        // start a new build by starting indexing
+        masterJob.indexingStarted();
+        // test whether we have commit
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 3);
+        blueRunDetailPage.clickTab(browser, 'changes');
+        blueRunDetailPage.validateNotEmptyChanges(browser);
+        blueRunDetailPage.authorsIsCondensed(browser);
     },
 
     // JENKINS-36615 the multibranch project has the branch 'feature/1'
     'Jobs can be started from branch tab. - RUN': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
-        blueActivityPage.assertActivitiesToBeEqual(browser, 3);
+        blueActivityPage.assertActivitiesToBeEqual(browser, 4);
         blueActivityPage.clickTab(browser, 'branches');
         browser.page.bluePipelineBranch().clickRunButton(browser);
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 2);
