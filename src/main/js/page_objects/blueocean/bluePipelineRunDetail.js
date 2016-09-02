@@ -33,8 +33,8 @@ module.exports.commands = [{
         this.buildNumber = (typeof branchName === 'number' ? branchName : buildNumber);
         return this.navigate(this.pageUrl());
     },
-    pageUrl: function (relative) {
-        var runUrl = url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
+    pageUrl: function(relative) {
+        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
 
         return !relative ?
         this.api.launchUrl + runUrl :
@@ -47,7 +47,7 @@ module.exports.commands = [{
     tabUrl: function (tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
     },
-    assertBasicLayoutOkay: function () {
+    assertBasicLayoutOkay: function() {
         this.waitForElementVisible(url.tabSelector('pipeline'));
         this.waitForElementVisible(url.tabSelector('changes'));
         this.waitForElementVisible(url.tabSelector('tests'));
@@ -67,7 +67,6 @@ module.exports.commands = [{
             self.assert.equal(urlProject.indexOf(expected) > -1, true);
         })
         return self;
-
     },
     closeModal: function (browser) {
         var self = this;
@@ -199,6 +198,23 @@ module.exports.commands = [{
         var self = this;
         self.expect.element('@authors').to.not.be.present.before(1000);
         return self;
-    }
+    },
+
+    validateNotEmptyChanges: function (browser, expectedCount) {
+        var self = this;
+        self.waitForElementVisible('@changes');
+        if (browser && expectedCount) {
+            browser.elements('css selector', 'table.changeset-table tr', function (codeCollection) {
+                this.assert.equal(codeCollection.value.length, expectedCount + 1); // +1 because of the heading row
+                return self;
+            });
+        }
+        return self;
+    },
+    validateFailingTests: function () {
+        var self = this;
+        self.waitForElementVisible('@tests');
+        return self;
+    },
 
 }];
