@@ -11,6 +11,7 @@ module.exports = {
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
         emptystate: 'div.empty-state',
+        emptystateQueued: 'div.empty-state span.waiting',
         detailTitle: 'section.table',
         closeButton: 'a.closeButton',
         activityTable: '.activity-table',
@@ -138,6 +139,11 @@ module.exports.commands = [{
     validateEmpty: function () {
         var self = this;
         self.waitForElementVisible('@emptystate');
+        return self;
+    },
+    validateQueued: function () {
+        var self = this;
+        self.waitForElementVisible('@emptystateQueued');
         return self;
     },
     validateNotEmptyArtifacts: function (browser, expectedCount) {
