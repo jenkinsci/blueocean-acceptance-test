@@ -2,7 +2,7 @@ var url = require('../../util/url');
 
 module.exports = {
     elements: {
-        runButton: 'div.actions div.run-pipeline',
+        runButton: 'div.actions a.run-button',
         toasts: 'div.toaster div.toast span.text'
     }
 };
