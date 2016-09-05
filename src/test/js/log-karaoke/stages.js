@@ -31,7 +31,7 @@ module.exports = {
         blueRunDetailPage.waitForElementPresent('svg circle.success');
         // FIXME should be taken from somewhere dynamically
         // Stop karaoke and go back in graph and see the result
-        const nodeDetail =  blueRunDetailPage.forNode('5');
+        const nodeDetail =  blueRunDetailPage.forNode('6');
         // validate that karaoke has stopped but overall process still runs
         nodeDetail.waitForElementVisible('g.progress-spinner.running');
         // Validate the result of the node
