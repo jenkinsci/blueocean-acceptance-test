@@ -226,14 +226,14 @@ module.exports.commands = [{
     },
     clickFirstResultItem: function (expand) {
         var self = this;
-        if (!expand) {
+        if (expand === undefined ) {
             expand = true;
         }
         self
             .waitForElementVisible('@firstResult')
             .click('@firstResult');
 
-        if (expand) {
+        if (expand === undefined) {
             self
                 .waitForElementVisible('code')
                 .getText('code', function (result) {
