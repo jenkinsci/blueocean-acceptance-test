@@ -41,7 +41,7 @@ module.exports = {
             })
         ;
         // test whether the expand works
-        nodeDetail.clickFirstResultItem(true);
+        nodeDetail.clickFirstResultItem();
         // test whether the stage we seeing is highlighted
         nodeDetail.waitForElementVisible('g.pipeline-node-selected');
         // test whether log lines are navigatable
