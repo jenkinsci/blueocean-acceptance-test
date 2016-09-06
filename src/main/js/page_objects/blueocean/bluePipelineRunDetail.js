@@ -20,6 +20,14 @@ module.exports = {
         changes: 'table.changeset-table tr',
         tests: 'div.new-failure-block div.result-item',
         authors: 'a.authors',
+        firstResult: {
+            selector: '//div[contains(@class, "result-item") and position()=1]',
+            locateStrategy: 'xpath',
+        },
+        firstErrorResult: {
+            selector: '//div[contains(@class, "failure") and position()=1]',
+            locateStrategy: 'xpath',
+        },
     }
 };
 
@@ -216,5 +224,35 @@ module.exports.commands = [{
         self.waitForElementVisible('@tests');
         return self;
     },
+    clickFirstResultItem: function (expand = true) {
+        var self = this;
+        self
+            .waitForElementVisible('@firstResult')
+            .click('@firstResult');
+
+        if (expand) {
+            self
+                .waitForElementVisible('code')
+                .getText('code', function (result) {
+                    this.assert.notEqual(null, result.value);
+                });
+        }
+
+        return self;
+    },
+    clickFirstResultItemFailure: function (expand = true) {
+        var self = this;
+        self
+            .waitForElementVisible('@firstErrorResult')
+            .click('@firstErrorResult')
+        if (expand) {
+            self.waitForElementVisible('code')
+                .getText('code', function (result) {
+                    this.assert.notEqual(null, result.value);
+                });
+        }
+
+        return self;
+    }
 
 }];
