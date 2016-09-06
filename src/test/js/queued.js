@@ -44,11 +44,10 @@ module.exports = {
         blueRunDetailPage.validateQueued();
     },
 
-    'Validate queued state and graph on multibranch job': function (browser) {
+    'Validate queued state on multibranch job': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail()
             .forRun(multiBranchJob, 'jenkins', 'feature%2F1', 1);
         blueRunDetailPage.validateQueued();
-        blueRunDetailPage.validateGraph();
     },
 
     'Test queued jobs - enable executors': function (browser) {
@@ -57,6 +56,11 @@ module.exports = {
         configure.setNumber(browser, 2);
     },
 
+    'Validate graph on multibranch job': function (browser) {
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail()
+            .forRun(multiBranchJob, 'jenkins', 'feature%2F1', 1);
+        blueRunDetailPage.validateGraph();
+    },
     // FIXME: Disabled because of https://issues.jenkins-ci.org/browse/JENKINS-37843
     // to enable remove ! before function
     'Validate logConsole on freestyle job': !function (browser) {
