@@ -2,14 +2,14 @@ Acceptance tests for Blue Ocean
 
 # Prepare your system
 
-## Install xmllint
+## Install xmllint/libssl-dev
 
-You need to install xmllint prior of running the server!
+You need to install xmllint and libssl-dev prior of running the server!
 
 In debian:
 
 ```
-apt-get install libxml2-utils
+apt-get install libxml2-utils libssl-dev 
 ```
 
 # Building

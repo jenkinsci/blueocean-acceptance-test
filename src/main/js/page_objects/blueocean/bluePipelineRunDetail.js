@@ -224,8 +224,11 @@ module.exports.commands = [{
         self.waitForElementVisible('@tests');
         return self;
     },
-    clickFirstResultItem: function (expand = true) {
+    clickFirstResultItem: function (expand) {
         var self = this;
+        if (!expand) {
+            expand = true;
+        }
         self
             .waitForElementVisible('@firstResult')
             .click('@firstResult');
@@ -240,8 +243,11 @@ module.exports.commands = [{
 
         return self;
     },
-    clickFirstResultItemFailure: function (expand = true) {
+    clickFirstResultItemFailure: function (expand) {
         var self = this;
+        if (!expand) {
+            expand = true;
+        }
         self
             .waitForElementVisible('@firstErrorResult')
             .click('@firstErrorResult')
