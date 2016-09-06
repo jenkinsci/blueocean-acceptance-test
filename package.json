@@ -19,18 +19,18 @@
   "license": "MIT",
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {
-    "@jenkins-cd/sse-gateway": "0.0.7",
-    "events": "1.1.0",
+    "@jenkins-cd/sse-gateway": "0.0.8",
+    "events": "1.1.1",
     "eventsource": "0.2.1",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
-    "nightwatch": "0.9.1",
-    "phantomjs-prebuilt": "2.1.7",
-    "request": "2.72.0",
+    "nightwatch": "0.9.8",
+    "phantomjs-prebuilt": "2.1.12",
+    "request": "2.74.0",
     "util": "0.10.3",
     "xmlhttprequest": "1.8.0",
     "fs-extra": "^0.30.0",
-    "nodegit": "^0.13.2"
+    "nodegit": "^0.14.1"
   },
   "dependencies": {
     "async": "^2.0.1",
