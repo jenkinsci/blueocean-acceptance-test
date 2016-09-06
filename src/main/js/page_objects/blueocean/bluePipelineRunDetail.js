@@ -233,7 +233,7 @@ module.exports.commands = [{
             .waitForElementVisible('@firstResult')
             .click('@firstResult');
 
-        if (expand === undefined) {
+        if (expand) {
             self
                 .waitForElementVisible('code')
                 .getText('code', function (result) {
@@ -245,7 +245,7 @@ module.exports.commands = [{
     },
     clickFirstResultItemFailure: function (expand) {
         var self = this;
-        if (!expand) {
+        if (expand === undefined) {
             expand = true;
         }
         self
