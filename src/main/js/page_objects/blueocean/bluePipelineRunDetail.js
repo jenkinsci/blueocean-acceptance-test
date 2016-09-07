@@ -265,6 +265,20 @@ module.exports.commands = [{
         }
 
         return self;
+    },
+    validateScrollToBottom: function () {
+        const browser = this.api;
+        browser.execute(function (selector) {
+            const cmElem = document.evaluate(
+                selector, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null
+            ).singleNodeValue;
+            // return the scrollHeight to determine whether we moved to the bottom on karaoke
+            return cmElem.scrollHeight;
+        }, ['//div[@class="content"]'], function (result) {
+            browser.assert.equal(typeof result, "object");
+            browser.assert.equal(result.status, 0);
+            browser.assert.equal(result.value > 0, true);
+        });
     }
 
 }];

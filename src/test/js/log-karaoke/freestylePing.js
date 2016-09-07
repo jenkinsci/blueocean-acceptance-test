@@ -24,17 +24,7 @@ module.exports = {
             .fullLogButtonNotPresent()
             .expect.element('code').text.to.contain('Finished: SUCCESS');
         // make sure the windows is small
-        browser.execute(function (selector) {
-            const cmElem = document.evaluate(
-                    selector, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null
-                ).singleNodeValue;
-            // return the scrollHeight to determine whether we moved to the bottom on karaoke
-            return cmElem.scrollHeight;
-        }, ['//div[@class="content"]'], function (result) {
-            browser.assert.equal(typeof result, "object");
-            browser.assert.equal(result.status, 0);
-            browser.assert.equal(result.value > 0, true);
-        });
+        blueRunDetailPage.validateScrollToBottom();
         // make the browser big again
         browser.resizeWindow(1680, 1050);
 
