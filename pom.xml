@@ -22,8 +22,8 @@
   <properties>
     <!-- https://github.com/jenkinsci/acceptance-test-harness -->
     <jenkins.acceptance.testharness.version>1.30</jenkins.acceptance.testharness.version>
-    <node.version>5.8.0</node.version>
-    <npm.version>3.7.3</npm.version>
+    <node.version>6.4.0</node.version>
+    <npm.version>3.10.3</npm.version>
   </properties>
 
   <repositories>
