@@ -41,13 +41,13 @@ module.exports = {
     'Validate queued state on freestyle job': !function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail()
             .forRun(jobNameFreestyle, 'jenkins', 1);
-        blueRunDetailPage.validateEmpty();
+        blueRunDetailPage.validateQueued();
     },
 
     'Validate queued state on multibranch job': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail()
             .forRun(multiBranchJob, 'jenkins', 'feature%2F1', 1);
-        blueRunDetailPage.validateEmpty();
+        blueRunDetailPage.validateQueued();
     },
 
     'Test queued jobs - enable executors': function (browser) {
