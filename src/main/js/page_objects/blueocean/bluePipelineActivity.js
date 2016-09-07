@@ -32,10 +32,14 @@ module.exports.commands = [{
         this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
         this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.success');
     },
-    waitForRunRunningVisible: function(runName) {
+    waitForRunRunningVisible: function(runName, callback) {
         this.waitForElementVisible('.activity-table tr#' + runName);
         this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
-        this.waitForElementPresent('.activity-table tr#' + runName + ' svg path.running');
+        if (callback === undefined) {
+            this.waitForElementPresent('.activity-table tr#' + runName + ' svg path.running');
+        } else {
+            this.waitForElementPresent('.activity-table tr#' + runName + ' svg path.running', callback);
+        }
     },
     clickTab: function (browser, tab) {
         var self = this;
