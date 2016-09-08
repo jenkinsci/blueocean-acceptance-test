@@ -1,3 +1,8 @@
+/**
+ * @file TEST: logs tailing with stages
+ *
+ * Based on three different syntax files we will run the tests against each syntax to make sure they work all as expected
+ */
 const async = require("async");
 const stringCleaner = function (string) {
   return string.replace(/\r?\n|\r/g, '');
@@ -16,7 +21,7 @@ const cases = [{
     script: 'stages-with-wait-pipelineModel-syntax.groovy',
     nodeId: '6',
 },];
-/*
+/**
  Create a callback wrapper - we need to make sure that we have finished before
  we use the callback. If we have an error we invoke with error.
  @param callback, the callback we need to call

@@ -1,5 +1,5 @@
-/*
- * REGRESSION TEST: logs not tailing with freestyle
+/**
+ * @file REGRESSION TEST: logs not tailing with freestyle
  *
  * We will use a simple script which pings 10 times a certain url.
  * To provoke that the browser has to scroll we will resize the browser and then test the scrollHeight of the
