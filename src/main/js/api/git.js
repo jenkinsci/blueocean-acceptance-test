@@ -40,6 +40,7 @@ exports.init = function (pathToRepo, onInit) {
                                 fse.copySync(pathToFiles, pathToRepo);
                             },
                             commit: function (message) {
+                                console.log('preparing commit with repo', repo, 'and signature', signature);
                                 if (!message) {
                                     message = 'commit all';
                                 }
