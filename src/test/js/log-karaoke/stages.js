@@ -131,7 +131,7 @@ module.exports = {
     'Check whether the artifacts tab shows artifacts': function (browser) {
         async.mapSeries(cases, function (useCase, callback) {
             const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
-            blueRunDetailPage.clickTab(browser, 'artifacts');
+            blueRunDetailPage.clickTab('artifacts');
             blueRunDetailPage
                 .validateNotEmptyArtifacts(browser, 1)
                 .waitForElementVisible('@artifactTable', createCallbackWrapper(callback));
@@ -139,8 +139,8 @@ module.exports = {
             // Check whether the changes tab shows emptyState for only one case
             // this test case is the finisher since we cannot finish with a async series without a closing func
             const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(cases[0].name, 'jenkins', 1);
-            blueRunDetailPage.clickTab(browser, 'changes');
+            blueRunDetailPage.clickTab('changes');
             blueRunDetailPage.waitForElementVisible('@emptystate');
         });
-    },
+    }
 };
