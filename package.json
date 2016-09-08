@@ -4,7 +4,7 @@
   "description": "Blue Ocean acceptance tests",
   "main": "index.js",
   "scripts": {
-    "test": "nightwatch"
+    "test": "./node_modules/.bin/nightwatch"
   },
   "repository": {
     "type": "git",
