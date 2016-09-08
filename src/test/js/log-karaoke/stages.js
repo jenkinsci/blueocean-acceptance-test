@@ -1,7 +1,8 @@
 /**
- * @file TEST: logs tailing with stages
+ * @file TEST: logs tailing with stages and steps - karaoke mode
  *
- * Based on three different syntax files we will run the tests against each syntax to make sure they work all as expected
+ * Based on three different syntax files we will run the tests against each syntax to make sure they work all as expected.
+ * We will cover
  */
 const async = require("async");
 const stringCleaner = function (string) {
@@ -36,6 +37,7 @@ const createCallbackWrapper = function (callback) {
     };
 };
 module.exports = {
+    /** Create the job */
     'Create Pipeline Job "stages"': function (browser) {
         // create the different jobs
         async.mapSeries(cases, function (useCase, callback) {

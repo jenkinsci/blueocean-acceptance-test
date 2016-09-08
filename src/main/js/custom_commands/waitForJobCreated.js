@@ -1,3 +1,4 @@
+/** @module custom_commands*/
 /**
  * Nightwatch command to wait for a job be created.
  * See http://nightwatchjs.org/guide#writing-custom-commands
@@ -12,6 +13,7 @@ function Cmd() {
 }
 util.inherits(Cmd, events.EventEmitter);
 
+/** @module custom_commands/waitForJobCreated*/
 Cmd.prototype.command = function (jobName, onCreated, timeout) {
     var self = this;
 
