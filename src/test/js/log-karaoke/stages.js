@@ -133,7 +133,7 @@ module.exports = {
             const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
             blueRunDetailPage.clickTab('artifacts');
             blueRunDetailPage
-                .validateNotEmptyArtifacts(browser, 1)
+                .validateNotEmptyArtifacts(1)
                 .waitForElementVisible('@artifactTable', createCallbackWrapper(callback));
         }, function(err, results) {
             // Check whether the changes tab shows emptyState for only one case

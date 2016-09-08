@@ -48,8 +48,8 @@ const notEmptyHelper = function (selector, self, expectedMinimum) {
         } else {
             self.assert.equal(codeCollection.value.length > 0, true);
         }
-        return self;
     });
+    return self;
 };
 module.exports = {
     elements: {
@@ -187,8 +187,8 @@ module.exports.commands = [{
             // current, this is the reason, why no url change is triggered. The question remains
             // why that is happening
             // this.pause(10000)
-            return self;
         })
+        return self;
     },
     /*
      * Navigate to a certain tab by clicking on it
@@ -222,9 +222,9 @@ module.exports.commands = [{
                 self.validateLoading();
                 // did we changed the url on  change?
                 self.assert.equal(responseInner.value.includes('start=0'), true);
-                return self;
             })
         })
+        return self;
 
     },
     /*
@@ -247,6 +247,7 @@ module.exports.commands = [{
         self.waitForElementVisible('@progressBar');
         // when we are loading the code element should not be present
         this.expect.element('@code').to.not.be.present.before(1000);
+        return self;
 
     },
     /*
@@ -267,7 +268,6 @@ module.exports.commands = [{
         self.waitForElementVisible('@logConsole');
         const selector = '.logConsole';
         return notEmptyHelper(selector, self, expectedMinimum);
-        return self;
     },
     /*
      * validate that the log console is present
@@ -414,8 +414,8 @@ module.exports.commands = [{
             // the scrollHeight has to be higher 0 to indicate that we have scrolled
             browser.assert.equal(result.value > 0, true);
             // to make component chain-able we will return self - part 2
-            return self;
         });
+        return self;
     }
 
 }];
