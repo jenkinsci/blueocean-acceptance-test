@@ -21,7 +21,7 @@
 # 
 # ------------------------------------------------------------------------------------------------------------------
 
-JENKINS_VERSION=2.5
+JENKINS_VERSION=2.7.3
 SELENIUM_VERSION=2.53
 
 LOCAL_SNAPSHOTS=false
@@ -153,7 +153,7 @@ echo ""
 echo "------------------------------------------------"
 
 # Download the jenkins war
-source download.sh "http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war" 
+source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war"
 # Download Selenium standalone
 source download.sh "http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" 
 
