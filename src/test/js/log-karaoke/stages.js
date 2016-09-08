@@ -80,7 +80,7 @@ module.exports = {
 
     'Check whether the artifacts tab shows artifacts': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
-        blueRunDetailPage.clickTab(browser, 'artifacts');
+        blueRunDetailPage.clickTab('artifacts');
         blueRunDetailPage.validateNotEmptyArtifacts();
     }
 };

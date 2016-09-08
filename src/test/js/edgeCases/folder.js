@@ -90,27 +90,27 @@ module.exports = {
         // JENKINS-36773 / JENKINS-37605 verify encoding and spacing of details
         blueRunDetailPage.assertTitle('jenkins / ' + anotherFolders.join(' / ') + ' / feature/1');
         // FIXME JENKINS-36619 -> somehow the close in AT is not working
-        // blueRunDetailPage.closeModal(browser);
+        // blueRunDetailPage.closeModal();
         // JENKINS-36613 Unable to load steps for multibranch pipelines with / in them
         blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
-        blueRunDetailPage.validateSteps(browser); // validate that steps are displayed
+        blueRunDetailPage.validateSteps(); // validate that steps are displayed
         // There should be no authors
-        blueRunDetailPage.authorsIsNotSet(browser);
+        blueRunDetailPage.authorsIsNotSet();
     },
 
     'Check whether the artifacts tab shows artifacts': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
         // go to the artifact page by clicking the tab
-        blueRunDetailPage.clickTab(browser, 'artifacts');
+        blueRunDetailPage.clickTab('artifacts');
         // we have added 2 files as artifact
-        blueRunDetailPage.validateNotEmptyArtifacts(browser, 2);
+        blueRunDetailPage.validateNotEmptyArtifacts(2);
     },
 
     // JENKINS-36674 Tests are not being reported
     'Check whether the test tab shows failing tests': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
         // Go to the test page by clicking the tab
-        blueRunDetailPage.clickTab(browser, 'tests');
+        blueRunDetailPage.clickTab('tests');
         // There should be failing tests
         blueRunDetailPage.validateFailingTests();
     },
@@ -156,11 +156,11 @@ module.exports = {
             // test whether we have commit
             const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
             // click on the changes tab
-            blueRunDetailPage.clickTab(browser, 'changes');
+            blueRunDetailPage.clickTab('changes');
             // we should have one commits now
-            blueRunDetailPage.validateNotEmptyChanges(browser);
+            blueRunDetailPage.validateNotEmptyChanges();
             // the author title should be shown
-            blueRunDetailPage.authorsIsNotCondensed(browser);
+            blueRunDetailPage.authorsIsNotCondensed();
             // Wait for the job to end
             blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/master');
         });
@@ -222,13 +222,13 @@ module.exports = {
             // test whether we have commit
             const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 3);
             // click on the changes tab
-            blueRunDetailPage.clickTab(browser, 'changes');
+            blueRunDetailPage.clickTab('changes');
             // we should have a couple of commits now
-            blueRunDetailPage.validateNotEmptyChanges(browser);
+            blueRunDetailPage.validateNotEmptyChanges();
             // make sure the windows is small
             browser.resizeWindow(1000, 600);
             // test now whether the authors are not listed but condendes
-            blueRunDetailPage.authorsIsCondensed(browser);
+            blueRunDetailPage.authorsIsCondensed();
             // make the browser big again
             browser.resizeWindow(1680, 1050);
             // Wait for the job to end
