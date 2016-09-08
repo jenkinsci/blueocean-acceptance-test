@@ -4,7 +4,8 @@
   "description": "Blue Ocean acceptance tests",
   "main": "index.js",
   "scripts": {
-    "test": "nightwatch",
+    "test": "npm run nightwatch",
+    "nightwatch": "PATH=./node:./node/npm/bin:$PATH nightwatch",
     "site-build": "rm -rf docs/; gulp doc",
     "site-publish": "npm run site-build;./site-publish.sh"
   },

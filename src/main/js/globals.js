@@ -1,3 +1,7 @@
+console.log('-------- versions --------');
+console.log(process.versions);
+console.log('--------------------------');
+
 var sse = require('./api/sse');
 
 require('./api/debug');
