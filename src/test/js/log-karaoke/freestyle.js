@@ -34,7 +34,7 @@ module.exports = {
     'Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('hijo', 'jenkins', 1);
         // request full log
-        blueRunDetailPage.clickFullLog(browser);
+        blueRunDetailPage.clickFullLog();
     },
 
 };
