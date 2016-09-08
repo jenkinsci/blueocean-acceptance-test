@@ -6,6 +6,7 @@ module.exports = {
     waitForConditionTimeout: 20000,
     default: {
         beforeEach: function (browser, done) {
+            browser.windowMaximize();
             removeBreadcrumbBarOnNavigate(browser);
             sse.connect(browser, done);
         },
