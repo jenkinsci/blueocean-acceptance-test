@@ -5,6 +5,7 @@
 
 var gulp  = require('gulp');
 var shell = require('gulp-shell');
+var jsdoc = require('gulp-jsdoc3');
 
 if (process.argv.length === 4 && process.argv[2] === '--test') {
     gulp.task('default', shell.task('nightwatch --suiteRetries 2 ' + process.argv[3].toString()));
@@ -12,3 +13,7 @@ if (process.argv.length === 4 && process.argv[2] === '--test') {
     gulp.task('default', shell.task('nightwatch --suiteRetries 2'));
 }
 
+gulp.task('doc', function (cb) {
+    gulp.src(['README.md', './src/**/*.js'], {read: false})
+        .pipe(jsdoc(cb));
+});
