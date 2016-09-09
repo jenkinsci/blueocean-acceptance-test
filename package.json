@@ -26,6 +26,7 @@
     "gulp": "^3.9.1",
     "gulp-jsdoc3": "^0.3.0",
     "gulp-shell": "^0.5.2",
+    "gulp-watch": "^4.3.9",
     "nightwatch": "0.9.8",
     "nodegit": "^0.14.1",
     "phantomjs-prebuilt": "2.1.12",

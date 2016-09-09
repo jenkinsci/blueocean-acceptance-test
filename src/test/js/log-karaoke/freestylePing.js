@@ -1,5 +1,6 @@
-/**
- * @file REGRESSION TEST: logs not tailing with freestyle
+/** @module freestylePing
+ * @memberof karaoke
+ * @description REGRESSION TEST: logs not tailing with freestyle
  *
  * We will use a simple script which pings 10 times a certain url.
  * To provoke that the browser has to scroll we will resize the browser and then test the scrollHeight of the
@@ -8,12 +9,13 @@
 // The name of the job
 const jobName = 'pingTest';
 module.exports = {
+/** */
     'Create freestyle Job "ping"': function (browser) {
         // simple script to ping 10 times a certain url
         const freestyleCreate = browser.page.freestyleCreate().navigate();
         freestyleCreate.createFreestyle(jobName, 'freestylePing.sh');
     },
-
+/** */
     'Build freestyle Job': function (browser) {
         // build the job
         const freestylePage = browser.page.jobUtils().forJob(jobName);
@@ -24,7 +26,7 @@ module.exports = {
                 .waitForElementVisible('@executer');
         })
     },
-
+/** */
     'Check Job Blue Ocean run detail page - karaoke': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
 

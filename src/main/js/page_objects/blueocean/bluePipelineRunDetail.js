@@ -1,55 +1,9 @@
 const url = require('../../util/url');
-/**
- * @description Helper function which validates basic integrity of a nightwatch response object.
- * @param {Object} self - nightwatch page object
- * @param {Object} response - nightwatch response object
- */
-const sanityCheck = function (self, response) {
-    self.assert.equal(typeof response, "object");
-    self.assert.equal(response.status, 0);
-};
-/**
- * @description Helper function which validate that a code block is visible
- * @param {Object} self - nightwatch page object
- * @param {Boolean} [expand=true] - if false we will not validate that a code is present, only that the click was successful.
- * @returns {Function} - callback for onClick validations
- */
-const isCodeBlockVisibleCallback = function(self, expand) {
-    return function (response) {
-        // sanity test
-        sanityCheck(self, response);
-        // default value for expand is true
-        if (expand === undefined) {
-            expand = true;
-        }
-        // if we expand, validate that we really did
-        if (expand) {
-            // we will have a code tag if expand worked
-            self.waitForElementVisible('code')
-                .getText('code', function (result) {
-                    this.assert.notEqual(null, result.value);
-                });
-        }
-    };
-};
-/**
- * Helper that validates, whether a certain selector return at least one entry
- * @param {String} selector  - a css selector
- * @param {Object} self - nightwatch page object
- * @param {Number} [expectedMinimum] - the minimum which we await
- */
-const notEmptyHelper = function (selector, self, expectedMinimum) {
-    const browser = self.api;
-    browser.elements('css selector', selector, function (codeCollection) {
-        sanityCheck(self, codeCollection);
-        if (expectedMinimum) {
-            self.assert.equal(codeCollection.value.length >= expectedMinimum, true);
-        } else {
-            self.assert.equal(codeCollection.value.length > 0, true);
-        }
-    });
-    return self;
-};
+const pageHelper = require('../../util/pageHelper');
+//oh man, I miss es6 import :(
+const sanityCheck = pageHelper.sanityCheck;
+const isCodeBlockVisibleCallback = pageHelper.isCodeBlockVisibleCallback;
+const notEmptyHelper = pageHelper.notEmptyHelper;
 /** @module bluePipelineRunDetails */
 module.exports = {
     // selectors
