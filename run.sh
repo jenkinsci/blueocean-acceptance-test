@@ -155,7 +155,7 @@ echo "------------------------------------------------"
 # Download the jenkins war
 source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war"
 # Download Selenium standalone
-source download.sh "http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" 
+source download.sh "http://selenium-release.storage.googleapis.com/${SELENIUM_VERSION}/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.1.jar"
 
 # Run the tests
 eval "${EXECUTION}"
