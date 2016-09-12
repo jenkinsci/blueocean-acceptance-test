@@ -21,7 +21,6 @@ module.exports = {
     /**
      * Test queued jobs - disable executors
      * @param browser
-     * @constructor
      */
     'Step 01': function (browser) {
         const configure = browser.page.computer().navigate();

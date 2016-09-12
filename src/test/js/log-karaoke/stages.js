@@ -27,8 +27,8 @@ const cases = [{
 },];
 
 module.exports = {
-/** */
-    'Create Pipeline Job "stages"': function (browser) {
+/** Create Pipeline Job "stages" */
+    'Step 01': function (browser) {
         // create the different jobs
         async.mapSeries(cases, function (useCase, callback) {
             console.log('creating pipeline job', useCase.name, useCase.script);
@@ -39,8 +39,8 @@ module.exports = {
             ;
         });
     },
-/** */
-    'Build Pipeline Job': function (browser) {
+/** Build Pipeline Job */
+    'Step 02': function (browser) {
         // we need to create a browser page outside the async loop
         // const pipelinesCreate = browser.page.pipelineCreate().navigate();
         async.mapSeries(cases, function (useCase, callback) {
@@ -54,16 +54,16 @@ module.exports = {
             });
         });
     },
-/** */
-    'Check Job Blue Ocean Pipeline Activity Page has run': function (browser) {
+/** Check Job Blue Ocean Pipeline Activity Page has run */
+    'Step 03': function (browser) {
         async.mapSeries(cases, function (useCase, callback) {
             const blueActivityPage = browser.page.bluePipelineActivity().forJob(useCase.name, 'jenkins');
             // Check the run itself
             blueActivityPage.waitForRunRunningVisible(useCase.name + '-1', createCallbackWrapper(callback));
         });
     },
-/** */
-    'Check Job Blue Ocean Pipeline run detail page - karaoke': function (browser) {
+/** Check Job Blue Ocean Pipeline run detail page - karaoke*/
+    'Step 04': function (browser) {
         // this test case tests a live pipeline that is why we only running it with one case
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(cases[0].name, 'jenkins', 1);
         blueRunDetailPage.assertBasicLayoutOkay();
@@ -112,8 +112,8 @@ module.exports = {
         // wait for job to finish
         nodeDetail.waitForJobRunEnded(cases[0].name);
     },
-/** */
-    'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
+/** Check whether there is an EmptyStateView for stages with no steps*/
+    'Step 05': function (browser) {
         async.mapSeries(cases, function (useCase, callback) {
             // the pipeline-model cannot have "noSteps" need to skip the test for that
             if (useCase.name !== "stagesPM") {
@@ -124,8 +124,8 @@ module.exports = {
             }
         });
     },
-/** */
-    'Check whether the artifacts tab shows artifacts': function (browser) {
+/** Check whether the artifacts tab shows artifacts*/
+    'Step 06': function (browser) {
         async.mapSeries(cases, function (useCase, callback) {
             const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
             blueRunDetailPage.clickTab('artifacts');

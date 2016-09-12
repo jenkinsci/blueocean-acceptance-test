@@ -3,13 +3,13 @@
  * @description TEST: logs tailing a pipeline job without stages, but with steps - karaoke mode
  */
 module.exports = {
-    /** */
-    'Create Pipeline Job "noStages"': function (browser) {
+    /** Create Pipeline Job "noStages" */
+    'Step 01': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
         pipelinesCreate.createPipeline('noStages', 'no-stages.groovy');
     },
-    /** */
-    'Build Pipeline Job': function (browser) {
+    /** Build Pipeline Job*/
+    'Step 02': function (browser) {
         const pipelinePage = browser.page.jobUtils().forJob('noStages');
         pipelinePage.buildStarted(function() {
             // Reload the job page and check that there was a build done.
@@ -19,9 +19,10 @@ module.exports = {
                 .waitForElementVisible('@executer');
         });
     },
-    /** */
-    // need to click on an element so the up_arrow takes place in the window
-    'Check Job Blue Ocean Pipeline Activity Page has run  - stop follow': function (browser) {
+    /** Check Job Blue Ocean Pipeline Activity Page has run  - stop follow
+     * need to click on an element so the up_arrow takes place in the window
+     * */
+    'Step 03': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob('noStages', 'jenkins');
         // Check the run itself
         blueActivityPage.waitForRunRunningVisible('noStages-1');
@@ -77,8 +78,8 @@ module.exports = {
                 });
         blueRunDetailPage.assertBasicLayoutOkay();
     },
-    /** */
-    'Check Job Blue Ocean Pipeline run detail page - follow': function (browser) {
+    /** Check Job Blue Ocean Pipeline run detail page - follow*/
+    'Step 04': function (browser) {
         // Reload the page so as to restart karaoke mode        
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         browser.elements('css selector', 'div.result-item.success', function (collection) {
@@ -99,8 +100,8 @@ module.exports = {
             ;
         });
     },
-    /** */
-    'Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear': function (browser) {
+    /** Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear*/
+    'Step 05': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         
         browser.waitForJobRunEnded('noStages', function() {
@@ -117,28 +118,28 @@ module.exports = {
             blueRunDetailPage.clickFullLog();
         });
     },
-    /** */
-    'Check whether a step that does not has a log as well will have the expando disabled': function (browser) {
+    /** Check whether a step that does not has a log as well will have the expando disabled*/
+    'Step 06': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         // NOTE: if the pipeline script (no-stages.groovy) changes then the following
         // selector will need to be changed too.
         browser
             .waitForElementVisible('div.step-29 svg.disabled.result-item-expando');
     },
-    /** */
-    'Check whether the test tab shows an empty state hint': function (browser) {
+    /** Check whether the test tab shows an empty state hint*/
+    'Step 07': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         blueRunDetailPage.clickTab('tests');
         blueRunDetailPage.validateEmpty();
     },
-    /** */
-    'Check whether the changes tab shows an empty state hint': function (browser) {
+    /** Check whether the changes tab shows an empty state hint*/
+    'Step 08': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         blueRunDetailPage.clickTab('changes');
         blueRunDetailPage.validateEmpty();
     },
-    /** */
-    'Check whether the artifacts tab shows an empty state hint': function (browser) {
+    /** Check whether the artifacts tab shows an empty state hint*/
+    'Step 09': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
         blueRunDetailPage.clickTab('artifacts');
         blueRunDetailPage.validateEmpty();
