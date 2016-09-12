@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobDeleted</title>
+	<title>Documentation Module: multibranchCreate</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobDeleted</h1>
+	<h1 class="page-title">Module: multibranchCreate</h1>
 <section>
 
 <header>
@@ -90,6 +90,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the &quot;new Item&quot; page of classic jenkins but for multiBranch</p></div>
         
 
         
@@ -133,6 +135,12 @@
 
 
         
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">const branchCreate = browser.page.multibranchCreate().forJob(anotherFolders.join(&#x27;/&#x27;));</pre>
+
+
+        
     
     </div>
 
@@ -155,16 +163,12 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobDeleted"><span class="type-signature">&lt;inner> </span>waitForJobDeleted(jobName [, onDeleted])</h4>
+    <h4 class="name" id="~createBranch"><span class="type-signature">&lt;inner> </span>createBranch(folderName, path)</h4>
     
     
 </dt>
 <dd>
 
-    
-    <div class="description">
-        <p>Nightwatch command to wait for a job be deleted.</p>
-    </div>
     
 
     
@@ -186,8 +190,6 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -200,7 +202,7 @@
 
         <tr>
             
-                <td class="name"><code>jobName</code></td>
+                <td class="name"><code>folderName</code></td>
             
 
             <td class="type">
@@ -214,31 +216,23 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
+            <td class="description last"><p>where should be we create the multiBranch project in</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>onDeleted</code></td>
+                <td class="name"><code>path</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">String</span>
 
 
 
@@ -246,20 +240,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
+            <td class="description last"><p>where does the git repo exist? Will be injected in the input field</p></td>
         </tr>
 
     
@@ -319,6 +303,171 @@
     
 
     
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">// Let us create a multibranch object in the nested folders
+branchCreate.createBranch(multiBranchJob, pathToRepo);</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~forJob"><span class="type-signature">&lt;inner> </span>forJob(jobName)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns the config page of a certain job</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jobName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the job to configure</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">const branchCreate = browser.page.multibranchCreate().forJob(anotherFolders.join(&#x27;/&#x27;));</pre>
+
 
     
 </dd>

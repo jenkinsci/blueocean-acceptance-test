@@ -1,8 +1,10 @@
 const url = require('../../util/url');
-
-// Pipeline create (new item) page object (http://nightwatchjs.org/guide#page-objects)
+/** @module multibranchCreate
+ * @memberof page_objects
+ * @description Represents the "new Item" page of classic jenkins but for multiBranch
+ * @example const branchCreate = browser.page.multibranchCreate().forJob(anotherFolders.join('/'));
+ * */
 const suffix = 'newJob';
-
 module.exports = {
     url: function () {
         return this.api.launchUrl + '/view/All/' + suffix;
@@ -26,17 +28,25 @@ module.exports = {
         }
     }
 };
-
-// Nightwatch commands.
-// http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
-
+        /**
+         * Returns the config page of a certain job
+         * @example const branchCreate = browser.page.multibranchCreate().forJob(anotherFolders.join('/'));
+         * @param jobName {String} name of the job to configure
+         * @returns {Object} self - nightwatch page object
+         */
     forJob: function(jobName) {
-        var jobUrl = url.getJobUrl(this.api.launchUrl, jobName) + suffix;
+        var jobUrl = url.getJobUrl(this.api.launchUrl, jobName);
         this.jobName = jobName;
         return this.navigate(jobUrl);
     },
 
+    /**
+     * @example // Let us create a multibranch object in the nested folders
+branchCreate.createBranch(multiBranchJob, pathToRepo);
+     * @param folderName {String} where should be we create the multiBranch project in
+     * @param path {String} where does the git repo exist? Will be injected in the input field
+     */
     createBranch: function (folderName, path) {
         var self = this;
 

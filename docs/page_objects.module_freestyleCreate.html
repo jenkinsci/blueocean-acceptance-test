@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobDeleted</title>
+	<title>Documentation Module: freestyleCreate</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobDeleted</h1>
+	<h1 class="page-title">Module: freestyleCreate</h1>
 <section>
 
 <header>
@@ -90,6 +90,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the freestyle creation page of classic jenkins.</p></div>
         
 
         
@@ -155,7 +157,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobDeleted"><span class="type-signature">&lt;inner> </span>waitForJobDeleted(jobName [, onDeleted])</h4>
+    <h4 class="name" id="~createFreestyle"><span class="type-signature">&lt;inner> </span>createFreestyle(jobName, script [, oncreated])</h4>
     
     
 </dt>
@@ -163,7 +165,7 @@
 
     
     <div class="description">
-        <p>Nightwatch command to wait for a job be deleted.</p>
+        <p>Returns the create freestyle page for a certain job and creates the freestyle job</p>
     </div>
     
 
@@ -225,14 +227,47 @@
 
             
 
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
+            <td class="description last"><p>name of the job to configure</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>onDeleted</code></td>
+                <td class="name"><code>script</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the name of the script that shoould be used to be injected. Has to
+be present in ROOT/src/test/resources/test_scripts</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oncreated</code></td>
             
 
             <td class="type">
@@ -259,7 +294,7 @@
 
             
 
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
+            <td class="description last"><p>callback to be invoke when finished, will expect a traditional node callback function</p></td>
         </tr>
 
     

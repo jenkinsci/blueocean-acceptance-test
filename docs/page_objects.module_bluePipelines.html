@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobDeleted</title>
+	<title>Documentation Module: bluePipelines</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobDeleted</h1>
+	<h1 class="page-title">Module: bluePipelines</h1>
 <section>
 
 <header>
@@ -90,6 +90,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the listing of all pipelines in blueocean</p></div>
         
 
         
@@ -130,6 +132,12 @@
 
 	
 </dl>
+
+
+        
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">var bluePipelinesPage = browser.page.bluePipelines().navigate();</pre>
 
 
         
@@ -155,7 +163,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobDeleted"><span class="type-signature">&lt;inner> </span>waitForJobDeleted(jobName [, onDeleted])</h4>
+    <h4 class="name" id="~assertBasicLayoutOkay"><span class="type-signature">&lt;inner> </span>assertBasicLayoutOkay()</h4>
     
     
 </dt>
@@ -163,7 +171,7 @@
 
     
     <div class="description">
-        <p>Nightwatch command to wait for a job be deleted.</p>
+        <p>Different test on general elements that should be visible on the page</p>
     </div>
     
 
@@ -172,100 +180,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>jobName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onDeleted</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -319,6 +233,30 @@
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>

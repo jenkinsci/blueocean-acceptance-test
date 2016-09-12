@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Global</title>
+	<title>Documentation Module: jobUtils</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,15 +79,10 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Module: jobUtils</h1>
 <section>
 
 <header>
-    
-        <h2>
-        
-        </h2>
-        
     
 </header>
 
@@ -95,6 +90,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the &quot;new Item&quot; page of classic jenkins.</p></div>
         
 
         
@@ -138,6 +135,12 @@
 
 
         
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">const freestylePage = browser.page.jobUtils().forJob(&#x27;hijo&#x27;);</pre>
+
+
+        
     
     </div>
 
@@ -160,7 +163,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="connect"><span class="type-signature"></span>connect(browser, done)</h4>
+    <h4 class="name" id="~build"><span class="type-signature">&lt;inner> </span>build( [onBuildComplete])</h4>
     
     
 </dt>
@@ -168,9 +171,7 @@
 
     
     <div class="description">
-        <p>Connect to the SSE Gateway.</p>
-<p><p>
-DO NOT CALL: done automatically in the globals.</p>
+        <p>Try to build the job, invoke callback when build is complete</p>
     </div>
     
 
@@ -193,6 +194,8 @@ DO NOT CALL: done automatically in the globals.</p>
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -205,36 +208,34 @@ DO NOT CALL: done automatically in the globals.</p>
 
         <tr>
             
-                <td class="name"><code>browser</code></td>
+                <td class="name"><code>onBuildComplete</code></td>
             
 
             <td class="type">
             
-            </td>
+                
+<span class="param-type">function</span>
 
-            
 
-            
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>done</code></td>
-            
-
-            <td class="type">
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>callback to be invoke when finished</p></td>
         </tr>
 
     
@@ -278,6 +279,13 @@ DO NOT CALL: done automatically in the globals.</p>
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><code>module:custom_commands.waitForJobRunEnded</code></li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -294,6 +302,40 @@ DO NOT CALL: done automatically in the globals.</p>
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">freestylePage.build(function() {
+    // Reload the job page and check that there was a build done.
+    freestylePage = browser.page.jobUtils().forJob(&#x27;my-pipeline&#x27;);
+    freestylePage.waitForElementVisible(&#x27;@builds&#x27;);
+});</pre>
+
 
     
 </dd>
@@ -302,7 +344,7 @@ DO NOT CALL: done automatically in the globals.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="createBranch"><span class="type-signature"></span>createBranch(branchName, pathToRepo)</h4>
+    <h4 class="name" id="~buildQueued"><span class="type-signature">&lt;inner> </span>buildQueued()</h4>
     
     
 </dt>
@@ -310,7 +352,115 @@ DO NOT CALL: done automatically in the globals.</p>
 
     
     <div class="description">
-        <p>Create a new branch in a given repository</p>
+        <p>Build and wait until job is in the queue.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">freestylePage.buildQueued();</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~buildStarted"><span class="type-signature">&lt;inner> </span>buildStarted( [onBuildStarted])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Try to build the job, invoke callback when build is started</p>
     </div>
     
 
@@ -333,6 +483,8 @@ DO NOT CALL: done automatically in the globals.</p>
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -345,7 +497,189 @@ DO NOT CALL: done automatically in the globals.</p>
 
         <tr>
             
-                <td class="name"><code>branchName</code></td>
+                <td class="name"><code>onBuildStarted</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>callback to be invoke when finished</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><code>module:custom_commands.waitForJobRunStarted</code></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">freestylePage.buildStarted(function () {
+    // Reload the job page and check that there was a build done.
+    freestylePage
+        .forRun(1)
+        .waitForElementVisible(&#x27;@executer&#x27;);
+})</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~forJob"><span class="type-signature">&lt;inner> </span>forJob(jobName [, suffix])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns the config page of a certain job</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jobName</code></td>
             
 
             <td class="type">
@@ -359,17 +693,25 @@ DO NOT CALL: done automatically in the globals.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>name of the branch</p></td>
+            <td class="description last"><p>name of the job to configure</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>pathToRepo</code></td>
+                <td class="name"><code>suffix</code></td>
             
 
             <td class="type">
@@ -383,10 +725,20 @@ DO NOT CALL: done automatically in the globals.</p>
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>the route to the repository</p></td>
+            <td class="description last"><p>we may need to add a suffix to the final url</p></td>
         </tr>
 
     
@@ -449,6 +801,10 @@ DO NOT CALL: done automatically in the globals.</p>
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
 
 
 <dl>
@@ -457,7 +813,7 @@ DO NOT CALL: done automatically in the globals.</p>
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">Object</span>
 
 
 
@@ -468,13 +824,19 @@ DO NOT CALL: done automatically in the globals.</p>
         
 
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">const freestylePage = browser.page.jobUtils().forJob(&#x27;hijo&#x27;);</pre>
+
+
+    
 </dd>
 
         
             
 <hr>
 <dt>
-    <h4 class="name" id="createCommit"><span class="type-signature"></span>createCommit(pathToRepo, files)</h4>
+    <h4 class="name" id="~forRun"><span class="type-signature">&lt;inner> </span>forRun(runId)</h4>
     
     
 </dt>
@@ -482,7 +844,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
     
     <div class="description">
-        <p>Create and return a commit promise.</p>
+        <p>Returns the config page of a certain run</p>
     </div>
     
 
@@ -517,16 +879,10 @@ DO NOT CALL: done automatically in the globals.</p>
 
         <tr>
             
-                <td class="name"><code>pathToRepo</code></td>
+                <td class="name"><code>runId</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
             
             </td>
 
@@ -534,31 +890,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
             
 
-            <td class="description last"><p>the route to the repository</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>files</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>to be committed</p></td>
+            <td class="description last"><p>the id of a specific run</p></td>
         </tr>
 
     
@@ -618,6 +950,36 @@ DO NOT CALL: done automatically in the globals.</p>
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">freestylePage.forRun(&#x27;1&#x27;);</pre>
+
 
     
 </dd>
@@ -626,7 +988,7 @@ DO NOT CALL: done automatically in the globals.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="createRepo"><span class="type-signature"></span>createRepo(fromDir, inDir)</h4>
+    <h4 class="name" id="~forUrl"><span class="type-signature">&lt;inner> </span>forUrl(url, jobName)</h4>
     
     
 </dt>
@@ -634,7 +996,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
     
     <div class="description">
-        <p>create a new git repository</p>
+        <p>Navigate to a certain url</p>
     </div>
     
 
@@ -669,7 +1031,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
         <tr>
             
-                <td class="name"><code>fromDir</code></td>
+                <td class="name"><code>url</code></td>
             
 
             <td class="type">
@@ -686,14 +1048,14 @@ DO NOT CALL: done automatically in the globals.</p>
 
             
 
-            <td class="description last"><p>source path</p></td>
+            <td class="description last"><p>the url to navigate to</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>inDir</code></td>
+                <td class="name"><code>jobName</code></td>
             
 
             <td class="type">
@@ -710,7 +1072,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
             
 
-            <td class="description last"><p>destination path</p></td>
+            <td class="description last"><p>name of the job to configure</p></td>
         </tr>
 
     
@@ -770,128 +1132,36 @@ DO NOT CALL: done automatically in the globals.</p>
     
 
     
-
+    <h5>Returns:</h5>
     
-</dd>
-
-        
             
-<hr>
-<dt>
-    <h4 class="name" id="disable"><span class="type-signature"></span>disable(category)</h4>
-    
-    
-</dt>
-<dd>
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
 
-    
-    <div class="description">
-        <p>disable debug for a specific category</p>
-    </div>
-    
 
-    
 
-    
-
-    
-    
-        <h5>Parameters:</h5>
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
         
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>category</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
+<span class="param-type">Object</span>
 
 
 
-	
-
-	
-
-	
-
-	
+    </dd>
 </dl>
 
 
-    
+        
 
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">freestylePage.forUrl(someUrl);</pre>
 
-    
-
-    
-
-    
-
-    
 
     
 </dd>
@@ -900,7 +1170,7 @@ DO NOT CALL: done automatically in the globals.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="disconnect"><span class="type-signature"></span>disconnect( [onDisconnected])</h4>
+    <h4 class="name" id="~indexingStarted"><span class="type-signature">&lt;inner> </span>indexingStarted( [onIndexingStarted])</h4>
     
     
 </dt>
@@ -908,9 +1178,8 @@ DO NOT CALL: done automatically in the globals.</p>
 
     
     <div class="description">
-        <p>Disconnect from the SSE Gateway.</p>
-<p><p>
-DO NOT CALL: done automatically in the globals.</p>
+        <p>Multibranch projects are needed to be indexed.
+This helper will click on the indexing selector and call the callback when the run has started</p>
     </div>
     
 
@@ -947,7 +1216,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
         <tr>
             
-                <td class="name"><code>onDisconnected</code></td>
+                <td class="name"><code>onIndexingStarted</code></td>
             
 
             <td class="type">
@@ -974,7 +1243,7 @@ DO NOT CALL: done automatically in the globals.</p>
 
             
 
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
+            <td class="description last"><p>callback to be invoke when finished</p></td>
         </tr>
 
     
@@ -1018,127 +1287,12 @@ DO NOT CALL: done automatically in the globals.</p>
 	
 
 	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="enable"><span class="type-signature"></span>enable(category)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>enable debug for a specific category</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>category</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><code>module:custom_commands.onIndexingStarted</code></li>
+			</ul>
+	</dd>
 	
 
 	
@@ -1156,236 +1310,36 @@ DO NOT CALL: done automatically in the globals.</p>
     
 
     
-
+    <h5>Returns:</h5>
     
-</dd>
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
 
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
         
-            
-<hr>
-<dt>
-    <h4 class="name" id="init"><span class="type-signature"></span>init(pathToRepo, onInit)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Generic wrapper aroung NodeGit</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pathToRepo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onInit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
+    </dd>
 </dl>
 
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
         
-            
-<hr>
-<dt>
-    <h4 class="name" id="setDEBUG"><span class="type-signature"></span>setDEBUG()</h4>
-    
-    
-</dt>
-<dd>
 
     
-    <div class="description">
-        <p>Turn on debug</p>
-    </div>
-    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">masterJob.indexingStarted(); // start a new build by starting indexing</pre>
 
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
 </dd>

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobDeleted</title>
+	<title>Documentation Module: folderCreate</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobDeleted</h1>
+	<h1 class="page-title">Module: folderCreate</h1>
 <section>
 
 <header>
@@ -90,6 +90,11 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the folder create page, which is a wrapper around the classic
+create job page of jenkins.</p>
+<p>If called as in the example it is the same as
+<code>https://ci.blueocean.io/view/All/newJob</code></p></div>
         
 
         
@@ -133,6 +138,12 @@
 
 
         
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">const folderCreate = browser.page.folderCreate().navigate();</pre>
+
+
+        
     
     </div>
 
@@ -155,7 +166,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobDeleted"><span class="type-signature">&lt;inner> </span>waitForJobDeleted(jobName [, onDeleted])</h4>
+    <h4 class="name" id="~createFolders"><span class="type-signature">&lt;inner> </span>createFolders(folders)</h4>
     
     
 </dt>
@@ -163,7 +174,7 @@
 
     
     <div class="description">
-        <p>Nightwatch command to wait for a job be deleted.</p>
+        <p>Create a path of folders.</p>
     </div>
     
 
@@ -186,8 +197,6 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -200,13 +209,13 @@
 
         <tr>
             
-                <td class="name"><code>jobName</code></td>
+                <td class="name"><code>folders</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array</span>
 
 
 
@@ -214,52 +223,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onDeleted</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
+            <td class="description last"><p>an array of {String} representing a deep path</p></td>
         </tr>
 
     
@@ -319,6 +286,194 @@
     
 
     
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">folderCreate.createFolders([&#x27;firstFolder&#x27;, &#x27;三百&#x27;, &#x27;ñba&#x27;, &#x27;七&#x27;]);</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~createFreestyle"><span class="type-signature">&lt;inner> </span>createFreestyle(basePath, jobName, script)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a freestyle project in a certain path</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>basePath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>may be a nested path</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>jobName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the new job to be created</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>script</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the file name of the freestyle script in ROOT/src/test/resources/test_scripts</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">folderCreate.createFreestyle(folders.join(&#x27;/&#x27;), jobName, &#x27;freestyle.sh&#x27;);</pre>
+
 
     
 </dd>

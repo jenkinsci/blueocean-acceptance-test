@@ -4,7 +4,14 @@ const pageHelper = require('../../util/pageHelper');
 const sanityCheck = pageHelper.sanityCheck;
 const isCodeBlockVisibleCallback = pageHelper.isCodeBlockVisibleCallback;
 const notEmptyHelper = pageHelper.notEmptyHelper;
-/** @module bluePipelineRunDetails */
+/** @module bluePipelineRunDetails
+ * @memberof page_objects
+ * @description Represents the detail page of a job in blueocean
+ *
+ * @example
+ *   const blueRunDetailPage = browser.page.bluePipelineRunDetail()
+ .forRun(jobNameFreestyle, 'jenkins', 1);
+ * */
 module.exports = {
     // selectors
     elements: {
@@ -36,24 +43,14 @@ module.exports = {
     }
 };
 
-/**
- * Nightwatch commands.
- * http://nightwatchjs.org/guide#writing-commands
- *
- * We are using in commands many times the following construct.
- * I will document here instead repeating the comments in every construct.
- *
- * @example
- * // to make component chain-able we will return self - part 1
- * const self = this;
- * ...
- * // to make component chain-able we will return self - part 2
- * return self;
- * @returns {Object} self - nightwatch page object
- */
 module.exports.commands = [{
     /**
-     * Navigate to a certain detail page, calculated based on different params
+     * Navigate to a certain detail page, calculated based on diferent params
+     *
+     * @example
+     *   const blueRunDetailPage = browser.page.bluePipelineRunDetail()
+     .forRun(jobNameFreestyle, 'jenkins', 1);
+     *
      * @param {String} jobName
      * @param {String} orgName
      * @param {String|Number} branchName - either the branchName o the buildNumber
@@ -154,7 +151,7 @@ module.exports.commands = [{
         const self = this;
         const browser = self.api;
         // leverage to url helper
-        return url.clickTab(browser, self, tab);
+        return url.clickTab(self, tab);
     },
     /**
      * Click the "Full Log" button and validate that we have changed the url

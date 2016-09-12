@@ -3,6 +3,11 @@ var fse = require('fs-extra');
 var path = require("path");
 var faker = require('faker');
 
+/**
+ * Generic wrapper aroung NodeGit
+ * @param pathToRepo {String}
+ * @param onInit {Function}
+ */
 exports.init = function (pathToRepo, onInit) {
     var pathToRepo = path.resolve(pathToRepo);
 
@@ -84,6 +89,11 @@ exports.init = function (pathToRepo, onInit) {
         });
 };
 
+/**
+ * create a new git repository
+ * @param fromDir {String} source path
+ * @param inDir {String} destination path
+ */
 exports.createRepo = function (fromDir, inDir) {
     return new Promise(function (resolve, reject) {
         exports.init(inDir, function (repo) {
@@ -95,6 +105,12 @@ exports.createRepo = function (fromDir, inDir) {
     });
 };
 
+/**
+ * Create a new branch in a given repository
+ * @param branchName {String} name of the branch
+ * @param pathToRepo {String} the route to the repository
+ * @returns {*}
+ */
 exports.createBranch = function (branchName, pathToRepo) {
     var pathToRepo = path.resolve(pathToRepo);
 
@@ -111,6 +127,11 @@ exports.createBranch = function (branchName, pathToRepo) {
         });
 };
 
+/**
+ * Create and return a commit promise.
+ * @param pathToRepo {String} the route to the repository
+ * @param files {Array} to be committed
+ */
 exports.createCommit = function (pathToRepo, files) {
 
     return new Promise(function (resolve, reject) {

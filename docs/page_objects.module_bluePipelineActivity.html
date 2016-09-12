@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobDeleted</title>
+	<title>Documentation Module: bluePipelineActivity</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobDeleted</h1>
+	<h1 class="page-title">Module: bluePipelineActivity</h1>
 <section>
 
 <header>
@@ -90,6 +90,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the listing of the activities in blueocean</p></div>
         
 
         
@@ -133,6 +135,12 @@
 
 
         
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">const blueActivityPage = browser.page.bluePipelineActivity().forJob(&#x27;my-pipeline&#x27;, &#x27;jenkins&#x27;);</pre>
+
+
+        
     
     </div>
 
@@ -155,7 +163,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobDeleted"><span class="type-signature">&lt;inner> </span>waitForJobDeleted(jobName [, onDeleted])</h4>
+    <h4 class="name" id="~assertActivitiesToBeEqual"><span class="type-signature">&lt;inner> </span>assertActivitiesToBeEqual(expected)</h4>
     
     
 </dt>
@@ -163,7 +171,565 @@
 
     
     <div class="description">
-        <p>Nightwatch command to wait for a job be deleted.</p>
+        <p>Count the activities in the table and compare them with the expected value.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>expected</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~assertBasicLayoutOkay"><span class="type-signature">&lt;inner> </span>assertBasicLayoutOkay()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Different test on general elements that should be visible on the page</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~clickTab"><span class="type-signature">&lt;inner> </span>clickTab(tab)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Click css selector of a specific tab</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tab</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the tab we want to select</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~forJob"><span class="type-signature">&lt;inner> </span>forJob(jobName, branchName)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns the config page of a certain job</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jobName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the job to configure</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>branchName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the branch (may be the same as jobname, in case of freestyle</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~waitForRunRunningVisible"><span class="type-signature">&lt;inner> </span>waitForRunRunningVisible(runName [, callback])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Wait for a specific run to appear in the activity table as running</p>
     </div>
     
 
@@ -200,16 +766,10 @@
 
         <tr>
             
-                <td class="name"><code>jobName</code></td>
+                <td class="name"><code>runName</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
             
             </td>
 
@@ -225,14 +785,14 @@
 
             
 
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
+            <td class="description last"><p>name of the job</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>onDeleted</code></td>
+                <td class="name"><code>callback</code></td>
             
 
             <td class="type">
@@ -260,6 +820,128 @@
             
 
             <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~waitForRunSuccessVisible"><span class="type-signature">&lt;inner> </span>waitForRunSuccessVisible(runName)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Wait for a specific run to appear in the activity table as a success</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>runName</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the job</p></td>
         </tr>
 
     

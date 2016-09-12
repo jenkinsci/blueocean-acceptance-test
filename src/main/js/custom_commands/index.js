@@ -1,7 +1,9 @@
 /** @module custom_commands
- * @description See http://nightwatchjs.org/guide#writing-custom-commands
+ * @description
+ *  This folder contains Nightwatch [custom commands](http://nightwatchjs.org/guide#writing-custom-commands).
  *
- * waitForJobCreated
+ *  Custom commands are particularly useful (essential actually) when performing async operations that need
+ *  the nightwatch test flow to suspend until the async operation is complete.
  *
  * @see {@link module:custom_commands.waitForJobCreated}
  * @see {@link module:custom_commands.waitForJobDeleted}

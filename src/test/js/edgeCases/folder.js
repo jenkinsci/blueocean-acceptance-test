@@ -56,9 +56,9 @@ module.exports = {
         // Initial folder create page
         const folderCreate = browser.page.folderCreate().navigate();
         // create nested folder for the project
-        folderCreate.createFolders(browser, folders);
+        folderCreate.createFolders(folders);
         // create the freestyle job in the folder
-        folderCreate.createFreestyle(browser, folders.join('/'), jobName, 'freestyle.sh');
+        folderCreate.createFreestyle(folders.join('/'), jobName, 'freestyle.sh');
     },
 /** Create folder and then a multibranch job - "anotherFolder"
  *
@@ -67,11 +67,11 @@ module.exports = {
         // Initial folder create page
         const folderCreate = browser.page.folderCreate().navigate();
         // create nested folder for the project
-        folderCreate.createFolders(browser, anotherFolders);
+        folderCreate.createFolders(anotherFolders);
         // go to the multibranch creation page
         const branchCreate = browser.page.multibranchCreate().forJob(anotherFolders.join('/'));
         // Let us create a multibranch object in the nested folders
-        branchCreate.createBranch(jobName, pathToRepo, anotherFolders.slice().shift());
+        branchCreate.createBranch(jobName, pathToRepo);
     },
 /** Jobs can have the same name in different folders, they should show up in the gui
  *
@@ -192,11 +192,11 @@ module.exports = {
         // first get the activity screen for the project
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
         // validate that we have 3 activities from the previous tests
-        blueActivityPage.assertActivitiesToBeEqual(browser, 3);
+        blueActivityPage.assertActivitiesToBeEqual(3);
         // change to the branch page, clicking on the tab
-        blueActivityPage.clickTab(browser, 'branches');
+        blueActivityPage.clickTab('branches');
         // click on the first matching run button (small one)
-        browser.page.bluePipelineBranch().clickRunButton(browser);
+        browser.page.bluePipelineBranch().clickRunButton();
         // go to the detail page
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 2);
         // Wait for the job to end

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobDeleted</title>
+	<title>Documentation Module: computer</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobDeleted</h1>
+	<h1 class="page-title">Module: computer</h1>
 <section>
 
 <header>
@@ -90,6 +90,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>Represents the configuration page of executors in classic jenkins</p></div>
         
 
         
@@ -133,6 +135,12 @@
 
 
         
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">const configure = browser.page.computer().navigate();</pre>
+
+
+        
     
     </div>
 
@@ -155,7 +163,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobDeleted"><span class="type-signature">&lt;inner> </span>waitForJobDeleted(jobName [, onDeleted])</h4>
+    <h4 class="name" id="~setNumber"><span class="type-signature">&lt;inner> </span>setNumber(newNumber)</h4>
     
     
 </dt>
@@ -163,7 +171,7 @@
 
     
     <div class="description">
-        <p>Nightwatch command to wait for a job be deleted.</p>
+        <p>Configure the number of executors we want to assign the node</p>
     </div>
     
 
@@ -186,8 +194,6 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -200,13 +206,13 @@
 
         <tr>
             
-                <td class="name"><code>jobName</code></td>
+                <td class="name"><code>newNumber</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Number</span>
 
 
 
@@ -214,52 +220,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onDeleted</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
+            <td class="description last"><p>how many executors we want to assign the node</p></td>
         </tr>
 
     
@@ -319,6 +283,12 @@
     
 
     
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">configure.setNumber(2);</pre>
+
 
     
 </dd>
