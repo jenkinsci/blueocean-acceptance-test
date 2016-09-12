@@ -4,14 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Class: command</title>
+	<title>Documentation Module: custom_commands</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
 
 </head>
 
@@ -32,22 +32,15 @@
 			
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-bluePipelineRunDetails.html">bluePipelineRunDetails</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-custom_commands_waitForJobCreated.html">custom_commands/waitForJobCreated</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-custom_commands_waitForJobCreated-Cmd_command.html">custom_commands/waitForJobCreated~Cmd#command</a></li>
+				<ul class="dropdown-menu inline">
+					<li><a href="custom_commands.module_waitForJobCreated.html">custom_commands.waitForJobCreated</a></li><li><a href="custom_commands.module_waitForJobDeleted.html">custom_commands.waitForJobDeleted</a></li><li><a href="custom_commands.module_waitForJobRunEnded.html">custom_commands.waitForJobRunEnded</a></li><li><a href="custom_commands.module_waitForJobRunStarted.html">custom_commands.waitForJobRunStarted</a></li><li><a href="edgeCases.module_folder.html">edgeCases.folder</a></li><li><a href="karaoke.module_freestyle.html">karaoke.freestyle</a></li><li><a href="karaoke.module_freestylePing.html">karaoke.freestylePing</a></li><li><a href="karaoke.module_noStages.html">karaoke.noStages</a></li><li><a href="karaoke.module_stages.html">karaoke.stages</a></li><li><a href="module-bluePipelineRunDetails.html">bluePipelineRunDetails</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-testcases.html">testcases</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li><li><a href="testcases.module_edgeCases.html">testcases.edgeCases</a></li><li><a href="testcases.module_karaoke.html">testcases.karaoke</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#disconnect">disconnect</a></li><li><a href="global.html#util">util</a></li>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#disconnect">disconnect</a></li>
 				</ul>
 			</li>
 			
@@ -79,15 +72,10 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: command</h1>
+	<h1 class="page-title">Module: custom_commands</h1>
 <section>
 
 <header>
-    
-        <h2>
-        command
-        </h2>
-        
     
 </header>
 
@@ -96,152 +84,11 @@
     <div class="container-overview">
     
         
-<hr>
-<dt>
-    <h4 class="name" id="command"><span class="type-signature"></span>new command(jobName [, onCreated] [, timeout])</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
+            <div class="description"><p>See http://nightwatchjs.org/guide#writing-custom-commands</p>
+<p>waitForJobCreated</p></div>
         
 
         
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>jobName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onCreated</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>timeout</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
 <dl class="details">
     
 
@@ -276,26 +123,25 @@
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><code>module:custom_commands.waitForJobCreated</code></li>
+			
+			<li><code>module:custom_commands.waitForJobDeleted</code></li>
+			
+			<li><code>module:custom_commands.waitForJobRunEnded</code></li>
+			
+			<li><code>module:custom_commands.waitForJobRunStarted</code></li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
 
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
+        
     
     </div>
 
@@ -360,7 +206,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on September 9th 2016, 12:24:45 pm
+		on September 12th 2016, 11:31:22 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

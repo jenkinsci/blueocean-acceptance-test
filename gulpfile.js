@@ -6,7 +6,7 @@
 const gulp  = require('gulp');
 const shell = require('gulp-shell');
 const jsdoc = require('gulp-jsdoc3');
-const watch = require('gulp-watch');
+const config = require('./jsdocConfig.json');
 
 if (process.argv.length === 4 && process.argv[2] === '--test') {
     gulp.task('default', shell.task('nightwatch --suiteRetries 2 ' + process.argv[3].toString()));
@@ -15,14 +15,7 @@ if (process.argv.length === 4 && process.argv[2] === '--test') {
 }
 
 gulp.task('doc', function (cb) {
+    console.log('***************Generate documentation+++++++++++++++++++++++++++++++++++');
     gulp.src(['README.md', './src/**/*.js'], {read: false})
-        .pipe(jsdoc(cb));
-});
-
-gulp.task('docwatch', function () {
-    // Callback mode, useful if any plugin in the pipeline depends on the `end`/`flush` event
-    return watch('./src/**/*.js', function (cb) {
-        gulp.src(['README.md', './src/**/*.js'], {read: false})
-            .pipe(jsdoc(cb));
-    });
+        .pipe(jsdoc(config, cb));
 });

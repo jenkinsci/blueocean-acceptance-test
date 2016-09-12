@@ -4,14 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: waitForJobRunStarted</title>
+	<title>Documentation Module: folder</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
 
 </head>
 
@@ -32,14 +32,14 @@
 			
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
+				<ul class="dropdown-menu inline">
 					<li><a href="custom_commands.module_waitForJobCreated.html">custom_commands.waitForJobCreated</a></li><li><a href="custom_commands.module_waitForJobDeleted.html">custom_commands.waitForJobDeleted</a></li><li><a href="custom_commands.module_waitForJobRunEnded.html">custom_commands.waitForJobRunEnded</a></li><li><a href="custom_commands.module_waitForJobRunStarted.html">custom_commands.waitForJobRunStarted</a></li><li><a href="edgeCases.module_folder.html">edgeCases.folder</a></li><li><a href="karaoke.module_freestyle.html">karaoke.freestyle</a></li><li><a href="karaoke.module_freestylePing.html">karaoke.freestylePing</a></li><li><a href="karaoke.module_noStages.html">karaoke.noStages</a></li><li><a href="karaoke.module_stages.html">karaoke.stages</a></li><li><a href="module-bluePipelineRunDetails.html">bluePipelineRunDetails</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-testcases.html">testcases</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li><li><a href="testcases.module_edgeCases.html">testcases.edgeCases</a></li><li><a href="testcases.module_karaoke.html">testcases.karaoke</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
+				<ul class="dropdown-menu inline">
 					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#disconnect">disconnect</a></li>
 				</ul>
 			</li>
@@ -72,7 +72,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: waitForJobRunStarted</h1>
+	<h1 class="page-title">Module: folder</h1>
 <section>
 
 <header>
@@ -84,8 +84,110 @@
     <div class="container-overview">
     
         
+            <div class="description"><p>Tests: Condensed state of commit author in detail header</p>
+<p>REGRESSION covered:</p></div>
+        
 
         
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36618">JENKINS-36618</a> - create same job but in another folder</li>
+			
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36616">JENKINS-36616</a> - Unable to load multibranch projects in a folder</li>
+			
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36773">JENKINS-36773</a> / <a href="https://issues.jenkins-ci.org/browse/JENKINS-37605">JENKINS-37605</a> verify encoding and spacing of details</li>
+			
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36613">JENKINS-36613</a> Unable to load steps for multibranch pipelines with / in them</li>
+			
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36674">JENKINS-36674</a> Tests are not being reported</li>
+			
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36615">JENKINS-36615</a> the multibranch project has the branch 'feature/1'</li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step01%22"><span class="type-signature">&lt;static> </span>"step 01"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create folder and then a freestyle job - &quot;firstFolder&quot;</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
 <dl class="details">
     
 
@@ -125,30 +227,26 @@
 </dl>
 
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
         
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
             
 <hr>
 <dt>
-    <h4 class="name" id="~waitForJobRunStarted"><span class="type-signature">&lt;inner> </span>waitForJobRunStarted(jobName [, onBuildStarted] [, timeout])</h4>
+    <h4 class="name" id=".%22step02%22"><span class="type-signature">&lt;static> </span>"step 02"()</h4>
     
     
 </dt>
@@ -156,7 +254,7 @@
 
     
     <div class="description">
-        <p>Nightwatch command to wait for a job run to start.</p>
+        <p>Create folder and then a multibranch job - &quot;anotherFolder&quot;</p>
     </div>
     
 
@@ -166,133 +264,657 @@
 
     
     
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
+    
+<dl class="details">
     
 
-        <tr>
-            
-                <td class="name"><code>jobName</code></td>
-            
+	
 
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
+	
 
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
-        </tr>
+	
 
     
 
-        <tr>
-            
-                <td class="name"><code>onBuildStarted</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
+    
 
     
 
-        <tr>
-            
-                <td class="name"><code>timeout</code></td>
-            
+    
 
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
-            
-            </td>
+	
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
+	
 
-                
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36618">JENKINS-36618</a> part 1 - create same job but in another folder</li>
+			</ul>
+	</dd>
+	
 
-                
-                </td>
-            
+	
+</dl>
 
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
 
     
-    </tbody>
-</table>
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step03%22"><span class="type-signature">&lt;static> </span>"step 03"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Jobs can have the same name in different folders, they should show up in the gui</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36618">JENKINS-36618</a> part 2 - verify</li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step04%22"><span class="type-signature">&lt;static> </span>"step 04"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build freestyle job</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step05%22"><span class="type-signature">&lt;static> </span>"step 05"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Validate correct encoding, pipeline graph and steps</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step06%22"><span class="type-signature">&lt;static> </span>"step 06"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Check whether the artifacts tab shows artifacts</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step07%22"><span class="type-signature">&lt;static> </span>"step 07"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Check whether the test tab shows failing tests</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36674">JENKINS-36674</a> Tests are not being reported</li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step08%22"><span class="type-signature">&lt;static> </span>"step 08"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Check whether the changes tab shows changes - one commit</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step09%22"><span class="type-signature">&lt;static> </span>"step 09"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Jobs can be started from branch tab. - RUN</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-36615">JENKINS-36615</a> the multibranch project has the branch 'feature/1'</li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22step10%22"><span class="type-signature">&lt;static> </span>"step 10"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Check whether the changes tab shows changes - condensed</p>
+    </div>
+    
+
+    
+
+    
+
+    
     
 
     
@@ -400,7 +1022,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on September 9th 2016, 2:36:01 pm
+		on September 12th 2016, 11:31:22 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

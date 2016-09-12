@@ -3,7 +3,7 @@ module.exports = {
     /**
      Create a callback wrapper - we need to make sure that we have finished before
      we use the callback. If we have an error we invoke with error.
-     @param callback, the callback we need to call
+     @param callback the callback we need to call
      */
     createCallbackWrapper: function (callback) {
         return function callbackWrapper(status) {

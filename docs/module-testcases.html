@@ -4,14 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Index</title>
+	<title>Documentation Module: testcases</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
 
 </head>
 
@@ -32,14 +32,14 @@
 			
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
+				<ul class="dropdown-menu inline">
 					<li><a href="custom_commands.module_waitForJobCreated.html">custom_commands.waitForJobCreated</a></li><li><a href="custom_commands.module_waitForJobDeleted.html">custom_commands.waitForJobDeleted</a></li><li><a href="custom_commands.module_waitForJobRunEnded.html">custom_commands.waitForJobRunEnded</a></li><li><a href="custom_commands.module_waitForJobRunStarted.html">custom_commands.waitForJobRunStarted</a></li><li><a href="edgeCases.module_folder.html">edgeCases.folder</a></li><li><a href="karaoke.module_freestyle.html">karaoke.freestyle</a></li><li><a href="karaoke.module_freestylePing.html">karaoke.freestylePing</a></li><li><a href="karaoke.module_noStages.html">karaoke.noStages</a></li><li><a href="karaoke.module_stages.html">karaoke.stages</a></li><li><a href="module-bluePipelineRunDetails.html">bluePipelineRunDetails</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-testcases.html">testcases</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li><li><a href="testcases.module_edgeCases.html">testcases.edgeCases</a></li><li><a href="testcases.module_karaoke.html">testcases.karaoke</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
+				<ul class="dropdown-menu inline">
 					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#disconnect">disconnect</a></li>
 				</ul>
 			</li>
@@ -72,85 +72,94 @@
 		<div id="main">
 			
 
+	<h1 class="page-title">Module: testcases</h1>
+<section>
+
+<header>
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>All the test cases we are covering</p></div>
+        
+
+        
+<dl class="details">
+    
+
 	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
-
-
-
-
-
-
-
-
-	
 	
 
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><code>module:karaoke</code></li>
+			
+			<li><code>module:edgeCases</code></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
 
 
+        
+    
+    </div>
 
+    
 
-    <section class="readme-section">
-        <article><p>Acceptance tests for Blue Ocean</p>
-<h1>Prepare your system</h1><h2>Install xmllint/libssl-dev</h2><p>You need to install xmllint and libssl-dev prior of running the server!</p>
-<p>In debian:</p>
-<pre class="prettyprint source"><code>apt-get install libxml2-utils libssl-dev</code></pre><h1>Building</h1><p>To build:</p>
-<pre class="prettyprint source lang-sh"><code>mvn clean install -DskipTests</code></pre><p>For now, you <strong>must</strong> build with the <code>-DskipTests</code> switch. We'll be able to change this once the Blue Ocean
-plugins are in the Update Center.</p>
-<h1>Running</h1><p>Builds directly on the main Jenkins <a href="https://github.com/jenkinsci/acceptance-test-harness">acceptance-test-harness</a>,
-so running it works as per the instructions on the README.md there.</p>
-<blockquote>
-<p><strong>NOTE:</strong> If you are not running dev mode, we assume a running selenium instance! See above how to start selenium manually.</p>
-</blockquote>
-<p>We also added a shortcut script for easy running:</p>
-<pre class="prettyprint source lang-sh"><code>./run.sh -a=&lt;aggregator-plugin-path></code></pre><p>The <code>-a</code> (or <code>--aggregator</code>) switch is the path to the Blue Ocean aggregator plugin
-(e.g. <code>/Users/tfennelly/projects/blueocean/blueocean-plugin/blueocean-plugin</code>). This switch is needed until such time as the
-Blue Ocean plugins are in the Update Center.</p>
-<blockquote>
-<p><strong>NOTE:</strong> You <strong>must</strong> build the <a href="https://github.com/jenkinsci/blueocean-plugin">blueocean-plugin repo</a> code before running.</p>
-</blockquote>
-<p>That script will download a recent version of Jenkins from the download mirror (see script) and will run the acceptance
-tests. Alternatively, you can specify the the version of Jenkins that you want to test against e.g. to run the tests
-against Jenkins version <code>2.4</code> (again, it will download that version of Jenkins if it doesn't already have it in the
-<code>wars</code> directory):</p>
-<pre class="prettyprint source lang-sh"><code>./run.sh --version=2.4 -a=&lt;aggregator-plugin-path></code></pre><h1>Running on Windows</h1><p>Sorry, this is not supported at the moment. We'd need to create equivalents of the shell scripts we already
-have in this project for running on Linux/MacOS. Feel like you'd be interested in doing that?</p>
-<h1>Troubleshooting</h1><blockquote>
-<p>(might move this section to an FAQ)</p>
-</blockquote>
-<h2>Tests/Browser hangs when running on my local development machine</h2><p>You need to determine if this is an issue with a change to the test harness itself, or as a result of a change to the
-local environment e.g. a browser version update (most common cause).</p>
-<p>Things to check:</p>
-<ol>
-<li>Are the acceptance tests passing on the CI server (https://ci.blueocean.io/). If they're failing there, then it might not be a local env issue.</li>
-<li>Did the browser auto-update to a version that has Selenium compatibility issues. We have seen issues with Firefox versions (e.g. Firefox 47.x and Selenium 2.53). As well as upgrading/downgrading the browser version to something that's compatible with the Selenium version, it might be a good idea to turn off browser auto-updates, otherwise there's a good chance of hitting issues again.</li>
-<li>If you have local changes, stash/revert them and try a version that was known to work previously.</li>
-</ol>
-<h1>Running in dev mode</h1><p>When running in normal mode, tests are run via JUnit and <code>NightwatchTest</code>
-(which uses the <code>JenkinsAcceptanceTestRule</code> from the main acceptance test harness). This is good
-when running all of the tests (e.g. CI builds) because it launches a clean Jenkins (clean <code>JENKINS_HOME</code> etc) for every
-run/suite. The downside to this however is that it's not such an easy model to use when developing tests
-because of the overhead of starting a new Jenkins every time (30+ seconds every time).</p>
-<p>For this we have a &quot;dev&quot; mode option which allows you to run a Jenkins instance in the background, keeping it
-running and then, in another terminal, to run <a href="http://nightwatchjs.org/">nightwatch</a> commands (a Selenium JS framework) to
-run tests quickly as you are writing them.</p>
-<p>To run in dev mode, simply add the <code>--dev</code> (or just <code>-d</code>) switch e.g.</p>
-<pre class="prettyprint source lang-sh"><code>./run.sh -a=&lt;aggregator-plugin-path> --dev</code></pre><p>An example of one of the <a href="http://nightwatchjs.org/">nightwatch</a> test scripts is <a href="src/test/js/smoke.js">smoke.js</a>. It is hooked into
-the main (maven) build via <a href="src/test/java/io/jenkins/blueocean/SmokeTest.java">SmokeTest.java</a>,
-but to run <a href="src/test/js/smoke.js">smoke.js</a> while running in dev mode, simply run:</p>
-<pre class="prettyprint source lang-sh"><code>nightwatch src/test/js/smoke.js</code></pre><p>Of course this assumes you have the <a href="http://nightwatchjs.org/">nightwatch</a> package globally installed (<code>npm install -g nightwatch</code>).
-Alternatively, you can just run <code>npm test</code> to run all <a href="http://nightwatchjs.org/">nightwatch</a> tests.</p>
-<p><a href="https://youtu.be/o8r4ztgpm8E"><img src="http://img.youtube.com/vi/o8r4ztgpm8E/maxresdefault.jpg" alt="Video"></a></p>
-<h1>Client code log output</h1><p>When running in <code>--dev</code> mode, it can be useful to turn on client code log output. To do this, simply set
-the <code>LOG_CONFIG</code> env variable e.g. to turn on SSE logging:</p>
-<pre class="prettyprint source"><code>$ export LOG_CONFIG=sse
-$ nightwatch ./src/test/js/karaoke-*.js</code></pre></article>
-    </section>
+    
 
+    
 
+    
 
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -192,7 +201,7 @@ $ nightwatch ./src/test/js/karaoke-*.js</code></pre></article>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on September 9th 2016, 2:36:01 pm
+		on September 12th 2016, 11:31:22 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

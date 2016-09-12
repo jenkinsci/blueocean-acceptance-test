@@ -4,14 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: custom_commands/waitForJobCreated</title>
+	<title>Documentation Module: noStages</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
 
 </head>
 
@@ -32,15 +32,15 @@
 			
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-bluePipelineRunDetails.html">bluePipelineRunDetails</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-custom_commands_waitForJobCreated.html">custom_commands/waitForJobCreated</a></li><li><a href="module-custom_commands_waitForJobDeleted.html">custom_commands/waitForJobDeleted</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li>
+				<ul class="dropdown-menu inline">
+					<li><a href="custom_commands.module_waitForJobCreated.html">custom_commands.waitForJobCreated</a></li><li><a href="custom_commands.module_waitForJobDeleted.html">custom_commands.waitForJobDeleted</a></li><li><a href="custom_commands.module_waitForJobRunEnded.html">custom_commands.waitForJobRunEnded</a></li><li><a href="custom_commands.module_waitForJobRunStarted.html">custom_commands.waitForJobRunStarted</a></li><li><a href="edgeCases.module_folder.html">edgeCases.folder</a></li><li><a href="karaoke.module_freestyle.html">karaoke.freestyle</a></li><li><a href="karaoke.module_freestylePing.html">karaoke.freestylePing</a></li><li><a href="karaoke.module_noStages.html">karaoke.noStages</a></li><li><a href="karaoke.module_stages.html">karaoke.stages</a></li><li><a href="module-bluePipelineRunDetails.html">bluePipelineRunDetails</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-testcases.html">testcases</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li><li><a href="testcases.module_edgeCases.html">testcases.edgeCases</a></li><li><a href="testcases.module_karaoke.html">testcases.karaoke</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#disconnect">disconnect</a></li><li><a href="global.html#util">util</a></li>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#disconnect">disconnect</a></li>
 				</ul>
 			</li>
 			
@@ -72,7 +72,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: custom_commands/waitForJobCreated</h1>
+	<h1 class="page-title">Module: noStages</h1>
 <section>
 
 <header>
@@ -83,6 +83,8 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description"><p>TEST: logs tailing a pipeline job without stages, but with steps - karaoke mode</p></div>
         
 
         
@@ -148,17 +150,13 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~command"><span class="type-signature">&lt;inner> </span>command(jobName [, onCreated] [, timeout])</h4>
+    <h4 class="name" id=".%22BuildPipelineJob%22"><span class="type-signature">&lt;static> </span>"Build Pipeline Job"()</h4>
     
     
 </dt>
 <dd>
 
     
-    <div class="description">
-        <p>Nightwatch command to wait for a job to be created.</p>
-    </div>
-    
 
     
 
@@ -166,133 +164,597 @@
 
     
     
-        <h5>Parameters:</h5>
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
         
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22CheckJobBlueOceanPipelineActivityPagehasrun-stopfollow%22"><span class="type-signature">&lt;static> </span>"Check Job Blue Ocean Pipeline Activity Page has run  - stop follow"()</h4>
     
-
-        <tr>
-            
-                <td class="name"><code>jobName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>the name of the job we are waiting on</p></td>
-        </tr>
+    
+</dt>
+<dd>
 
     
 
-        <tr>
-            
-                <td class="name"><code>onCreated</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
+    
 
     
 
-        <tr>
-            
-                <td class="name"><code>timeout</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>callback to be invoke when finished, will pass the sse event to the callback</p></td>
-        </tr>
+    
+    
 
     
-    </tbody>
-</table>
+<dl class="details">
+    
 
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22CheckJobBlueOceanPipelinerundetailpage-follow%22"><span class="type-signature">&lt;static> </span>"Check Job Blue Ocean Pipeline run detail page - follow"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22Checkwhetheralogwhichexceed150kbcontainsalinktofulllogandifclickeditdisappear%22"><span class="type-signature">&lt;static> </span>"Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22Checkwhetherastepthatdoesnothasalogaswellwillhavetheexpandodisabled%22"><span class="type-signature">&lt;static> </span>"Check whether a step that does not has a log as well will have the expando disabled"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22Checkwhethertheartifactstabshowsanemptystatehint%22"><span class="type-signature">&lt;static> </span>"Check whether the artifacts tab shows an empty state hint"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22Checkwhetherthechangestabshowsanemptystatehint%22"><span class="type-signature">&lt;static> </span>"Check whether the changes tab shows an empty state hint"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22Checkwhetherthetesttabshowsanemptystatehint%22"><span class="type-signature">&lt;static> </span>"Check whether the test tab shows an empty state hint"()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".%22CreatePipelineJob%5C%22noStages%5C%22%22"><span class="type-signature">&lt;static> </span>"Create Pipeline Job \"noStages\""()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
     
 
     
@@ -400,7 +862,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on September 9th 2016, 12:34:45 pm
+		on September 12th 2016, 11:31:22 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
