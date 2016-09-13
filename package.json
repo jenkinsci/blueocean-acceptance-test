@@ -4,7 +4,9 @@
   "description": "Blue Ocean acceptance tests",
   "main": "index.js",
   "scripts": {
-    "test": "nightwatch"
+    "test": "nightwatch",
+    "site-build": "rm -rf docs/; gulp doc",
+    "site-publish": "npm run site-build;./site-publish.sh"
   },
   "repository": {
     "type": "git",
