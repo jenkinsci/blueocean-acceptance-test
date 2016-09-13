@@ -1,8 +1,16 @@
 const url = require('../../util/url');
-
-// Pipeline create (new item) page object (http://nightwatchjs.org/guide#page-objects)
 const suffix = 'newJob';
-
+/** @module folderCreate
+ * @memberof page_objects
+ * @description Represents the folder create page, which is a wrapper around the classic
+ * create job page of jenkins.
+ *
+ * If called as in the example it is the same as
+ * ```https://ci.blueocean.io/view/All/newJob```
+ *
+ * @example
+ * const folderCreate = browser.page.folderCreate().navigate();
+ * */
 module.exports = {
     url: function () {
         return this.api.launchUrl + '/view/All/' + suffix;
@@ -16,16 +24,18 @@ module.exports = {
     }
 };
 
-// Nightwatch commands.
-// http://nightwatchjs.org/guide#writing-commands
 module.exports.commands = [{
-    /*
-     @param basePath may be a nested path
-     @param jobName the name of the new job to be created
+    /**
+     * Create a freestyle project in a certain path
+     * @example folderCreate.createFreestyle(folders.join('/'), jobName, 'freestyle.sh');
+     * @param basePath {String} may be a nested path
+     * @param jobName {String} the name of the new job to be created
+     * @param script {String} the file name of the freestyle script in ROOT/src/test/resources/test_scripts
       */
 
-    createFreestyle: function (browser, basePath, jobName, script) {
+    createFreestyle: function (basePath, jobName, script) {
         var self = this;
+        const browser = this.api;
         const fullProjectName = basePath+  '/' + jobName;
         const link = url.getJobUrl(this.api.launchUrl, basePath);
         self.navigate(link+ suffix);
@@ -41,8 +51,14 @@ module.exports.commands = [{
             .click('@save', function () {
             });
     },
-    createFolders: function(browser, folders) {
+    /**
+     * Create a path of folders.
+     * @example folderCreate.createFolders(['firstFolder', '三百', 'ñba', '七']);
+     * @param folders {Array} an array of {String} representing a deep path
+     */
+    createFolders: function(folders) {
         var self = this;
+        const browser = this.api;
         // we do not want to modify the original array
         const clone = folders.slice();
         const firstChild = clone.shift();

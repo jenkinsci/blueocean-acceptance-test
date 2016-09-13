@@ -1,5 +1,11 @@
-// Pipeline config page object (http://nightwatchjs.org/guide#page-objects)
-
+/** @module pipelineConfig
+ * @memberof page_objects
+ * @description Represents the pipeline config page of classic jenkins. Used from within @see {@link module:pipelineCreate}
+ * @example
+ self.api.page.pipelineConfig().forJob(jobName)
+ .setPipelineScript(script)
+ .click('@save', oncreated);
+ * */
 var fs = require('fs');
 
 exports.elements = {
@@ -7,14 +13,23 @@ exports.elements = {
     save: 'span.yui-button[name="Submit"]'
 };
 
-// Nightwatch commands.
-// http://nightwatchjs.org/guide#writing-commands
 exports.commands = [
     {
+        /**
+         * Returns the config page of a certain job
+         * @param jobName {String} name of the job to configure
+         * @returns {Object} self - nightwatch page object
+         */
         forJob: function(jobName) {
             var jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
             return this.navigate(jobUrl);
         },
+        /**
+         * Set the pipeline script to the correct input field and then saves the form
+         * @param script {String} the name of the script that shoould be used to be injected. Has to
+         * be present in ROOT/src/test/resources/test_scripts
+         * @returns {Object} self - nightwatch page object
+         */
         setPipelineScript: function (script) {
             var scriptText = readTestScript(script);
     
@@ -30,7 +45,11 @@ exports.commands = [
         }
     }
 ];
-
+/**
+ * Synchrony read the script file if exists
+ * @param script {String} - file name
+ * @returns {*}
+ */
 function readTestScript(script) {
     var fileName = 'src/test/resources/test_scripts/' + script;
     

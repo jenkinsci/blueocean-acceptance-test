@@ -1,57 +1,19 @@
-// Blue Ocean pipeline run detail page object (http://nightwatchjs.org/guide#page-objects)
 const url = require('../../util/url');
-/*
- * Helper function which validates basic integrity of a nightwatch response object
- * @param {Object} self - nightwatch page object
- * @param {Object} response - nightwatch response object
- */
-const sanityCheck = function (self, response) {
-    self.assert.equal(typeof response, "object");
-    self.assert.equal(response.status, 0);
-};
-/*
- * Helper function which validate that a code block is visible
- * @param {Object} self - nightwatch page object
- * @param {Boolean} [expand=true] - if false we will not validate that a code is present, only that the click was successful.
- * @returns {Function} - callback for onClick validations
- */
-const isCodeBlockVisibleCallback = function(self, expand) {
-    return function (response) {
-        // sanity test
-        sanityCheck(self, response);
-        // default value for expand is true
-        if (expand === undefined) {
-            expand = true;
-        }
-        // if we expand, validate that we really did
-        if (expand) {
-            // we will have a code tag if expand worked
-            self.waitForElementVisible('code')
-                .getText('code', function (result) {
-                    this.assert.notEqual(null, result.value);
-                });
-        }
-    };
-};
-/*
- * Helper that validates, whether a certain selector return at least one entry
- * @param {String} selector  - a css selector
- * @param {Object} self - nightwatch page object
- * @param {Number} [expectedMinimum] - the minimum which we await
- */
-const notEmptyHelper = function (selector, self, expectedMinimum) {
-    const browser = self.api;
-    browser.elements('css selector', selector, function (codeCollection) {
-        sanityCheck(self, codeCollection);
-        if (expectedMinimum) {
-            self.assert.equal(codeCollection.value.length >= expectedMinimum, true);
-        } else {
-            self.assert.equal(codeCollection.value.length > 0, true);
-        }
-    });
-    return self;
-};
+const pageHelper = require('../../util/pageHelper');
+//oh man, I miss es6 import :(
+const sanityCheck = pageHelper.sanityCheck;
+const isCodeBlockVisibleCallback = pageHelper.isCodeBlockVisibleCallback;
+const notEmptyHelper = pageHelper.notEmptyHelper;
+/** @module bluePipelineRunDetails
+ * @memberof page_objects
+ * @description Represents the detail page of a job in blueocean
+ *
+ * @example
+ *   const blueRunDetailPage = browser.page.bluePipelineRunDetail()
+ .forRun(jobNameFreestyle, 'jenkins', 1);
+ * */
 module.exports = {
+    // selectors
     elements: {
         code: 'code',
         progressBar: 'div.loadingContainer',
@@ -81,24 +43,14 @@ module.exports = {
     }
 };
 
-/*
- * Nightwatch commands.
- * http://nightwatchjs.org/guide#writing-commands
- *
- * We are using in commands many times the following construct.
- * I will document here instead repeating the comments in every construct.
- *
- * @example
- * // to make component chain-able we will return self - part 1
- * const self = this;
- * ...
- * // to make component chain-able we will return self - part 2
- * return self;
- * @returns {Object} self - nightwatch page object
- */
 module.exports.commands = [{
-    /*
-     * Navigate to a certain detail page, calculated based on different params
+    /**
+     * Navigate to a certain detail page, calculated based on diferent params
+     *
+     * @example
+     *   const blueRunDetailPage = browser.page.bluePipelineRunDetail()
+     .forRun(jobNameFreestyle, 'jenkins', 1);
+     *
      * @param {String} jobName
      * @param {String} orgName
      * @param {String|Number} branchName - either the branchName o the buildNumber
@@ -112,7 +64,7 @@ module.exports.commands = [{
         this.buildNumber = (typeof branchName === 'number' ? branchName : buildNumber);
         return this.navigate(this.pageUrl());
     },
-    /*
+    /**
      * Will return either a relative or an absolute URL
      * @param {Boolean} relative
      * @returns {String} url
@@ -124,7 +76,7 @@ module.exports.commands = [{
         this.api.launchUrl + runUrl :
             runUrl;
     },
-    /*
+    /**
      * Navigate to a certain node of a detail page of a certain pipeline graph,
      * @param {String} id - node id
      * @returns {Object} self - nightwatch page object
@@ -133,7 +85,7 @@ module.exports.commands = [{
         const baseUrl = this.pageUrl();
         return this.navigate(baseUrl + '/pipeline/' + id);
     },
-    /*
+    /**
      * Navigate to a certain tab by going directly to the url
      * @param {String} tabName
      * @returns {Object} self - nightwatch page object
@@ -141,7 +93,7 @@ module.exports.commands = [{
     tabUrl: function (tabName, relative) {
         return this.pageUrl(relative) + '/' + tabName;
     },
-    /*
+    /**
      * Different test on general elements that should be visible on the page
      * @returns {Object} self - nightwatch page object
      */
@@ -156,7 +108,7 @@ module.exports.commands = [{
         // E.g. nothing on the pipeline graph that allows us to find it.
         return this;
     },
-    /*
+    /**
      * Validate that the detail title contains the expected value
      * @param {String} expected - the title we await
      * @returns {Object} self - nightwatch page object
@@ -171,7 +123,7 @@ module.exports.commands = [{
         });
         return self;
     },
-     /*
+   /**
      * Close the modal view
      * @returns {Object} self - nightwatch page object
      */
@@ -190,7 +142,7 @@ module.exports.commands = [{
         })
         return self;
     },
-    /*
+    /**
      * Navigate to a certain tab by clicking on it
      * @param {String} tab - tabName
      * @returns {Object} self - nightwatch page object
@@ -199,9 +151,9 @@ module.exports.commands = [{
         const self = this;
         const browser = self.api;
         // leverage to url helper
-        return url.clickTab(browser, self, tab);
+        return url.clickTab(self, tab);
     },
-    /*
+    /**
      * Click the "Full Log" button and validate that we have changed the url
      * @param {String} tab - tabName
      * @returns {Object} self - nightwatch page object
@@ -227,7 +179,7 @@ module.exports.commands = [{
         return self;
 
     },
-    /*
+    /**
      * validate that the button for the full log is not present
      * @returns {Object} self - nightwatch page object
      */
@@ -236,7 +188,7 @@ module.exports.commands = [{
         this.expect.element('@fullLog').to.not.be.present.before(1000);
         return this;
     },
-    /*
+    /**
      * validate that show the progressBar to indicate loading
      * @returns {Object} self - nightwatch page object
      */
@@ -250,7 +202,7 @@ module.exports.commands = [{
         return self;
 
     },
-    /*
+    /**
      * validate that the pipeline graph is present
      * @returns {Object} self - nightwatch page object
      */
@@ -259,7 +211,7 @@ module.exports.commands = [{
         self.waitForElementVisible('@highlightedGraph');
         return self;
     },
-    /*
+    /**
      * validate that we have some steps to show
      * @returns {Object} self - nightwatch page object
      */
@@ -269,7 +221,7 @@ module.exports.commands = [{
         const selector = '.logConsole';
         return notEmptyHelper(selector, self, expectedMinimum);
     },
-    /*
+    /**
      * validate that the log console is present
      * @returns {Object} self - nightwatch page object
      */
@@ -278,7 +230,7 @@ module.exports.commands = [{
         self.waitForElementVisible('@code');
         return self;
     },
-    /*
+    /**
      * validate that the emptyState box is present
      * @returns {Object} self - nightwatch page object
      */
@@ -287,7 +239,7 @@ module.exports.commands = [{
         self.waitForElementVisible('@emptystate');
         return self;
     },
-    /*
+    /**
      * validate that the emptyState box contains a span which indicates queued state
      * @returns {Object} self - nightwatch page object
      */
@@ -296,7 +248,7 @@ module.exports.commands = [{
         self.waitForElementVisible('@emptystateQueued');
         return self;
     },
-    /*
+    /**
      * validate that the artifact table has entries
      * @param {Number} [expectedMinimum]
      * @returns {Object} self - nightwatch page object
@@ -307,7 +259,7 @@ module.exports.commands = [{
         const selector = 'table.artifacts-table tr';
         return notEmptyHelper(selector, self, expectedMinimum ? expectedMinimum + 1 : 1);  // +1 because of the heading row
     },
-     /*
+     /**
      * validate that the changes table has entries
      * @param {Number} [expectedMinimum]
      * @returns {Object} self - nightwatch page object
@@ -318,7 +270,7 @@ module.exports.commands = [{
         const selector = 'table.changeset-table tr';
         return notEmptyHelper(selector, self, expectedMinimum ? expectedMinimum + 1 : 1);  // +1 because of the heading row
     },
-    /*
+    /**
      * validate that the we have failing tests
      * @param {Number} [expectedMinimum]
      * @returns {Object} self - nightwatch page object
@@ -329,7 +281,7 @@ module.exports.commands = [{
         const selector = 'div.new-failure-block div.result-item';
         return notEmptyHelper(selector, self, expectedMinimum);
     },
-    /*
+    /**
      * validate that the authors in the modal header are condensed
      * @returns {Object} self - nightwatch page object
      */
@@ -344,7 +296,7 @@ module.exports.commands = [{
         });
         return self;
     },
-    /*
+    /**
      * validate that the authors in the modal header are not condensed
      * @returns {Object} self - nightwatch page object
      */
@@ -359,7 +311,7 @@ module.exports.commands = [{
         });
         return self;
     },
-    /*
+    /**
      * validate that the authors are not set - in case of no scm changes
      * @returns {Object} self - nightwatch page object
      */
@@ -368,7 +320,7 @@ module.exports.commands = [{
         self.expect.element('@authors').to.not.be.present.before(1000);
         return self;
     },
-    /*
+    /**
      * Locate and click the first result item
      * @param {boolean} expand - if undefined or true we will assert whether an expand has happened
      * @returns {Object} self - nightwatch page object
@@ -381,7 +333,7 @@ module.exports.commands = [{
 
         return self;
     },
-    /*
+    /**
      * Locate and click the first result item that has failed
      * @param {boolean} expand - if undefined or true we will assert whether an expand has happened
      * @returns {Object} self - nightwatch page object
@@ -394,7 +346,7 @@ module.exports.commands = [{
         // to make component chain-able we will return self - part 2
         return self;
     },
-    /*
+    /**
      * test whether the content container has scrolled to the bottom - using scrollHeight
      * @returns {Object} self - nightwatch page object
      */

@@ -1,13 +1,24 @@
 const JOB = 'noStagesFail';
+/** @module failing
+ * @memberof testcases
+ * @description TEST: basic tests around the failing pipeline. Test whether the result is not collapsed.
+ */
 module.exports = {
-    // create a simple pipeline, that will produce a failure
-    'Create Pipeline Job "noStagesFail"': function (browser) {
+    /**
+     * Create Pipeline Job "noStagesFail", create a simple pipeline, that will produce a failure
+     * @param browser
+     */
+    'Step 01': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
         // we have used the noStages script as basis
         pipelinesCreate.createPipeline(JOB, 'noStagesFailing.groovy');
     },
 
-    'Build Pipeline Job': function (browser) {
+    /**
+     * Build Pipeline Job
+     * @param browser
+     */
+    'Step 02': function (browser) {
         const pipelinePage = browser.page.jobUtils().forJob('noStagesFail');
         // start to build the pipeline
         pipelinePage.buildStarted(function() {
@@ -18,8 +29,12 @@ module.exports = {
                 .waitForElementVisible('@executer');
         });
     },
-    // now tesinting JENKINS-37666
-    'Check whether the resultItemas are collapsing as expected.': function (browser) {
+    /**
+     * Check whether the resultItemas are collapsing as expected.
+     * @param browser
+     */
+    // now testing JENKINS-37666
+    'Step 03': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(JOB, 'jenkins', 1);
         // we want to analyse the result after the job has finished
         browser.waitForJobRunEnded(JOB, function() {
