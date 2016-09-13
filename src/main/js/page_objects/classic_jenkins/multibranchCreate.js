@@ -40,6 +40,10 @@ module.exports.commands = [{
         this.jobName = jobName;
         return this.navigate(jobUrl + '/' + suffix);
     },
+    newItem: function(jobName) {
+        var jobUrl = url.getJobUrl(this.api.launchUrl, jobName);
+        return this.navigate(jobUrl + '/newJob');
+    },
 
     /**
      * @example // Let us create a multibranch object in the nested folders
@@ -58,6 +62,9 @@ branchCreate.createBranch(multiBranchJob, pathToRepo);
         self.click('@multibranchType');
         self.waitForElementPresent('@submit');
         self.click('@submit');
+
+        // We should now be on the configuration page for
+        // the multibranch job.
         self.waitForElementPresent('@button');
         self.click('@button');
         self.waitForElementPresent('@gitA');

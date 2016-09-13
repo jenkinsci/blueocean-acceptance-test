@@ -10,7 +10,7 @@ var fs = require('fs');
 
 exports.elements = {
     button: {
-        selector: '//button[@path="/hetero-list-add[builder]"]',
+        selector: '//button[@path="/hetero-list-add[builder]"]/parent::span/parent::span',
         locateStrategy: 'xpath',
     },
     shell: {
@@ -42,9 +42,10 @@ exports.commands = [
          */
         setFreestyleScript: function (script) {
             const scriptText = readTestScript(script);
-            this.waitForElementPresent('@button')
+            this.moveConfigpageButtons() // Need to move the config page buttons as they block clicking on the build step button
+                .waitForElementVisible('@button')
                 .click('@button')
-                .waitForElementPresent('@shell')
+                .waitForElementVisible('@shell')
                 .click('@shell')
                 .waitForElementPresent('@scriptHook');
             // we need to do the following to inject the script based on

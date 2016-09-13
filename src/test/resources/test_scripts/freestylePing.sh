@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ping spiegel.de -c 10
+ping -c 10 spiegel.de
