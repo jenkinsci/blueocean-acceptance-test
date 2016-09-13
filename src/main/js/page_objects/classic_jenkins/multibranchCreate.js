@@ -38,7 +38,7 @@ module.exports.commands = [{
     forJob: function(jobName) {
         var jobUrl = url.getJobUrl(this.api.launchUrl, jobName);
         this.jobName = jobName;
-        return this.navigate(jobUrl);
+        return this.navigate(jobUrl + '/' + suffix);
     },
 
     /**

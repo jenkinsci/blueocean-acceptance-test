@@ -81,7 +81,7 @@ module.exports = {
      */
     clickTab: function(self, tab) {
         const tabSelector = this.tabSelector(tab);
-        const browser = this.api;
+        const browser = self.api;
         self.waitForElementVisible(tabSelector);
         self.click(tabSelector);
         browser.url(function (response) {
