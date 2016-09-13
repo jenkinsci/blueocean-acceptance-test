@@ -1,11 +1,10 @@
 /**
- * Nightwatch command to remove the breadcrumb bar on classic jenkins pages.
+ * Nightwatch command to move the config page buttons out of the way.
  * See http://nightwatchjs.org/guide#writing-custom-commands
  * <p/>
- * The breadcrumb bar in classic Jenkins is sticky positioned at the top
+ * The config page save/apply buttons in classic Jenkins is sticky positioned at the bottom
  * of the page and can block events getting to elements e.g. selecting
- * the job type on the create item page. This command removes it completely
- * by injecting some JS into the page.
+ * build step dropdown.
  */
 
 const util = require('util');
@@ -19,9 +18,9 @@ util.inherits(Cmd, events.EventEmitter);
 Cmd.prototype.command = function () {
 
     this.api.execute(function() {
-        var breadcrumb = document.documentElement.getElementsBySelector('#breadcrumbBar');
-        if (breadcrumb && breadcrumb.length == 1) {
-            breadcrumb[0].parentElement.removeChild(breadcrumb[0]);
+        var buttonsDiv = document.documentElement.getElementsBySelector('#bottom-sticker');
+        if (buttonsDiv && buttonsDiv.length == 1) {
+            buttonsDiv[0].setAttribute('style', 'right: 0px;');
         }
     });
 
