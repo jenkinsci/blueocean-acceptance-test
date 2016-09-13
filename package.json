@@ -23,8 +23,8 @@
   "license": "MIT",
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {
-    "@jenkins-cd/js-modules": "0.0.8-beta3",
-    "@jenkins-cd/sse-gateway": "0.0.9-beta2",
+    "@jenkins-cd/js-modules": "0.0.8",
+    "@jenkins-cd/sse-gateway": "0.0.9",
     "events": "1.1.1",
     "eventsource": "0.2.1",
     "fs-extra": "^0.30.0",
