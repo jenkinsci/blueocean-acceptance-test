@@ -40,6 +40,10 @@ module.exports.commands = [{
         this.jobName = jobName;
         return this.navigate(jobUrl + '/' + suffix);
     },
+    newItem: function(jobName) {
+        var jobUrl = url.getJobUrl(this.api.launchUrl, jobName);
+        return this.navigate(jobUrl + '/newJob');
+    },
 
     /**
      * @example // Let us create a multibranch object in the nested folders

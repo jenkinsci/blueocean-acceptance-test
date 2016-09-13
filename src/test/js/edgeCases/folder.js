@@ -69,7 +69,7 @@ module.exports = {
         // create nested folder for the project
         folderCreate.createFolders(anotherFolders);
         // go to the multibranch creation page
-        const branchCreate = browser.page.multibranchCreate().forJob(anotherFolders.join('/'));
+        const branchCreate = browser.page.multibranchCreate().newItem(anotherFolders.join('/'));
         // Let us create a multibranch object in the nested folders
         branchCreate.createBranch(jobName, pathToRepo);
     },
