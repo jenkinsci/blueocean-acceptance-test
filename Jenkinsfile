@@ -13,13 +13,12 @@ node {
         stage 'build'
         dir('blueocean') {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
+          sh "echo *******************"
+          sh "echo `pwd`"
+          sh "echo *******************"
         }
-        sh "cd blueocean; mvn clean install"
-        sh "mvn clean install -DskipTests"
-
-        // Run the ATH
-        stage 'run'
-        sh "./run.sh -a=./blueocean/blueocean/"
+        sh "echo `pwd`"
+          sh "echo *******************"
 
       } catch(err) {
         currentBuild.result = "FAILURE"
