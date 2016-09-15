@@ -13,8 +13,8 @@ node {
         stage 'build'
         dir('blueocean') {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
-          sh "mvn clean install"
         }
+        sh "cd blueocean && mvn clean install"
         sh "mvn clean install -DskipTests"
 
         // Run the ATH
