@@ -14,11 +14,11 @@ node {
         dir('blueocean') {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
           sh "echo *******************"
-          sh "echo `pwd`"
+          sh "echo ${pwd()}"
           sh "echo *******************"
         }
-        sh "echo `pwd`"
-          sh "echo *******************"
+        sh "echo ${pwd()}"
+        sh "echo *******************"
 
       } catch(err) {
         currentBuild.result = "FAILURE"
