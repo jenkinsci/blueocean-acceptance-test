@@ -2,6 +2,8 @@ module.exports = (function (settings) {
     var fs = require('fs');
     var launchUrl;
     
+    var netaddr = require('network-address');
+
     if (process.env.LAUNCH_URL) {
         //
         // This allows you to run the tests against a Jenkins instance of
@@ -28,7 +30,19 @@ module.exports = (function (settings) {
         launchUrl = fs.readFileSync(jenkins_url_file, 'utf8');
     }
     
+    // Replace localhost addresses with the actual IP, allowing it
+    // to work inside a docker container running on the host.
+    launchUrl = launchUrl.replace('localhost', netaddr());
+    launchUrl = launchUrl.replace('127.0.0.1', netaddr());
+
     console.log('Jenkins running at: ' + launchUrl);
+    console.log("    NOTE:");
+    console.log("        Selenium and the browser (Firefox) are running in a docker");
+    console.log("        container that also has VNC. This allows you to connect if");
+    console.log("        you'd like to look at the browser while the tests run.");
+    console.log("        Simple run:");
+    console.log("         $ open vnc://:secret@localhost:15900");
+    console.log("");
     
     settings.test_settings.default.launch_url = launchUrl;
 

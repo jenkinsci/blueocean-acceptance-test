@@ -25,6 +25,7 @@ JENKINS_VERSION=2.7.3
 SELENIUM_VERSION=2.53
 
 LOCAL_SNAPSHOTS=false
+RUN_SELENIUM=false
 PLUGINS=""
 AGGREGATOR_DIR=""
 AGGREGATOR_ENV=""
@@ -73,6 +74,7 @@ if [ "${DEV_JENKINS}" == "true" ]; then
     # having to restart Jenkins.
     PROFILES="-P runDevRunner"
     TEST_TO_RUN=""
+    RUN_SELENIUM=true
 fi
 
 # For now, the location of the aggregator plugin must be defined until we have
@@ -157,7 +159,13 @@ source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/
 # Download Selenium standalone
 source download.sh "http://selenium-release.storage.googleapis.com/${SELENIUM_VERSION}/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.1.jar"
 
+if [ "${RUN_SELENIUM}" == "true" ]; then
+    ./start-selenium.sh
+fi
+
 # Run the tests
 eval "${EXECUTION}"
 
-
+if [ "${RUN_SELENIUM}" == "true" ]; then
+    ./stop-selenium.sh
+fi
