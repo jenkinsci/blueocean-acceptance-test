@@ -2,7 +2,7 @@
 
 node {
   stage 'init'
-  deleteDir()
+  //deleteDir()
   checkout scm
 
   def athImg = docker.image('headless-ath-firefox')
@@ -13,7 +13,7 @@ node {
         stage 'build'
         dir('blueocean') {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
-          sh "mvn clean install -DskipTests"
+          sh "mvn clean install"
         }
         sh "mvn clean install -DskipTests"
 
@@ -24,7 +24,7 @@ node {
       } catch(err) {
         currentBuild.result = "FAILURE"
       } finally {
-        deleteDir()
+        //deleteDir()
       }
     }
   }
