@@ -11,7 +11,7 @@ node {
       try {
         // Build blueocean and the ATH
         stage 'build'
-        dir('blueocean-plugin') {
+        dir('target/blueocean-plugin') {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
           sh "echo --------"
           sh "echo ${pwd()}"
