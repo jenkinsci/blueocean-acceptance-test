@@ -15,7 +15,7 @@ node {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
           sh "echo --------"
           sh "echo ${pwd()}"
-          sh "ls -al blueocean"
+          sh "ls -al"
           sh "echo --------"
         }
         sh "echo ${pwd()}"
