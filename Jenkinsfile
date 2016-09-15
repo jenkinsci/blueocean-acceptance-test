@@ -11,17 +11,18 @@ node {
       try {
         // Build blueocean and the ATH
         stage 'build'
-        dir('target/blueocean-plugin') {
+        dir('blueocean-plugin') {
           git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
-          sh "echo --------"
-          sh "echo ${pwd()}"
-          sh "ls -al target/blueocean-plugin"
-          sh "echo --------"
+          //
+          // Must cd into blueocean-plugin before running build
+          // see https://issues.jenkins-ci.org/browse/JENKINS-33510
+          sh "cd blueocean-plugin && mvn clean install"
         }
-        sh "echo ${pwd()}"
-        sh "ls -al"
-        sh "echo --------"
+        sh "mvn clean install -DskipTests"
 
+        // Run the ATH
+        stage 'run'
+        sh "./run.sh -a=./blueocean-plugin/blueocean/"
       } catch(err) {
         currentBuild.result = "FAILURE"
       } finally {
