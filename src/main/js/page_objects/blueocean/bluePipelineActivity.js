@@ -6,6 +6,9 @@
  *   const blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
  * */
 const url = require('../../util/url');
+const pageHelper = require('../../util/pageHelper');
+//oh man, I miss es6 import :(
+const sanityCheck = pageHelper.sanityCheck;
 
 module.exports = {
     elements: {
@@ -13,6 +16,11 @@ module.exports = {
         emptyStateShoes: '.empty-state .empty-state-icon.shoes',
         activityTable: '.activity-table',
         activityTableEntries: 'table.activity-table tbody tr',
+        runButton: 'a.run-button',
+        toastOpenButton: {
+            selector: '//a[@class="action" and position()=1]',
+            locateStrategy: 'xpath',
+        },
     }
 };
 module.exports.commands = [{
@@ -82,5 +90,24 @@ module.exports.commands = [{
         browser.elements('css selector', 'table.activity-table tbody tr', function (codeCollection) {
             this.assert.equal(codeCollection.value.length, expected);
         });
+    },
+    /**
+     * On Activity Page click the run button, then click the open in toast
+     * and then validate that we are on the detail page
+     * @returns {Object} self - nightwatch page object
+     */
+    clickRunButtonAndOpenDetail: function () {
+        var self = this;
+        const browser = this.api;
+        // first press the runButton
+        self.waitForElementVisible('@runButton');
+        self.click('@runButton');
+        // now press the toast "open" link
+        self.waitForElementVisible('@toastOpenButton');
+        self.click('@toastOpenButton', function (response) {
+            sanityCheck(self, response);
+        });
+        return self;
     }
 }];
+q
