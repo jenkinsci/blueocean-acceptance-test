@@ -1,10 +1,12 @@
 const jobName = 'parallelStages';
 /** @module stages
  * @memberof karaoke
- * @description TEST: logs tailing with stages and steps - karaoke mode
+ * @description REGRESSION-TEST: parallel karaoke not allowing branch selection or completing correctly
+ * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-37962|JENKINS-37962}
  *
- * Based on three different syntax files we will run the tests against each syntax to make sure they work all as expected.
- * We will cover
+ * TODO @see {@link https://issues.jenkins-ci.org/browse/JENKINS-37753|JENKINS-37753}
+ * REGRESSION: Steps showing up as incomplete when they are in fact complete
+ *
  */
 module.exports = {
     /** Create Pipeline Job "parallelStages" */
