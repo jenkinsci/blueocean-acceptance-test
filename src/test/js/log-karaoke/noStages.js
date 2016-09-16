@@ -1,3 +1,4 @@
+const jobName = 'noStages';
 /** @module noStages
  * @memberof karaoke
  * @description TEST: logs tailing a pipeline job without stages, but with steps - karaoke mode
@@ -6,11 +7,11 @@ module.exports = {
     /** Create Pipeline Job "noStages" */
     'Step 01': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline('noStages', 'no-stages.groovy');
+        pipelinesCreate.createPipeline(jobName, 'no-stages.groovy');
     },
     /** Build Pipeline Job*/
     'Step 02': function (browser) {
-        const pipelinePage = browser.page.jobUtils().forJob('noStages');
+        const pipelinePage = browser.page.jobUtils().forJob(jobName);
         pipelinePage.buildStarted(function() {
             // Reload the job page and check that there was a build done.
             pipelinePage
@@ -23,10 +24,10 @@ module.exports = {
      * need to click on an element so the up_arrow takes place in the window
      * */
     'Step 03': function (browser) {
-        const blueActivityPage = browser.page.bluePipelineActivity().forJob('noStages', 'jenkins');
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         // Check the run itself
         blueActivityPage.waitForRunRunningVisible('noStages-1');
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         
         // Wait for the table of pipeline steps to start rendering with
         // follow-on turned on.
@@ -81,7 +82,7 @@ module.exports = {
     /** Check Job Blue Ocean Pipeline run detail page - follow*/
     'Step 04': function (browser) {
         // Reload the page so as to restart karaoke mode        
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         browser.elements('css selector', 'div.result-item.success', function (collection) {
             const count = collection.value.length;
             // wait for the success update via sse event
@@ -102,9 +103,9 @@ module.exports = {
     },
     /** Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear*/
     'Step 05': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         
-        browser.waitForJobRunEnded('noStages', function() {
+        browser.waitForJobRunEnded(jobName, function() {
             // Note, tried using "last" selectors for both CSS and XPath
             // and neither worked in nightwatch e.g. //div[starts-with(@class, 'logConsole')][last()]
             // works in the browser, but not for nightwatch.
@@ -120,7 +121,7 @@ module.exports = {
     },
     /** Check whether a step that does not has a log as well will have the expando disabled*/
     'Step 06': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         // NOTE: if the pipeline script (no-stages.groovy) changes then the following
         // selector will need to be changed too.
         browser
@@ -128,19 +129,19 @@ module.exports = {
     },
     /** Check whether the test tab shows an empty state hint*/
     'Step 07': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.clickTab('tests');
         blueRunDetailPage.validateEmpty();
     },
     /** Check whether the changes tab shows an empty state hint*/
     'Step 08': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.clickTab('changes');
         blueRunDetailPage.validateEmpty();
     },
     /** Check whether the artifacts tab shows an empty state hint*/
     'Step 09': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('noStages', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.clickTab('artifacts');
         blueRunDetailPage.validateEmpty();
     }
