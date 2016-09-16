@@ -25,7 +25,9 @@ module.exports = {
                 .waitForElementVisible('@executer');
         });
     },
-    /** Check Job Blue Ocean Pipeline Activity Page has run  */
+    /** Check Job Blue Ocean Pipeline Activity Page has run.
+     * Check different nodes of the graph, first check that we are in first branch and that we have steps.
+     * Then change to the second parallel tree and check the same as before for the secondBranch*/
     'Step 03': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         // Check the run itself
@@ -45,7 +47,9 @@ module.exports = {
         // we should have now 2 steps
         blueRunDetailPage.validateSteps(2);
     },
-    /** Wait for job to end*/
+    /** Wait for job to end, TODO: then validate that the steps are all marked as finished
+     * TODO @see {@link https://issues.jenkins-ci.org/browse/JENKINS-37753|JENKINS-37753}
+     * */
     'Step 04': function (browser) {
         browser.waitForJobRunEnded(jobName, function () {
            // Here will test for JENKINS-37753
