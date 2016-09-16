@@ -69,5 +69,19 @@ module.exports = {
         var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 'jenkins', 1);
         
         blueRunDetailPage.assertBasicLayoutOkay();
+    },
+
+    /**
+     * On Activity Page click the run button, then click the open in toast
+     * and then validate that we are on the detail page.
+     * Regression test @see {@link https://issues.jenkins-ci.org/browse/JENKINS-38240|JENKINS-38240}
+     * @param browser
+     */
+    'Step 05': function (browser) {
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
+        blueActivityPage.clickRunButtonAndOpenDetail();
+        // Check the run itself
+        browser.page.bluePipelineRunDetail().assertBasicLayoutOkay();
     }
+
 };
