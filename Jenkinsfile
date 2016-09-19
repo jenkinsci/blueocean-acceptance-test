@@ -5,10 +5,10 @@ node {
     //deleteDir()
     checkout scm
 
-    def hostIP = sh ("PATH=./node node .printip.js")
-    sh "echo **********"
-    sh "echo ${hostIP}"
-    sh "echo **********"
+    sh "PATH=./node node .printip.js > hostip.txt"
+    def hostip = readFile 'hostip.txt'
+
+    sh "***** hostip: ${hostip}"
 
 //  def athImg = docker.image('blueocean-ath-builder')
 //  athImg.inside("--expose=1024-65535") {
