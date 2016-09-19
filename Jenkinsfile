@@ -6,7 +6,9 @@ node {
     checkout scm
 
     def hostIP = sh ("PATH=./node node .printip.js")
-    printf('******* ' + hostIP)
+    sh "echo **********"
+    sh "echo ${hostIP}"
+    sh "echo **********"
 
 //  def athImg = docker.image('blueocean-ath-builder')
 //  athImg.inside("--expose=1024-65535") {
