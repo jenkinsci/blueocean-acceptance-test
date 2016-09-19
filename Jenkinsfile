@@ -2,7 +2,7 @@
 
 node {
     stage 'init'
-    //deleteDir()
+    deleteDir()
     checkout scm
 
     stage 'build'
