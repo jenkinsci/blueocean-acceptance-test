@@ -8,11 +8,7 @@ node {
     stage 'build'
     dir('blueocean-plugin') {
         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
-        //
-        // Must cd into blueocean-plugin before running build
-        // see https://issues.jenkins-ci.org/browse/JENKINS-33510
-        // TODO: figure out why rest-impl tests fail and then remove -DskipTests
-        sh "cd blueocean-plugin && mvn clean install -DskipTests"
+        sh "mvn clean install -DskipTests"
     }
     sh "mvn clean install -DskipTests"
 
