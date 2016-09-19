@@ -8,7 +8,7 @@ node {
     sh "PATH=./node node .printip.js > hostip.txt"
     def hostip = readFile 'hostip.txt'
 
-    sh "hostip: ${hostip}"
+    sh "echo 'hostip: ${hostip}'"
 
 //  def athImg = docker.image('blueocean-ath-builder')
 //  athImg.inside("--expose=1024-65535") {
