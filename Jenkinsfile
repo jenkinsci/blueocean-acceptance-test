@@ -16,7 +16,7 @@ node {
 
         // Run the ATH
         stage 'run'
-        //sh "./run.sh -a=./blueocean-plugin/blueocean/"
+        sh "./run.sh -a=./blueocean-plugin/blueocean/"
     } catch (err) {
         currentBuild.result = "FAILURE"
     } finally {
