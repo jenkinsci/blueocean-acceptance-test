@@ -1,11 +1,11 @@
 #!groovy
 
 node {
-  stage 'init'
-  //deleteDir()
-  checkout scm
+    stage 'init'
+    //deleteDir()
+    checkout scm
 
-  sh "echo `PATH=./node/:./node/npm/:$PATH node .printip.js`"
+    sh "echo `PATH=./node node .printip.js` "
 
 //  def athImg = docker.image('blueocean-ath-builder')
 //  athImg.inside("--expose=1024-65535") {
