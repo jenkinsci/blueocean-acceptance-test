@@ -17,13 +17,6 @@ node {
     // Run selenium in a docker container of its own on the host.
     sh "./start-selenium.sh"
 
-    // Build blueocean and the ATH
-    stage 'build'
-    dir('blueocean-plugin') {
-        git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
-        sh "mvn clean install"
-    }
-
     try {
         def athImg = docker.image('blueocean-ath-builder')
 
@@ -33,14 +26,15 @@ node {
         athImg.inside("--expose=12345") {
             withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
                 try {
-//
-//                    // Build blueocean and the ATH
-//                    stage 'build'
-//                    dir('blueocean-plugin') {
-//                        git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
-//                        sh "cd blueocean-plugin && mvn clean install"
-//                    }
-//                    sh "mvn clean install -DskipTests"
+                    // Build blueocean and the ATH
+                    stage 'build'
+                    dir('blueocean-plugin') {
+                        git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
+                        // Need test-compile because the rest-impl has a test-jar that we
+                        // need to make sure gets compiled and installed for other modules.
+                        sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
+                    }
+                    sh "mvn clean install -DskipTests"
 
                     // Run the ATH
                     stage 'run'
