@@ -24,6 +24,7 @@
 JENKINS_VERSION=2.7.3
 SELENIUM_VERSION=2.53
 
+MAVEN_SETTINGS=""
 LOCAL_SNAPSHOTS=false
 RUN_SELENIUM=false
 ATH_SERVER_HOST=""
@@ -47,6 +48,9 @@ case $i in
     ;;
     -s|--snaps|--snapshots)
     LOCAL_SNAPSHOTS=true
+    ;;
+    --settings=*)
+    MAVEN_SETTINGS="${i#*=}"
     ;;
     -h=*|--host=*)
     ATH_SERVER_HOST="${i#*=}"
@@ -154,6 +158,9 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
+if [ "${MAVEN_SETTINGS}" != "" ]; then
+    MAVEN_SETTINGS="-s ${MAVEN_SETTINGS}"
+fi
 if [ "${ATH_SERVER_HOST}" != "" ]; then
     ATH_SERVER_HOST="blueoceanHost=${ATH_SERVER_HOST}"
 fi
@@ -161,7 +168,7 @@ if [ "${ATH_SERVER_PORT}" != "" ]; then
     ATH_SERVER_PORT="httpPort=${ATH_SERVER_PORT}"
 fi
 
-EXECUTION="env JENKINS_JAVA_OPTS=\"${JENKINS_JAVA_OPTS}\" ${ATH_SERVER_HOST} ${ATH_SERVER_PORT} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES} ${TEST_TO_RUN}"
+EXECUTION="env JENKINS_JAVA_OPTS=\"${JENKINS_JAVA_OPTS}\" ${ATH_SERVER_HOST} ${ATH_SERVER_PORT} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn ${MAVEN_SETTINGS} test ${PROFILES} ${TEST_TO_RUN}"
 
 echo ""
 echo "> ${EXECUTION}"
