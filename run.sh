@@ -155,10 +155,10 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
 fi
 
 if [ "${ATH_SERVER_HOST}" != "" ]; then
-    ATH_SERVER_HOST="--blueoceanHost=${ATH_SERVER_HOST}"
+    ATH_SERVER_HOST="blueoceanHost=${ATH_SERVER_HOST}"
 fi
 if [ "${ATH_SERVER_PORT}" != "" ]; then
-    ATH_SERVER_PORT="--httpPort=${ATH_SERVER_PORT}"
+    ATH_SERVER_PORT="httpPort=${ATH_SERVER_PORT}"
 fi
 
 EXECUTION="env JENKINS_JAVA_OPTS=\"${JENKINS_JAVA_OPTS}\" ${ATH_SERVER_HOST} ${ATH_SERVER_PORT} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES} ${TEST_TO_RUN}"
@@ -172,7 +172,6 @@ echo "------------------------------------------------"
 # Download the jenkins war
 source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war"
 # Download Selenium standalone
-source download.sh "http://selenium-release.storage.googleapis.com/${SELENIUM_VERSION}/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.1.jar"
 
 if [ "${RUN_SELENIUM}" == "true" ]; then
     ./start-selenium.sh

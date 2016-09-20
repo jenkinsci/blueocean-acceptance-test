@@ -74,7 +74,7 @@ public class BlueOceanWinstoneController extends LocalController {
     }
 
     protected int getWinstoneHttpPort() {
-        String httpPortEnv = System.getenv("--httpPort");
+        String httpPortEnv = System.getenv("httpPort");
         if (httpPortEnv != null) {
             return Integer.parseInt(httpPortEnv);
         }
