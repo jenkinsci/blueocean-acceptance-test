@@ -1,5 +1,6 @@
 module.exports = (function (settings) {
     var fs = require('fs');
+    var url = require('url');
     var launchUrl;
     
     var netaddr = require('network-address');
@@ -35,6 +36,8 @@ module.exports = (function (settings) {
     launchUrl = launchUrl.replace('localhost', netaddr());
     launchUrl = launchUrl.replace('127.0.0.1', netaddr());
 
+    var launchUrlObj = url.parse(launchUrl);
+
     console.log('Jenkins running at: ' + launchUrl);
     console.log("    NOTE:");
     console.log("        Selenium and the browser (Firefox) are running in a docker");
@@ -43,8 +46,12 @@ module.exports = (function (settings) {
     console.log("        Simple run:");
     console.log("         $ open vnc://:secret@localhost:15900");
     console.log("");
-    
+    console.log("    NOTE:");
+    console.log("        The selenium server is at " + launchUrlObj.hostname + ":4444");
+    console.log("");
+
     settings.test_settings.default.launch_url = launchUrl;
+    settings.test_settings.default.selenium_host = launchUrlObj.hostname;
 
     if (fs.existsSync('target/.selenium_server_provided')) {
         settings.selenium.start_process = false;
