@@ -28,6 +28,7 @@ node {
             withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
                 try {
                     // Use the m2 repo cache from the host by creating a settings.xml.
+                    sh 'mkdir /home/bouser/.m2repo'
                     writeFile file: 'settings.xml', text: "<settings><localRepository>/home/bouser/.m2repo</localRepository></settings>"
 
                     // Build blueocean and the ATH
