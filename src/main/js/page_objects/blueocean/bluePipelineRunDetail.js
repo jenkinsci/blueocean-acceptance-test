@@ -32,6 +32,7 @@ module.exports = {
         changes: 'table.changeset-table tr',
         tests: 'div.new-failure-block div.result-item',
         authors: 'a.authors',
+        circleSuccess: 'svg circle.success',
         firstResult: {
             selector: '//div[contains(@class, "result-item") and position()=1]',
             locateStrategy: 'xpath',
@@ -118,6 +119,22 @@ module.exports.commands = [{
         self.waitForElementVisible('@detailTitle');
         self.getText('@detailTitle', function (response) {
             sanityCheck(self, response);
+            const urlProject = (response.value);
+            self.assert.equal(urlProject.indexOf(expected) > -1, true);
+        });
+        return self;
+    },
+    /**
+     * Validate that the log title contains the expected value
+     * @param {String} expected - the title we await
+     * @returns {Object} self - nightwatch page object
+     */
+    assertLogTitle: function (expected) {
+        const self = this;
+        self.waitForElementVisible('@logHeader');
+        self.getText('@logHeader', function (response) {
+            sanityCheck(self, response);
+            console.log(response)
             const urlProject = (response.value);
             self.assert.equal(urlProject.indexOf(expected) > -1, true);
         });
