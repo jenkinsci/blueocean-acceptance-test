@@ -5,13 +5,16 @@ node {
     //deleteDir()
     checkout scm
 
+    // Need to build the ATH out here so as to get node via
+    // the frontend maven plugin
+    sh "mvn clean package -DskipTests"
+    // Now we can execute a node script to get the local host IP,
+    // which we need for running selenium in one docker container
+    // and the ATH itself in another.
     sh "PATH=./node node .printip.js > hostip.txt"
     def hostip = readFile 'hostip.txt'
 
-    def athImg = docker.image('blueocean-ath-builder')
-
     // Run selenium in a docker container of its own on the host.
-    //
     sh "./start-selenium.sh"
 
     // Build blueocean and the ATH
@@ -20,9 +23,10 @@ node {
         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
         sh "mvn clean install"
     }
-    sh "mvn clean install -DskipTests"
 
     try {
+        def athImg = docker.image('blueocean-ath-builder')
+
         // Expose the port on which the ATH Jenkins instance runs (12345), allowing the
         // Firefox browser (running in the selenium container) to make requests back
         // in etc.
