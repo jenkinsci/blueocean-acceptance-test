@@ -23,6 +23,7 @@ node {
         // Expose the port on which the ATH Jenkins instance runs (12345), allowing the
         // Firefox browser (running in the selenium container) to make requests back
         // in etc.
+        sh 'mkdir m2repo'
         athImg.inside("--expose=12345 -v m2repo:/home/bouser/.m2repo") {
             withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
                 try {
