@@ -171,7 +171,6 @@ echo "------------------------------------------------"
 
 # Download the jenkins war
 source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war"
-# Download Selenium standalone
 
 if [ "${RUN_SELENIUM}" == "true" ]; then
     ./start-selenium.sh
