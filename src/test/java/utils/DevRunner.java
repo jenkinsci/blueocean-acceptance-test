@@ -38,7 +38,7 @@ public class DevRunner extends BOJUnitTest {
         System.out.println("");
         System.out.println("------------------------------------------------------------------------------------");
         System.out.println("    A clean dev instance of Jenkins is running now.");
-        System.out.println("     - " + jenkins.getCurrentUrl());
+        System.out.println("     - " + getJenkinsUrl());
         System.out.println("");
         System.out.println("    You should now be able to develop tests against this instance without");
         System.out.println("    having to constantly restart Jenkins.");
