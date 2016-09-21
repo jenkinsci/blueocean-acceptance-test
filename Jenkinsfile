@@ -32,7 +32,7 @@ node {
                             "  <mirrors>\n" +
                             "    <mirror>\n" +
                             "      <id>localnexus</id>\n" +
-                            "      <url>http://192.168.1.3/repository/maven-public/</url>\n" +
+                            "      <url>http://192.168.1.3:8081/repository/maven-public/</url>\n" +
                             "      <mirrorOf>*</mirrorOf>\n" +
                             "    </mirror>\n" +
                             "  </mirrors>" +
