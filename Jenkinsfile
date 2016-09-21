@@ -44,9 +44,9 @@ node {
                         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
-                        sh "cd blueocean-plugin && mvn -s /home/bouser/settings.xml clean test-compile install -DskipTests"
+                        sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
                     }
-                    sh "mvn -s /home/bouser/settings.xml clean install -DskipTests"
+                    sh "mvn clean install -DskipTests"
 
                     // Run the ATH
                     stage 'run'
