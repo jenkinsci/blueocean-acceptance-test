@@ -28,7 +28,7 @@ node {
                 try {
                     sh "echo 'writing settings.xml'"
                     // Use the m2 repo cache from the host by creating a settings.xml.
-                    writeFile (file: '/home/bouser/.m2/settings.xml', text: "<settings>" +
+                    sh ("echo \"<settings>" +
                             "  <mirrors>\n" +
                             "    <mirror>\n" +
                             "      <id>localnexus</id>\n" +
@@ -37,7 +37,7 @@ node {
                             "    </mirror>\n" +
                             "  </mirrors>" +
                             "   <servers><server><id>localnexus</id><username>admin</username><password>admin123</password></server></servers>" +
-                            "</settings>");
+                            "</settings>\" > /home/bouser/.m2/settings.xml");
 
                     sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
