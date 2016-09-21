@@ -26,6 +26,7 @@ node {
         athImg.inside("--expose=12345") {
             withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
                 try {
+                    sh "echo 'writing settings.xml'"
                     // Use the m2 repo cache from the host by creating a settings.xml.
                     writeFile (file: '/home/bouser/.m2/settings.xml', text: "<settings>" +
                             "  <mirrors>\n" +
@@ -38,6 +39,7 @@ node {
                             "   <servers><server><id>localnexus</id><username>admin</username><password>admin123</password></server></servers>" +
                             "</settings>");
 
+                    sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
                     stage 'build'
                     dir('blueocean-plugin') {
