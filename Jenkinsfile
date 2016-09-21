@@ -52,7 +52,7 @@ node {
 
                     // Run the ATH
                     stage 'run'
-                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"${hostip}\" --port=12345 --settings /home/bouser/settings.xml "
+                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"${hostip}\" --port=12345"
                 } catch (err) {
                     sh "echo '${err.message}'"
                     currentBuild.result = "FAILURE"
