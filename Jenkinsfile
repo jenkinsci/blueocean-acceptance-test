@@ -14,6 +14,8 @@ node {
     sh "PATH=./node node .printip.js > hostip.txt"
     def hostip = readFile 'hostip.txt'
 
+    echo "Host IP: ${hostip}"
+
     // Run selenium in a docker container of its own on the host.
     sh "./start-selenium.sh"
 
@@ -38,7 +40,7 @@ node {
                         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
-                        sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
+                        // sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
                     }
                     sh "mvn clean install -DskipTests"
 
