@@ -1,10 +1,16 @@
-// Pipeline config page object (http://nightwatchjs.org/guide#page-objects)
-
+/** @module freestyleConfig
+ * @memberof page_objects
+ * @description Represents the freestyle config page of classic jenkins. Used from within @see {@link module:freestyleCreate}
+ * @example
+ self.api.page.freestyleConfig().forJob(jobName)
+ .setFreestyleScript(script)
+ .click('@save', oncreated);
+ * */
 var fs = require('fs');
 
 exports.elements = {
     button: {
-        selector: '//button[@path="/hetero-list-add[builder]"]',
+        selector: '//button[@path="/hetero-list-add[builder]"]/parent::span/parent::span',
         locateStrategy: 'xpath',
     },
     shell: {
@@ -17,19 +23,29 @@ exports.elements = {
     },
     save: 'span.yui-button[name="Submit"]'
 };
-// Nightwatch commands.
-// http://nightwatchjs.org/guide#writing-commands
 exports.commands = [
     {
+        /**
+         * Returns the config page of a certain job
+         * @param jobName {String} name of the job to configure
+         * @returns {Object} self - nightwatch page object
+         */
         forJob: function(jobName) {
             const jobUrl = this.api.launchUrl + 'job/' + jobName + '/configure';
             return this.navigate(jobUrl);
         },
+        /**
+         * Set the freestyle script to the correct input field and then saves the form
+         * @param script {String} the name of the script that shoould be used to be injected. Has to
+         * be present in ROOT/src/test/resources/test_scripts
+         * @returns {Object} self - nightwatch page object
+         */
         setFreestyleScript: function (script) {
             const scriptText = readTestScript(script);
-            this.waitForElementPresent('@button')
+            this.moveConfigpageButtons() // Need to move the config page buttons as they block clicking on the build step button
+                .waitForElementVisible('@button')
                 .click('@button')
-                .waitForElementPresent('@shell')
+                .waitForElementVisible('@shell')
                 .click('@shell')
                 .waitForElementPresent('@scriptHook');
             // we need to do the following to inject the script based on
@@ -51,10 +67,14 @@ exports.commands = [
         }
     }
 ];
-
+/**
+ * Synchrony read the script file if exists
+ * @param script {String} - file name
+ * @returns {*}
+ */
 function readTestScript(script) {
     const fileName = 'src/test/resources/test_scripts/' + script;
-    
+
     if (!fs.existsSync(fileName)) {
         // It's not a script file.
         // Must be a raw script text.

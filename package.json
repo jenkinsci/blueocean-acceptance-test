@@ -4,7 +4,11 @@
   "description": "Blue Ocean acceptance tests",
   "main": "index.js",
   "scripts": {
-    "test": "nightwatch"
+    "test": "npm run nightwatch",
+    "nightwatch": "PATH=./node:./node/npm:$PATH nightwatch",
+    "doinstall": "PATH=./node:./node/npm:$PATH npm install",
+    "site-build": "rm -rf docs/; gulp doc",
+    "site-publish": "npm run site-build;./site-publish.sh"
   },
   "repository": {
     "type": "git",
@@ -19,15 +23,25 @@
   "license": "MIT",
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {
-    "@jenkins-cd/sse-gateway": "0.0.7",
-    "events": "1.1.0",
+    "@jenkins-cd/js-modules": "0.0.8",
+    "@jenkins-cd/sse-gateway": "0.0.9",
+    "events": "1.1.1",
     "eventsource": "0.2.1",
+    "fs-extra": "^0.30.0",
+    "glob": "^7.0.6",
     "gulp": "^3.9.1",
+    "gulp-jsdoc3": "^0.3.0",
     "gulp-shell": "^0.5.2",
-    "nightwatch": "0.9.1",
-    "phantomjs-prebuilt": "2.1.7",
-    "request": "2.72.0",
+    "gulp-watch": "^4.3.9",
+    "nightwatch": "0.9.8",
+    "nodegit": "^0.14.1",
+    "phantomjs-prebuilt": "2.1.12",
+    "request": "2.74.0",
     "util": "0.10.3",
     "xmlhttprequest": "1.8.0"
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "faker": "^3.1.0"
   }
 }

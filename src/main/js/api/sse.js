@@ -7,6 +7,9 @@ var jobEventHistory = [];
  * Connect to the SSE Gateway.
  * <p>
  * DO NOT CALL: done automatically in the globals.
+ *
+ * @param browser
+ * @param done
  */
 exports.connect = function(browser, done) {
     if (jobChannel) {
@@ -44,6 +47,8 @@ exports.connect = function(browser, done) {
  * Disconnect from the SSE Gateway.
  * <p>
  * DO NOT CALL: done automatically in the globals.
+ *
+ * @param {Function} [onDisconnected] - callback to be invoke when finished, will pass the sse event to the callback
  */
 exports.disconnect = function(onDisconnected) {
     function clientDisconnect() {

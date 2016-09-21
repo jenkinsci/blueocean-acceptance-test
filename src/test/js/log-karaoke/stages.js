@@ -1,37 +1,77 @@
+/** @module stages
+ * @memberof karaoke
+ * @description TEST: logs tailing with stages and steps - karaoke mode
+ *
+ * Based on three different syntax files we will run the tests against each syntax to make sure they work all as expected.
+ * We will cover
+ */
+const async = require("async");
+const pageHelper = require("../../../main/js/util/pageHelper");
+const createCallbackWrapper = pageHelper.createCallbackWrapper;
 const stringCleaner = function (string) {
   return string.replace(/\r?\n|\r/g, '');
 };
-module.exports = {
-    'Create Pipeline Job "stages"': function (browser) {
-        const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline('stages', 'stages-with-wait.groovy');
-    },
+// using different syntax of the same pipeline
+const cases = [{
+    name: 'stagesClassic',
+    script: 'stages-with-wait.groovy',
+    nodeId: '5',
+},{
+    name: 'stagesBlock',
+    script: 'stages-with-wait-block-syntax.groovy',
+    nodeId: '6',
+},{
+    name: 'stagesPM',
+    script: 'stages-with-wait-pipelineModel-syntax.groovy',
+    nodeId: '6',
+},];
 
-    'Build Pipeline Job': function (browser) {
-        const pipelinePage = browser.page.pipeline().forJob('stages');
-        pipelinePage.buildStarted(function() {
-            // Reload the job page and check that there was a build done.
-            pipelinePage
-                .waitForElementVisible('div#pipeline-box')
-                .forRun(1)
-                .waitForElementVisible('@executer');
+module.exports = {
+/** Create Pipeline Job "stages" */
+    'Step 01': function (browser) {
+        // create the different jobs
+        async.mapSeries(cases, function (useCase, callback) {
+            console.log('creating pipeline job', useCase.name, useCase.script);
+            // navigate to the create page
+            const pipelinesCreate = browser.page.pipelineCreate().navigate();
+            pipelinesCreate
+                .createPipeline(useCase.name, useCase.script, createCallbackWrapper(callback))
+            ;
         });
     },
-
-    'Check Job Blue Ocean Pipeline Activity Page has run': function (browser) {
-        const blueActivityPage = browser.page.bluePipelineActivity().forJob('stages', 'jenkins');
-        // Check the run itself
-        blueActivityPage.waitForRunRunningVisible('stages-1');
+/** Build Pipeline Job */
+    'Step 02': function (browser) {
+        // we need to create a browser page outside the async loop
+        // const pipelinesCreate = browser.page.pipelineCreate().navigate();
+        async.mapSeries(cases, function (useCase, callback) {
+            const pipelinePage = browser.page.jobUtils().forJob(useCase.name);
+            pipelinePage.buildStarted(function() {
+                // Reload the job page and check that there was a build done.
+                pipelinePage
+                    .waitForElementVisible('div#pipeline-box')
+                    .forRun(1)
+                    .waitForElementVisible('@executer', createCallbackWrapper(callback));
+            });
+        });
     },
-
-    'Check Job Blue Ocean Pipeline run detail page - karaoke': function (browser) {
-        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
+/** Check Job Blue Ocean Pipeline Activity Page has run */
+    'Step 03': function (browser) {
+        async.mapSeries(cases, function (useCase, callback) {
+            const blueActivityPage = browser.page.bluePipelineActivity().forJob(useCase.name, 'jenkins');
+            // Check the run itself
+            blueActivityPage.waitForRunRunningVisible(useCase.name + '-1', createCallbackWrapper(callback));
+        });
+    },
+/** Check Job Blue Ocean Pipeline run detail page - karaoke*/
+    'Step 04': function (browser) {
+        // this test case tests a live pipeline that is why we only running it with one case
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(cases[0].name, 'jenkins', 1);
         blueRunDetailPage.assertBasicLayoutOkay();
         // if we have the first stage finished we are sure in karaoke mode
         blueRunDetailPage.waitForElementPresent('svg circle.success');
         // FIXME should be taken from somewhere dynamically
         // Stop karaoke and go back in graph and see the result
-        const nodeDetail =  blueRunDetailPage.forNode('5');
+        const nodeDetail = blueRunDetailPage.forNode(cases[0].nodeId);
         // validate that karaoke has stopped but overall process still runs
         nodeDetail.waitForElementVisible('g.progress-spinner.running');
         // Validate the result of the node
@@ -41,12 +81,7 @@ module.exports = {
             })
         ;
         // test whether the expand works
-        nodeDetail.waitForElementVisible('div.result-item')
-            .click('div.result-item')
-            .waitForElementVisible('code')
-            .getText('code', function (result) {
-                this.assert.notEqual(null, result.value);
-            });
+        nodeDetail.clickFirstResultItem();
         // test whether the stage we seeing is highlighted
         nodeDetail.waitForElementVisible('g.pipeline-node-selected');
         // test whether log lines are navigatable
@@ -75,12 +110,34 @@ module.exports = {
         // turn on css again
         browser.useCss();
         // wait for job to finish
-        nodeDetail.waitForJobRunEnded('stages');
+        nodeDetail.waitForJobRunEnded(cases[0].name);
     },
-
-    'Check whether there is an EmptyStateView for stages with no steps': function (browser) {
-       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('stages', 'jenkins', 1);
-       blueRunDetailPage.waitForElementVisible('div.empty-state');
+/** Check whether there is an EmptyStateView for stages with no steps*/
+    'Step 05': function (browser) {
+        async.mapSeries(cases, function (useCase, callback) {
+            // the pipeline-model cannot have "noSteps" need to skip the test for that
+            if (useCase.name !== "stagesPM") {
+                const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
+                blueRunDetailPage.waitForElementVisible('@emptystate', createCallbackWrapper(callback));
+            } else {
+                callback(null);
+            }
+        });
     },
-
+/** Check whether the artifacts tab shows artifacts*/
+    'Step 06': function (browser) {
+        async.mapSeries(cases, function (useCase, callback) {
+            const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
+            blueRunDetailPage.clickTab('artifacts');
+            blueRunDetailPage
+                .validateNotEmptyArtifacts(1)
+                .waitForElementVisible('@artifactTable', createCallbackWrapper(callback));
+        }, function(err, results) {
+            // Check whether the changes tab shows emptyState for only one case
+            // this test case is the finisher since we cannot finish with a async series without a closing func
+            const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(cases[0].name, 'jenkins', 1);
+            blueRunDetailPage.clickTab('changes');
+            blueRunDetailPage.waitForElementVisible('@emptystate');
+        });
+    }
 };

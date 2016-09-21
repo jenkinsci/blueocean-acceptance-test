@@ -13,6 +13,15 @@ node {
     // should not appear in the view when karaoke is stopped.
     sh 'sleep 1; echo `date` second;'
     echo 'third now'
+    sh '''#!/bin/bash -l
+        echo $0
+        COUNTER=0
+        while [  $COUNTER -lt 10001 ]; do
+         echo The counter is $COUNTER
+         let COUNTER=COUNTER+1
+        done
+        '''
+        // add a step that does not produce a log
     sh 'sleep 1; echo `date` third;'
     echo '4th'
     sh 'sleep 1; echo `date`;'
@@ -28,27 +37,7 @@ node {
     sh 'sleep 1; echo `date`;'
     echo '10th'
     sh 'sleep 1; echo `date`;'
-    echo '11th'
-    sh 'sleep 1; echo `date`;'
-    echo '12th'
-    sh 'sleep 1; echo `date`;'
-    echo '13th'
-    sh 'sleep 1; echo `date`;'
-    echo '14th'
-    sh 'sleep 1; echo `date`;'
-    echo '15th'
-    sh 'sleep 2; echo `date`;'
-    echo 'last 5th'
-    sh 'echo `date` fifth;'
     echo 'and we are finished'
     sh 'echo end'
-    sh '''#!/bin/bash -l
-    echo $0
-    COUNTER=0
-    while [  $COUNTER -lt 10001 ]; do
-     echo The counter is $COUNTER
-     let COUNTER=COUNTER+1
-    done
-    '''
-
+    deleteDir()
 }
