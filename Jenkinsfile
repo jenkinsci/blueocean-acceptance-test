@@ -23,12 +23,20 @@ node {
         // Expose the port on which the ATH Jenkins instance runs (12345), allowing the
         // Firefox browser (running in the selenium container) to make requests back
         // in etc.
-        sh 'mkdir -p m2repo'
-        athImg.inside("--expose=12345 -v m2repo:/home/bouser/.m2repo") {
+        athImg.inside("--expose=12345") {
             withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
                 try {
                     // Use the m2 repo cache from the host by creating a settings.xml.
-                    writeFile file: '/home/bouser/settings.xml', text: "<settings><localRepository>/home/bouser/.m2repo</localRepository></settings>"
+                    writeFile file: '/home/bouser/settings.xml', text: "<settings>" +
+                            "  <mirrors>\n" +
+                            "    <mirror>\n" +
+                            "      <id>localnexus</id>\n" +
+                            "      <url>http://192.168.1.3/repository/maven-public/</url>\n" +
+                            "      <mirrorOf>*</mirrorOf>\n" +
+                            "    </mirror>\n" +
+                            "  </mirrors>" +
+                            "   <servers><server><id>localnexus</id><username>admin</username><password>admin123</password></server></servers>" +
+                            "</settings>";
 
                     // Build blueocean and the ATH
                     stage 'build'
