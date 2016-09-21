@@ -52,6 +52,7 @@ node {
                     stage 'run'
                     sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"${hostip}\" --port=12345 --settings /home/bouser/settings.xml "
                 } catch (err) {
+                    sh "echo '${err.getMessage()}'"
                     currentBuild.result = "FAILURE"
                 } finally {
                     //deleteDir()
