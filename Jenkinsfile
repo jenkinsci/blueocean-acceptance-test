@@ -5,9 +5,11 @@ node ('docker') {
     //deleteDir()
     checkout scm
 
+    def mvnHome = tool 'M3'
+
     // Need to build the ATH out here so as to get node via
     // the frontend maven plugin
-    sh "mvn clean package -DskipTests"
+    sh "${mvnHome}/bin/mvn -B clean package -DskipTests"
     // Now we can execute a node script to get the local host IP,
     // which we need for running selenium in one docker container
     // and the ATH itself in another.
@@ -41,9 +43,9 @@ node ('docker') {
                         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
-                        sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
+                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
-                    sh "mvn clean install -DskipTests"
+                    sh "mvn -B clean install -DskipTests"
 
                     // Run the ATH. Tell the run script to not try starting selenium. Selenium is
                     // already running in a docker container of it's on in the host. See call to
