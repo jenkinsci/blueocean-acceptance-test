@@ -26,7 +26,7 @@ SELENIUM_VERSION=2.53
 
 MAVEN_SETTINGS=""
 LOCAL_SNAPSHOTS=false
-RUN_SELENIUM=false
+RUN_SELENIUM=true
 ATH_SERVER_HOST=""
 ATH_SERVER_PORT=""
 PLUGINS=""
@@ -48,6 +48,9 @@ case $i in
     ;;
     -s|--snaps|--snapshots)
     LOCAL_SNAPSHOTS=true
+    ;;
+    --no-selenium)
+    RUN_SELENIUM=false
     ;;
     --settings=*)
     MAVEN_SETTINGS="${i#*=}"
@@ -86,7 +89,6 @@ if [ "${DEV_JENKINS}" == "true" ]; then
     # having to restart Jenkins.
     PROFILES="-P runDevRunner"
     TEST_TO_RUN=""
-    RUN_SELENIUM=true
 fi
 
 # For now, the location of the aggregator plugin must be defined until we have
