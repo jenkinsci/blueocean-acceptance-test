@@ -30,8 +30,8 @@ node {
         // volume binding to the "inside" container run settings (change username from "tfennelly"):
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
-        athImg.inside("--expose=12345 -p 12345:12345 -v /home/tfennelly/.m2:/home/bouser/.m2") {
-            withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com', "blueoceanHost=${hostip}"]) {
+        athImg.inside("--expose=12345 -p 12345:12345") {
+            withEnv(["blueoceanHost=${hostip}", 'GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
                 try {
                     sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
@@ -40,7 +40,7 @@ node {
                         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
-                        // sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
+                        sh "cd blueocean-plugin && mvn clean test-compile install -DskipTests"
                     }
                     sh "mvn clean install -DskipTests"
 
