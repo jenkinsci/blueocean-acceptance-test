@@ -20,7 +20,8 @@ node {
     sh "./start-selenium.sh"
 
     try {
-        def athImg = docker.image('blueocean-ath-builder')
+        // Build an image from the the local Dockerfile
+        def athImg = docker.build('blueocean-ath-builder')
 
         // Expose the port on which the ATH Jenkins instance runs (12345), allowing the
         // Firefox browser (running in the selenium container) to make requests back
