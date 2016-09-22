@@ -135,9 +135,9 @@ module.exports.commands = [{
         self.waitForElementVisible('@logHeader');
         self.getText('@logHeader', function (response) {
             sanityCheck(self, response);
-            console.log(response)
-            const urlProject = (response.value);
-            self.assert.equal(urlProject.indexOf(expected) > -1, true);
+            //console.log(response, expected)
+            const title = (response.value);
+            self.assert.equal(title.indexOf(expected) > -1, true);
         });
         return self;
     },

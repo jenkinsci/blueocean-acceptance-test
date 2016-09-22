@@ -65,7 +65,8 @@ module.exports = {
             blueRunDetailPage.forNode(10);
             blueRunDetailPage.validateNotRunningResults();
             // sample taken at random for logs to see whether they are truncated
-            blueRunDetailPage.validateNotRunningResults();
+            blueRunDetailPage.clickFirstResultItem('Running shell script');
+            blueRunDetailPage.clickFirstResultItem('secondBranch www.stern.de');
             // navigate to the second stage in the parallel step in the pipeline
             blueRunDetailPage.forNode(11);
             blueRunDetailPage.validateNotRunningResults();
