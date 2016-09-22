@@ -5,15 +5,9 @@ node ('docker') {
     //deleteDir()
     checkout scm
 
-    def mvnHome = tool 'M3'
-
-    // Need to build the ATH out here so as to get node via
-    // the frontend maven plugin
-    sh "${mvnHome}/bin/mvn -B clean package -DskipTests"
-    // Now we can execute a node script to get the local host IP,
-    // which we need for running selenium in one docker container
-    // and the ATH itself in another.
-    sh "PATH=./node node .printip.js > hostip.txt"
+    // Get the local host IP, which we need for running selenium in
+    // one docker container and the ATH itself in another.
+    sh "hostname -i > hostip.txt"
     def hostip = readFile 'hostip.txt'
 
     echo "Host IP: [${hostip}]"
