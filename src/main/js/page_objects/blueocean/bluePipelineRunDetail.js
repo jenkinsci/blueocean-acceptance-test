@@ -33,6 +33,7 @@ module.exports = {
         tests: 'div.new-failure-block div.result-item',
         authors: 'a.authors',
         circleSuccess: 'svg circle.success',
+        runningResult: 'span.result-item-icon.running',
         firstResult: {
             selector: '//div[contains(@class, "result-item") and position()=1]',
             locateStrategy: 'xpath',
@@ -215,7 +216,7 @@ module.exports.commands = [{
         // the progressBar should be present
         self.waitForElementVisible('@progressBar');
         // when we are loading the code element should not be present
-        this.expect.element('@code').to.not.be.present.before(1000);
+        self.expect.element('@code').to.not.be.present.before(1000);
         return self;
 
     },
@@ -385,6 +386,15 @@ module.exports.commands = [{
             // to make component chain-able we will return self - part 2
         });
         return self;
+    },
+
+    /**
+     * We are validating that there are no running nodes visible anymore
+     * @returns {Object} self - nightwatch page object
+     */
+    validateNotRunningResults: function () {
+        this.expect.element('@runningResult').to.not.be.present.before(1000);
+        return this;
     }
 
 }];
