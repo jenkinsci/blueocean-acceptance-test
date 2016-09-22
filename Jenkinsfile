@@ -1,6 +1,6 @@
 #!groovy
 
-node {
+node ('docker') {
     stage 'init'
     //deleteDir()
     checkout scm
