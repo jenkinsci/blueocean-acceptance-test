@@ -44,9 +44,11 @@ node {
                     }
                     sh "mvn clean install -DskipTests"
 
-                    // Run the ATH
+                    // Run the ATH. Tell the run script to not try starting selenium. Selenium is
+                    // already running in a docker container of it's on in the host. See call to
+                    // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
                     stage 'run'
-                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"${hostip}\" --port=12345"
+                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"${hostip}\" --port=12345 --no-selenium"
                 } catch (err) {
                     sh "echo '${err.message}'"
                     currentBuild.result = "FAILURE"
