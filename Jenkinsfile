@@ -30,7 +30,7 @@ node {
         // volume binding to the "inside" container run settings (change username from "tfennelly"):
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
-        athImg.inside("--expose=12345 -v /home/tfennelly/.m2:/home/bouser/.m2") {
+        athImg.inside("--expose=12345 -p 12345:12345 -v /home/tfennelly/.m2:/home/bouser/.m2") {
             withEnv(['GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com', "blueoceanHost=${hostip}"]) {
                 try {
                     sh "echo 'Starting build stage'"
