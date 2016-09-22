@@ -47,6 +47,10 @@ public abstract class BOJUnitTest extends AbstractJUnitTest {
         String jenkinsUrl = jenkins.getCurrentUrl();
         String host = System.getenv("blueoceanHost");
 
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(System.getenv());
+        System.out.println("--------------------------------------------------------------------------------");
+
         if (host != null) {
             jenkinsUrl = jenkinsUrl.replace("127.0.0.1", host);
             jenkinsUrl = jenkinsUrl.replace("localhost", host);
