@@ -14,7 +14,7 @@ node {
     sh "PATH=./node node .printip.js > hostip.txt"
     def hostip = readFile 'hostip.txt'
 
-    echo "Host IP: ${hostip}"
+    echo "Host IP: [${hostip}]"
 
     // Run selenium in a docker container of its own on the host.
     sh "./start-selenium.sh"
