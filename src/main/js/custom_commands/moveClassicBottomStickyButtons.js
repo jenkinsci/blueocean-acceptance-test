@@ -16,6 +16,7 @@ function Cmd() {
 util.inherits(Cmd, events.EventEmitter);
 
 Cmd.prototype.command = function () {
+    var self = this;
 
     this.api.execute(function() {
         (function () {
@@ -26,7 +27,9 @@ Cmd.prototype.command = function () {
                     // and we don't care.
                     callback(window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports);
                 } catch(e) {
-                    // ignore
+                    setTimeout(function() {
+                        self.emit('complete');
+                    }, 10);
                 }
             }
 
@@ -68,7 +71,6 @@ Cmd.prototype.command = function () {
         }());
     });
 
-    var self = this;
     setTimeout(function() {
         self.api.waitForElementPresent('body.bottom-buttons-unstickied', function() {
             self.emit('complete');
