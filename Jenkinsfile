@@ -6,8 +6,9 @@ node ('docker') {
     checkout scm
 
     // Run selenium in a docker container of its own on the host.
-    // It will export BLUEO_SELENIUM_SERVER_ADDR
-    sh "sudo source start-selenium.sh"
+    // It will output the selenium server address to ./target/.selenium_ip
+    sh "./start-selenium.sh"
+    def seleniumIP = readFile './target/.selenium_ip'
 
     try {
         // Build an image from the the local Dockerfile
@@ -22,7 +23,7 @@ node ('docker') {
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
         athImg.inside("--expose=12345 -p 12345:12345 -v /home/tfennelly/.m2:/home/bouser/.m2") {
-            withEnv(["BLUEO_SELENIUM_SERVER_ADDR=${BLUEO_SELENIUM_SERVER_ADDR}"]) {
+            withEnv(["BLUEO_SELENIUM_SERVER_ADDR=${seleniumIP}"]) {
                 try {
                     sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
