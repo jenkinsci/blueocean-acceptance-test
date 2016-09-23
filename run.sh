@@ -186,8 +186,14 @@ if [ "${RUN_SELENIUM}" == "true" ]; then
 fi
 
 # Run the tests
+EXIT_CODE=0
 eval "${EXECUTION}"
+if [ $? != 0 ];then
+    EXIT_CODE=1
+fi
 
 if [ "${RUN_SELENIUM}" == "true" ]; then
     ./stop-selenium.sh
 fi
+
+exit $EXIT_CODE
