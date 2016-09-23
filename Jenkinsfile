@@ -22,7 +22,7 @@ node ('docker') {
         // volume binding to the "inside" container run settings (change username from "tfennelly"):
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
-        athImg.inside("--expose=12345 -p 12345:12345 -v /home/tfennelly/.m2:/home/bouser/.m2") {
+        athImg.inside("--expose=12345 -p 12345:12345") {
             withEnv(["BLUEO_SELENIUM_SERVER_ADDR=${seleniumIP}"]) {
                 try {
                     sh "echo 'Starting build stage'"
@@ -32,7 +32,9 @@ node ('docker') {
                         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
-                        // sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
+                        // Must cd into blueocean-plugin before running build
+                        // see https://issues.jenkins-ci.org/browse/JENKINS-33510
+                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
                     sh "mvn -B clean install -DskipTests"
 
