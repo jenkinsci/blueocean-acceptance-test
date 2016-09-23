@@ -19,9 +19,9 @@ util.inherits(Cmd, events.EventEmitter);
 Cmd.prototype.command = function () {
 
     this.api.execute(function() {
-        var breadcrumb = document.documentElement.getElementsBySelector('#breadcrumbBar');
-        if (breadcrumb && breadcrumb.length == 1) {
-            breadcrumb[0].parentElement.removeChild(breadcrumb[0]);
+        var pageHead = document.documentElement.getElementsBySelector('#page-head');
+        if (pageHead && pageHead.length == 1) {
+            pageHead[0].parentElement.removeChild(pageHead[0]);
         }
     });
 

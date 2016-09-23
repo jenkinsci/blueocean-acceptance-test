@@ -57,7 +57,7 @@ function doClassicPageIntercepts(browser) {
                 // Perform the navigate and then do the
                 // page adjustments.
                 return navFunc.apply(this, arguments)
-                    .removeBreadcrumbBar();
+                    .removePageHead();
             };
 
             return thePage;
