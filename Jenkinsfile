@@ -5,15 +5,9 @@ node ('docker') {
     //deleteDir()
     checkout scm
 
-    // Get the local host IP, which we need for running selenium in
-    // one docker container and the ATH itself in another.
-    sh "hostname -i > hostip.txt"
-    def hostip = readFile 'hostip.txt'
-
-    echo "Host IP: [${hostip}]"
-
     // Run selenium in a docker container of its own on the host.
-    sh "./start-selenium.sh"
+    // It will export BLUEO_SELENIUM_SERVER_ADDR
+    sh "source start-selenium.sh"
 
     try {
         // Build an image from the the local Dockerfile
@@ -27,8 +21,8 @@ node ('docker') {
         // volume binding to the "inside" container run settings (change username from "tfennelly"):
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
-        athImg.inside("--expose=12345 -p 12345:12345") {
-            withEnv(["blueoceanHost=${hostip}", 'GIT_COMMITTER_EMAIL=me@hatescake.com', 'GIT_COMMITTER_NAME=Hates', 'GIT_AUTHOR_NAME=Cake', 'GIT_AUTHOR_EMAIL=hates@cake.com']) {
+        athImg.inside("--expose=12345 -p 12345:12345 -v /home/tfennelly/.m2:/home/bouser/.m2") {
+            withEnv(["BLUEO_SELENIUM_SERVER_ADDR=${BLUEO_SELENIUM_SERVER_ADDR}"]) {
                 try {
                     sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
@@ -37,7 +31,7 @@ node ('docker') {
                         git url: 'https://github.com/jenkinsci/blueocean-plugin.git'
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
-                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
+                        // sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
                     sh "mvn -B clean install -DskipTests"
 
@@ -45,7 +39,7 @@ node ('docker') {
                     // already running in a docker container of it's on in the host. See call to
                     // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
                     stage 'run'
-                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"${hostip}\" --port=12345 --no-selenium"
+                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"`node .printip.js`\" --port=12345 --no-selenium"
                 } catch (err) {
                     sh "echo '${err.message}'"
                     currentBuild.result = "FAILURE"

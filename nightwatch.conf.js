@@ -38,7 +38,14 @@ module.exports = (function (settings) {
 
     var launchUrlObj = url.parse(launchUrl);
 
-    console.log('Jenkins running at: ' + launchUrl);
+    settings.test_settings.default.launch_url = launchUrl;
+    settings.test_settings.default.selenium_host = launchUrlObj.hostname;
+
+    if (process.env.BLUEO_SELENIUM_SERVER_ADDR) {
+        settings.test_settings.default.selenium_host = process.env.BLUEO_SELENIUM_SERVER_ADDR
+    }
+
+    console.log('Jenkins running at: ' + settings.test_settings.default.launch_url);
     console.log("    NOTE:");
     console.log("        Selenium and the browser (Firefox) are running in a docker");
     console.log("        container that also has VNC. This allows you to connect if");
@@ -47,11 +54,8 @@ module.exports = (function (settings) {
     console.log("         $ open vnc://:secret@localhost:15900");
     console.log("");
     console.log("    NOTE:");
-    console.log("        The selenium server is at " + launchUrlObj.hostname + ":4444");
+    console.log("        The selenium server is at " + settings.test_settings.default.selenium_host + ":4444");
     console.log("");
-
-    settings.test_settings.default.launch_url = launchUrl;
-    settings.test_settings.default.selenium_host = launchUrlObj.hostname;
 
     if (fs.existsSync('target/.selenium_server_provided')) {
         settings.selenium.start_process = false;
