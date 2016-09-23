@@ -44,7 +44,6 @@ node ('docker') {
                     stage 'run'
                     sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"`node .printip.js`\" --port=12345 --no-selenium"
                 } catch (err) {
-                    sh "echo '${err.message}'"
                     currentBuild.result = "FAILURE"
                 } finally {
                     //deleteDir()
