@@ -7,7 +7,7 @@ node ('docker') {
 
     // Run selenium in a docker container of its own on the host.
     // It will export BLUEO_SELENIUM_SERVER_ADDR
-    sh "source start-selenium.sh"
+    sh "sudo source start-selenium.sh"
 
     try {
         // Build an image from the the local Dockerfile
