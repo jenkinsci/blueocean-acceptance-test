@@ -9,6 +9,7 @@ docker run -d --name blueo-selenium -p 15900:5900 -p 4444:4444 -e no_proxy=local
 
 # Output the containers bridge network IP to file
 SELENIUM_IP=`docker inspect -f '{{ .NetworkSettings.IPAddress }}' blueo-selenium`
+mkdir -p ./target
 echo $SELENIUM_IP > ./target/.selenium_ip
 
 echo ""
