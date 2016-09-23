@@ -52,7 +52,25 @@ module.exports = {
      * */
     'Step 04': function (browser) {
         browser.waitForJobRunEnded(jobName, function () {
-           // Here will test for JENKINS-37753
+            /*
+             * Here we will test for JENKINS-37753  -> IF groovy changes this might to be adopted
+             */
+            const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
+            // we should be on the last stage of the pipeline by now
+            blueRunDetailPage.validateNotRunningResults();
+            // navigate to the first stage in the pipeline
+            blueRunDetailPage.forNode(5);
+            blueRunDetailPage.validateNotRunningResults();
+            // navigate to the first stage in the parallel step in the pipeline
+            blueRunDetailPage.forNode(10);
+            blueRunDetailPage.validateNotRunningResults();
+            // sample taken at random for logs to see whether they are truncated
+            blueRunDetailPage.clickFirstResultItem('Running shell script');
+            blueRunDetailPage.clickFirstResultItem('secondBranch www.stern.de');
+            // navigate to the second stage in the parallel step in the pipeline
+            blueRunDetailPage.forNode(11);
+            blueRunDetailPage.validateNotRunningResults();
+
         });
     }
 };
