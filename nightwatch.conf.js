@@ -42,7 +42,7 @@ module.exports = (function (settings) {
     settings.test_settings.default.selenium_host = launchUrlObj.hostname;
 
     if (process.env.BLUEO_SELENIUM_SERVER_ADDR) {
-        settings.test_settings.default.selenium_host = process.env.BLUEO_SELENIUM_SERVER_ADDR
+        settings.test_settings.default.selenium_host = process.env.BLUEO_SELENIUM_SERVER_ADDR.trim();
     }
 
     console.log('Jenkins running at: ' + settings.test_settings.default.launch_url);
