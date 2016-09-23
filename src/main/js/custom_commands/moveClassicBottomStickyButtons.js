@@ -59,6 +59,10 @@ Cmd.prototype.command = function () {
                             moveConfigButtons();
                         }, 10);
                     });
+
+                    // Make the emmision of the "complete" event (below) a bit
+                    // more deterministic.
+                    $('body').addClass('bottom-buttons-unstickied');
                 });
             });
         }());
@@ -66,7 +70,9 @@ Cmd.prototype.command = function () {
 
     var self = this;
     setTimeout(function() {
-        self.emit('complete');
+        self.api.waitForElementPresent('body.bottom-buttons-unstickied', function() {
+            self.emit('complete');
+        });
     }, 10);
 
     return this;
