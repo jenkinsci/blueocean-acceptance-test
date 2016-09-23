@@ -59,6 +59,7 @@ branchCreate.createBranch(multiBranchJob, pathToRepo);
         self.setValue('@nameInput', folderName);
 
         self.waitForElementPresent('@multibranchType');
+        self.moveClassicBottomStickyButtons();
         self.click('@multibranchType');
         self.waitForElementPresent('@submit');
         self.click('@submit');

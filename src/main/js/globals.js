@@ -11,7 +11,7 @@ module.exports = {
     default: {
         beforeEach: function (browser, done) {
             browser.windowMaximize();
-            removeBreadcrumbBarOnNavigate(browser);
+            doClassicPageIntercepts(browser);
             sse.connect(browser, done);
         },
         afterEach: function (browser, done) {
@@ -26,11 +26,11 @@ module.exports = {
     }
 };
 
-function removeBreadcrumbBarOnNavigate(browser) {
+function doClassicPageIntercepts(browser) {
     //
     // Hack time !!! ...
     // Iterate over all of the page objects and wrap the navigate
-    // function so that we remove the breadcrumb bar from the page
+    // function so that we can perform some page adjustments
     // just after navigating to it and before trying to do anything.
     //
 
@@ -54,7 +54,10 @@ function removeBreadcrumbBarOnNavigate(browser) {
             // Need to wrap the 'navigate' function on
             // the page object...
             thePage.navigate = function() {
-                return navFunc.apply(this, arguments).removeBreadcrumbBar();
+                // Perform the navigate and then do the
+                // page adjustments.
+                return navFunc.apply(this, arguments)
+                    .removeBreadcrumbBar();
             };
 
             return thePage;

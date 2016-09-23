@@ -28,6 +28,7 @@ module.exports.commands = [{
         self.waitForJobDeleted(jobName);
 
         self.setValue('@nameInput', jobName);
+        self.moveClassicBottomStickyButtons();
         self.click('@pipelineJobType');
         self.click('@submit');
 
