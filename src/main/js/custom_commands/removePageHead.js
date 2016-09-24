@@ -19,15 +19,37 @@ util.inherits(Cmd, events.EventEmitter);
 Cmd.prototype.command = function () {
 
     this.api.execute(function() {
-        var pageHead = document.documentElement.getElementsBySelector('#page-head');
-        if (pageHead && pageHead.length == 1) {
-            pageHead[0].parentElement.removeChild(pageHead[0]);
-        }
+        (function () {
+            function waitForJQuery() {
+                try {
+                    // In classic Jenkins, we can try dipping into the js-modules
+                    // and get jQuery. If it's not there, then we're not in classic Jenkins
+                    // and we don't care.
+                    var $ = window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports;
+                    doTweaks($);
+                } catch(e) {
+                    setTimeout(waitForJQuery, 50);
+                }
+            }
+            function doTweaks($) {
+                $(function() {
+                    // Remove the page-head
+                    $('#page-head').remove();
+
+                    // Make the emission of the "complete" event (below) a bit
+                    // more deterministic.
+                    $('body').addClass('page-head-removed');
+                });
+            }
+            waitForJQuery();
+        }());
     });
 
     var self = this;
     setTimeout(function() {
-        self.emit('complete');
+        self.api.waitForElementPresent('body.page-head-removed', function() {
+            self.emit('complete');
+        });
     }, 10);
 
     return this;

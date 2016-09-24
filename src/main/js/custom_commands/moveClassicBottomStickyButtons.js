@@ -20,53 +20,55 @@ Cmd.prototype.command = function () {
 
     this.api.execute(function() {
         (function () {
-            function markBodyComplete() {
-                document.documentElement.getElementsBySelector('body')[0].classList.add('bottom-buttons-unstickied');
+            function waitForJQuery() {
+                try {
+                    // In classic Jenkins, we can try dipping into the js-modules
+                    // and get jQuery. If it's not there, then we're not in classic Jenkins
+                    // and we don't care.
+                    var $ = window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports;
+                    doTweaks($);
+                } catch(e) {
+                    setTimeout(waitForJQuery, 50);
+                }
             }
+            function doTweaks($) {
+                $(function() {
+                    // Make the new item page stick buttons non-sticky
+                    var createButtonsDiv = $('#createItem .footer');
+                    var thebutton = $('.btn-decorator', createButtonsDiv);
 
-            try {
-                // In classic Jenkins, we can try dipping into the js-modules
-                // and get jQuery. If it's not there, then we're not in classic Jenkins
-                // and we don't care.
-                var $ = callback(window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports);
-            } catch(e) {
-                markBodyComplete();
-                return;
-            }
+                    createButtonsDiv.css('position', 'inherit');
+                    thebutton.css('bottom', 'null');
 
-            $(function() {
-                // Make the new item page stick buttons non-sticky
-                var createButtonsDiv = document.documentElement.getElementsBySelector('#createItem .footer');
-                if (createButtonsDiv && createButtonsDiv.length == 1) {
-                    createButtonsDiv[0].setAttribute('style', 'position: inherit;');
-                    var thebutton = createButtonsDiv[0].getElementsBySelector('.btn-decorator')[0];
-                    thebutton.setAttribute('style', 'bottom: null');
                     // Need to remove the window scroll listeners because they'll
                     // reapply all styles etc.
                     $(window).off('scroll');
-                }
-                // Make the config page buttons non-sticky
-                function moveConfigButtons() {
-                    var condfigButtonsDiv = document.documentElement.getElementsBySelector('#bottom-sticker');
-                    if (condfigButtonsDiv && condfigButtonsDiv.length == 1) {
-                        condfigButtonsDiv[0].setAttribute('style', 'right: 0px; display: inline-block;');
-                    }
-                }
-                moveConfigButtons();
-                $(window).scroll(function() {
-                    // There's all sorts of prototype gunk on classic Jenkins,
-                    // some of which we can't get at to remove the listeners etc,
-                    // so only option that seems to be left is to listen for scroll
-                    // events and set a timeout to undo the prototype gunk.
-                    setTimeout(function() {
-                        moveConfigButtons();
-                    }, 10);
-                });
 
-                // Make the emission of the "complete" event (below) a bit
-                // more deterministic.
-                markBodyComplete();
-            });
+                    // Make the config page buttons non-sticky
+                    function moveConfigButtons() {
+                        var condfigButtonsDiv = $('#bottom-sticker');
+                        condfigButtonsDiv.css({
+                            'right': '0px',
+                            'display': 'inline-block'
+                        });
+                    }
+                    moveConfigButtons();
+                    $(window).scroll(function() {
+                        // There's all sorts of prototype gunk on classic Jenkins,
+                        // some of which we can't get at to remove the listeners etc,
+                        // so only option that seems to be left is to listen for scroll
+                        // events and set a timeout to undo the prototype gunk.
+                        setTimeout(function() {
+                            moveConfigButtons();
+                        }, 10);
+                    });
+
+                    // Make the emission of the "complete" event (below) a bit
+                    // more deterministic.
+                    $('body').addClass('bottom-buttons-unstickied');
+                });
+            }
+            waitForJQuery();
         }());
     });
 
