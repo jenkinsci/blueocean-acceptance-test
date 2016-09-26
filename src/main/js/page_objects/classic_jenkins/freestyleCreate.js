@@ -29,6 +29,7 @@ module.exports.commands = [{
         self.waitForJobDeleted(jobName);
 
         self.setValue('@nameInput', jobName);
+        self.moveClassicBottomStickyButtons();
         self.click('@freestyleType');
         self.click('@submit');
 

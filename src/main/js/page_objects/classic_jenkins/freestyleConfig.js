@@ -42,7 +42,7 @@ exports.commands = [
          */
         setFreestyleScript: function (script) {
             const scriptText = readTestScript(script);
-            this.moveConfigpageButtons() // Need to move the config page buttons as they block clicking on the build step button
+            this.moveClassicBottomStickyButtons() // Need to move the config page buttons as they block clicking on the build step button
                 .waitForElementVisible('@button')
                 .click('@button')
                 .waitForElementVisible('@shell')

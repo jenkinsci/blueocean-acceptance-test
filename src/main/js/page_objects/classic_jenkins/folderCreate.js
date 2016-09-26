@@ -40,6 +40,7 @@ module.exports.commands = [{
         const link = url.getJobUrl(this.api.launchUrl, basePath);
         self.navigate(link+ suffix);
         self.setValue('@nameInput', jobName);
+        self.moveClassicBottomStickyButtons();
         self.click('@freestyleType');
         self.click('@submit');
 

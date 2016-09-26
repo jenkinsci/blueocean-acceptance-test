@@ -24,7 +24,11 @@
 JENKINS_VERSION=2.7.3
 SELENIUM_VERSION=2.53
 
+MAVEN_SETTINGS=""
 LOCAL_SNAPSHOTS=false
+RUN_SELENIUM=true
+ATH_SERVER_HOST=""
+ATH_SERVER_PORT=""
 PLUGINS=""
 AGGREGATOR_DIR=""
 AGGREGATOR_ENV=""
@@ -44,6 +48,18 @@ case $i in
     ;;
     -s|--snaps|--snapshots)
     LOCAL_SNAPSHOTS=true
+    ;;
+    --no-selenium)
+    RUN_SELENIUM=false
+    ;;
+    --settings=*)
+    MAVEN_SETTINGS="${i#*=}"
+    ;;
+    -h=*|--host=*)
+    ATH_SERVER_HOST="${i#*=}"
+    ;;
+    -p=*|--port=*)
+    ATH_SERVER_PORT="${i#*=}"
     ;;
     -d|--dev)
     DEV_JENKINS=true    
@@ -144,7 +160,17 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
     AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
-EXECUTION="env JENKINS_JAVA_OPTS=${JENKINS_JAVA_OPTS} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn test ${PROFILES} ${TEST_TO_RUN}"
+if [ "${MAVEN_SETTINGS}" != "" ]; then
+    MAVEN_SETTINGS="-s ${MAVEN_SETTINGS}"
+fi
+if [ "${ATH_SERVER_HOST}" != "" ]; then
+    ATH_SERVER_HOST="blueoceanHost=${ATH_SERVER_HOST}"
+fi
+if [ "${ATH_SERVER_PORT}" != "" ]; then
+    ATH_SERVER_PORT="httpPort=${ATH_SERVER_PORT}"
+fi
+
+EXECUTION="env JENKINS_JAVA_OPTS=\"${JENKINS_JAVA_OPTS}\" ${ATH_SERVER_HOST} ${ATH_SERVER_PORT} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn ${MAVEN_SETTINGS} test ${PROFILES} ${TEST_TO_RUN}"
 
 echo ""
 echo "> ${EXECUTION}"
@@ -154,10 +180,20 @@ echo "------------------------------------------------"
 
 # Download the jenkins war
 source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war"
-# Download Selenium standalone
-source download.sh "http://selenium-release.storage.googleapis.com/${SELENIUM_VERSION}/selenium-server-standalone-${SELENIUM_VERSION}.0.jar" "bin/selenium-server-standalone-${SELENIUM_VERSION}.1.jar"
+
+if [ "${RUN_SELENIUM}" == "true" ]; then
+    ./start-selenium.sh
+fi
 
 # Run the tests
+EXIT_CODE=0
 eval "${EXECUTION}"
+if [ $? != 0 ];then
+    EXIT_CODE=1
+fi
 
+if [ "${RUN_SELENIUM}" == "true" ]; then
+    ./stop-selenium.sh
+fi
 
+exit $EXIT_CODE
