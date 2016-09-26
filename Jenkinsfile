@@ -2,6 +2,10 @@
 
 node ('docker') {
 
+    // Allow the pipeline to be built with parameters, defaulting the
+    // Blue Ocean branch name to be that of the ATH branch name. If no such branch
+    // of Blue Ocean exists, then the ATH will just run against the master branch of
+    // Blue Ocean.
     properties([parameters([string(defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run', name: 'BLUEOCEAN_BRANCH_NAME')]), pipelineTriggers([])])
 
     stage 'init'
