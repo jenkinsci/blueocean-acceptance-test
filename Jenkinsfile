@@ -2,6 +2,8 @@
 
 node ('docker') {
 
+    properties([parameters([string(defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run', name: 'BLUEOCEAN_BRANCH_NAME')]), pipelineTriggers([])])
+
     stage 'init'
     //deleteDir()
     checkout scm
@@ -33,9 +35,9 @@ node ('docker') {
                         // Try checking out the Blue Ocean branch having the same name. If that fails (i.e.
                         // doesn't exist ), just use the default/master branch and run the ATH tests against that.
                         try {
-                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${env.BRANCH_NAME}")
+                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${BLUEOCEAN_BRANCH_NAME}")
                         } catch (Exception e) {
-                            echo "No Blue Ocean branch named '${env.BRANCH_NAME}'. Running against 'master' instead."
+                            echo "No Blue Ocean branch named '${BLUEOCEAN_BRANCH_NAME}'. Running against 'master' instead."
                         }
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
