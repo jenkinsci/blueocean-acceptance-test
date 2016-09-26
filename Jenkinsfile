@@ -36,8 +36,8 @@ node ('docker') {
                     // Build blueocean and the ATH
                     stage 'build'
                     dir('blueocean-plugin') {
-                        // Try checking out the Blue Ocean branch having the same name. If that fails (i.e.
-                        // doesn't exist ), just use the default/master branch and run the ATH tests against that.
+                        // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
+                        // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
                         try {
                             git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${BLUEOCEAN_BRANCH_NAME}")
                             echo "Found a Blue Ocean branch named '${BLUEOCEAN_BRANCH_NAME}'. Running ATH against that branch."
