@@ -36,6 +36,7 @@ node ('docker') {
                         // Must cd into blueocean-plugin before running build
                         // see https://issues.jenkins-ci.org/browse/JENKINS-33510
                         sh "cd blueocean-plugin && git checkout ${env.BRANCH_NAME}"
+                        sh "cd blueocean-plugin && git branch"
                         sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
                     sh "mvn -B clean install -DskipTests"
