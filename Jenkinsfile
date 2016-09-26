@@ -34,13 +34,13 @@ node ('docker') {
                             // git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${env.BRANCH_NAME}")
                             git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "XXXXXXXXXXXX")
                         } catch (Exception e) {
-                            echo "No Blue Ocean branch named '${env.BRANCH_NAME}'. Checkout out 'master' instead."
-                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: 'master')
+                            echo "No Blue Ocean branch named '${env.BRANCH_NAME}'. Running against 'master' instead."
                         }
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
                         // Must cd into blueocean-plugin before running build
                         // see https://issues.jenkins-ci.org/browse/JENKINS-33510
+                        sh "cd blueocean-plugin && echo `cat `"
                         sh "cd blueocean-plugin && git branch"
                         sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
