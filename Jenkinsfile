@@ -40,8 +40,9 @@ node ('docker') {
                         // doesn't exist ), just use the default/master branch and run the ATH tests against that.
                         try {
                             git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${BLUEOCEAN_BRANCH_NAME}")
+                            echo "Found a Blue Ocean branch named '${BLUEOCEAN_BRANCH_NAME}'. Running ATH against that branch."
                         } catch (Exception e) {
-                            echo "No Blue Ocean branch named '${BLUEOCEAN_BRANCH_NAME}'. Running against 'master' instead."
+                            echo "No Blue Ocean branch named '${BLUEOCEAN_BRANCH_NAME}'. Running ATH against 'master' instead."
                         }
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
