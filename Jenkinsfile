@@ -31,8 +31,7 @@ node ('docker') {
                     stage 'build'
                     dir('blueocean-plugin') {
                         try {
-                            // git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${env.BRANCH_NAME}")
-                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "XXXXXXXXXXXX")
+                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${env.BRANCH_NAME}")
                         } catch (Exception e) {
                             echo "No Blue Ocean branch named '${env.BRANCH_NAME}'. Running against 'master' instead."
                         }
@@ -40,7 +39,7 @@ node ('docker') {
                         // need to make sure gets compiled and installed for other modules.
                         // Must cd into blueocean-plugin before running build
                         // see https://issues.jenkins-ci.org/browse/JENKINS-33510
-                        sh "cd blueocean-plugin && echo `cat `"
+                        sh "cd blueocean-plugin && echo `cat TOM-TEST-BRANCH.txt`"
                         sh "cd blueocean-plugin && git branch"
                         sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
