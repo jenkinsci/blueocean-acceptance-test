@@ -60,11 +60,31 @@ node ('docker') {
                 } catch (err) {
                     currentBuild.result = "FAILURE"
                 } finally {
+                    sendhipchat()
                     //deleteDir()
                 }
             }
         }
     } finally {
         sh "./stop-selenium.sh"
+    }
+}
+
+def sendhipchat() {
+    res = currentBuild.result
+    if(res == null) {
+        res = "SUCCESS"
+    }
+    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}, status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+    color = null
+    if(res == "UNSTABLE") {
+        color = "YELLOW"
+    } else if(res == "SUCCESS"){
+        color = "GREEN"
+    } else if(res == "FAILURE") {
+        color = "RED"
+    }
+    if(color != null) {
+        hipchatSend message: message, color: color
     }
 }
