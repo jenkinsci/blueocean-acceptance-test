@@ -83,7 +83,7 @@ node ('docker') {
                                selector: [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"],
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                         sh 'mkdir -p blueocean-plugin/blueocean'
-                        sh 'tar xzf ath-plugins.tar.gz -C blueocean-plugin/blueocean'
+                        sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
                         // Mark this as a pre-assembly. This tells the run.sh script to
                         // not perform the assembly again.
                         sh 'touch blueocean-plugin/blueocean/.pre-assembly'
