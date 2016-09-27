@@ -81,7 +81,7 @@ node ('docker') {
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/${branchName}",
                                selector: [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"],
-                               filter: 'ath-plugins.tar.gz']);
+                               filter: 'blueocean/target/ath-plugins.tar.gz']);
                         sh 'mkdir -p blueocean-plugin/blueocean'
                         sh 'tar xzf ath-plugins.tar.gz -C blueocean-plugin/blueocean'
                         // Mark this as a pre-assembly. This tells the run.sh script to
