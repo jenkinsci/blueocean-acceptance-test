@@ -112,21 +112,24 @@ if [ ! -d "${AGGREGATOR_DIR}" ]; then
     echo ""
     exit 1
 fi
-pushd "${AGGREGATOR_DIR}"
-AGGREGATOR_GROUP_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:parent/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`
-AGGREGATOR_ARTIFACT_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`
-popd
-if [ "${AGGREGATOR_GROUP_ID}" != "io.jenkins.blueocean" ] || [ "${AGGREGATOR_ARTIFACT_ID}" != "blueocean" ]; then
-    echo ""
-    echo " *********************************************************************"
-    echo "    The location specified for the aggregator plugin does not appear"
-    echo "    to be correct. Check the supplied parameter and make sure it"
-    echo "    points to the aggregator plugin."
-    echo "    > groupId:    ${AGGREGATOR_GROUP_ID}"
-    echo "    > artifactId: ${AGGREGATOR_ARTIFACT_ID}"
-    echo " *********************************************************************"
-    echo ""
-    exit 1
+
+if [ ! -f "${AGGREGATOR_DIR}/.pre-assembly" ]; then
+    pushd "${AGGREGATOR_DIR}"
+    AGGREGATOR_GROUP_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:parent/x:groupId/text()' | xmllint --shell pom.xml | grep -v /`
+    AGGREGATOR_ARTIFACT_ID=`echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:artifactId/text()' | xmllint --shell pom.xml | grep -v /`
+    popd
+    if [ "${AGGREGATOR_GROUP_ID}" != "io.jenkins.blueocean" ] || [ "${AGGREGATOR_ARTIFACT_ID}" != "blueocean" ]; then
+        echo ""
+        echo " *********************************************************************"
+        echo "    The location specified for the aggregator plugin does not appear"
+        echo "    to be correct. Check the supplied parameter and make sure it"
+        echo "    points to the aggregator plugin."
+        echo "    > groupId:    ${AGGREGATOR_GROUP_ID}"
+        echo "    > artifactId: ${AGGREGATOR_ARTIFACT_ID}"
+        echo " *********************************************************************"
+        echo ""
+        exit 1
+    fi
 fi
 
 echo "------------------------------------------------"
