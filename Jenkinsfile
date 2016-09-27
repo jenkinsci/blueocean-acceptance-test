@@ -51,6 +51,7 @@ node ('docker') {
                             echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
                         } catch (Exception e) {
                             echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
+                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
                         }
                         // Need test-compile because the rest-impl has a test-jar that we
                         // need to make sure gets compiled and installed for other modules.
