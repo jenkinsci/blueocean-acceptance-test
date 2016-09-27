@@ -2,18 +2,29 @@
 
 node ('docker') {
 
+    def NOT_TRIGGERED = 'not-triggered'
+
     // Allow the pipeline to be built with parameters, defaulting the
     // Blue Ocean branch name to be that of the ATH branch name. If no such branch
     // of Blue Ocean exists, then the ATH will just run against the master branch of
     // Blue Ocean.
-    properties([parameters([string(defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run', name: 'BLUEOCEAN_BRANCH_NAME')]), pipelineTriggers([])])
+    properties([parameters([
+            string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run.'),
+            string(name: 'TRIGGERED_BY_BUILD_NUM', defaultValue: NOT_TRIGGERED, description: 'The Blue Ocean build number, if triggered by the building of a Blue Ocean branch. Used to get pre-assembled Jenkins plugins.')
+    ]), pipelineTriggers([])])
 
     def branchName;
+    def buildNumber;
     try {
-        branchName = "${BLUEOCEAN_BRANCH_NAME}";
+        branchName = "${BLUEOCEAN_BRANCH_NAME}"
+        buildNumber = "${TRIGGERED_BY_BUILD_NUM}"
     } catch (e) {
-        // Must be first run of the pipeline ... no property set
-        branchName = "${env.BRANCH_NAME}";
+        echo "*************************************************************************************************************************"
+        echo "Sorry, please run the build again if running manually. Parameters not yet initialized (or were modified) for this branch."
+        echo "Otherwise, just wait for the next blue ocean build to trigger. This failed run will have initialized the Parameters."
+        echo "*************************************************************************************************************************"
+        currentBuild.result = "UNSTABLE"
+        return
     }
 
     stage 'init'
@@ -43,21 +54,39 @@ node ('docker') {
                     sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
                     stage 'build'
-                    dir('blueocean-plugin') {
-                        // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
-                        // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
-                        try {
-                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${branchName}")
-                            echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
-                        } catch (Exception e) {
-                            echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
-                            git (url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
+                    sh 'rm -rf blueocean-plugin'
+                    if (buildNumber == NOT_TRIGGERED) {
+                        // This build of the ATH was not triggered from an upstream build of blueocean itself
+                        // so we must get and build blueocean.
+                        dir('blueocean-plugin') {
+                            // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
+                            // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
+                            try {
+                                git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${branchName}")
+                                echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
+                            } catch (Exception e) {
+                                echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
+                                git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
+                            }
+                            // Need test-compile because the rest-impl has a test-jar that we
+                            // need to make sure gets compiled and installed for other modules.
+                            // Must cd into blueocean-plugin before running build
+                            // see https://issues.jenkins-ci.org/browse/JENKINS-33510
+                            sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                         }
-                        // Need test-compile because the rest-impl has a test-jar that we
-                        // need to make sure gets compiled and installed for other modules.
-                        // Must cd into blueocean-plugin before running build
-                        // see https://issues.jenkins-ci.org/browse/JENKINS-33510
-                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
+                    } else {
+                        // This run was triggered from a build of a Blue Ocean branch. That build already
+                        // has the right plugins pre-assembled and archived in a tar on the build.
+                        // Let's just extract that tar to where the ATH would expect the plugins to be.
+                        step ([$class: 'CopyArtifact',
+                               projectName: "blueocean/${branchName}",
+                               selector: [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"],
+                               filter: 'blueocean/target/ath-plugins.tar.gz']);
+                        sh 'mkdir -p blueocean-plugin/blueocean'
+                        sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
+                        // Mark this as a pre-assembly. This tells the run.sh script to
+                        // not perform the assembly again.
+                        sh 'touch blueocean-plugin/blueocean/.pre-assembly'
                     }
                     sh "mvn -B clean install -DskipTests"
 
