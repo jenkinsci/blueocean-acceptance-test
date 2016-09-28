@@ -32,9 +32,7 @@ node ('docker') {
     checkout scm
 
     // Run selenium in a docker container of its own on the host.
-    // It will output the selenium server address to ./target/.selenium_ip
     sh "./start-selenium.sh"
-    def seleniumIP = readFile './target/.selenium_ip'
 
     try {
         // Build an image from the the local Dockerfile
@@ -45,66 +43,64 @@ node ('docker') {
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
         athImg.inside("--net=container:blueo-selenium") {
-            withEnv(["BLUEO_SELENIUM_SERVER_ADDR=localhost"]) {
-                try {
-                    sh "echo 'Starting build stage'"
-                    // Build blueocean and the ATH
-                    stage 'build'
-                    if (buildNumber == NOT_TRIGGERED) {
-                        // This build of the ATH was not triggered from an upstream build of blueocean itself
-                        // so we must get and build blueocean.
-                        dir('blueocean-plugin') {
-                            // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
-                            // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
-                            try {
-                                git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${branchName}")
-                                echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
-                            } catch (Exception e) {
-                                echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
-                                git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
-                            }
-                            // Need test-compile because the rest-impl has a test-jar that we
-                            // need to make sure gets compiled and installed for other modules.
-                            // Must cd into blueocean-plugin before running build
-                            // see https://issues.jenkins-ci.org/browse/JENKINS-33510
-                            sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
+            try {
+                sh "echo 'Starting build stage'"
+                // Build blueocean and the ATH
+                stage 'build'
+                if (buildNumber == NOT_TRIGGERED) {
+                    // This build of the ATH was not triggered from an upstream build of blueocean itself
+                    // so we must get and build blueocean.
+                    dir('blueocean-plugin') {
+                        // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
+                        // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
+                        try {
+                            git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${branchName}")
+                            echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
+                        } catch (Exception e) {
+                            echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
+                            git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
                         }
-                    } else {
-                        def selector;
-
-                        // Get the ATH plugin set from an upstream build of the "blueocean" job. All blueocean builds
-                        // already have the plugins pre-assembled and archived in a tar on the build.
-                        if (buildNumber.toLowerCase() == "latest") {
-                            selector = [$class: 'LastCompletedBuildSelector'];
-                        } else {
-                            // Get from a specific build number. This run may have been triggered from a
-                            // build of a Blue Ocean branch.
-                            selector = [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"];
-                        }
-
-                        // Let's copy and extract that tar to where the ATH would expect the plugins to be.
-                        step ([$class: 'CopyArtifact',
-                               projectName: "blueocean/${branchName}",
-                               selector: selector,
-                               filter: 'blueocean/target/ath-plugins.tar.gz']);
-                        sh 'mkdir -p blueocean-plugin/blueocean'
-                        sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
-                        // Mark this as a pre-assembly. This tells the run.sh script to
-                        // not perform the assembly again.
-                        sh 'touch blueocean-plugin/blueocean/.pre-assembly'
+                        // Need test-compile because the rest-impl has a test-jar that we
+                        // need to make sure gets compiled and installed for other modules.
+                        // Must cd into blueocean-plugin before running build
+                        // see https://issues.jenkins-ci.org/browse/JENKINS-33510
+                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                     }
-                    sh "mvn -B clean install -DskipTests"
+                } else {
+                    def selector;
 
-                    // Run the ATH. Tell the run script to not try starting selenium. Selenium is
-                    // already running in a docker container of it's on in the host. See call to
-                    // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
-                    stage 'run'
-                    sh "./run.sh -a=./blueocean-plugin/blueocean/ --host=\"`node .printip.js`\" --port=12345 --no-selenium"
-                } catch (err) {
-                    currentBuild.result = "FAILURE"
-                } finally {
-                    sendhipchat()
+                    // Get the ATH plugin set from an upstream build of the "blueocean" job. All blueocean builds
+                    // already have the plugins pre-assembled and archived in a tar on the build.
+                    if (buildNumber.toLowerCase() == "latest") {
+                        selector = [$class: 'LastCompletedBuildSelector'];
+                    } else {
+                        // Get from a specific build number. This run may have been triggered from a
+                        // build of a Blue Ocean branch.
+                        selector = [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"];
+                    }
+
+                    // Let's copy and extract that tar to where the ATH would expect the plugins to be.
+                    step ([$class: 'CopyArtifact',
+                           projectName: "blueocean/${branchName}",
+                           selector: selector,
+                           filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    sh 'mkdir -p blueocean-plugin/blueocean'
+                    sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
+                    // Mark this as a pre-assembly. This tells the run.sh script to
+                    // not perform the assembly again.
+                    sh 'touch blueocean-plugin/blueocean/.pre-assembly'
                 }
+                sh "mvn -B clean install -DskipTests"
+
+                // Run the ATH. Tell the run script to not try starting selenium. Selenium is
+                // already running in a docker container of it's on in the host. See call to
+                // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
+                stage 'run'
+                sh "./run.sh -a=./blueocean-plugin/blueocean/ --no-selenium"
+            } catch (err) {
+                currentBuild.result = "FAILURE"
+            } finally {
+                sendhipchat()
             }
         }
     } finally {
