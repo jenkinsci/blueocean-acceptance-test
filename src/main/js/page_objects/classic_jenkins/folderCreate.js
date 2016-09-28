@@ -19,8 +19,9 @@ module.exports = {
         nameInput: '#name',
         folderType: 'li.com_cloudbees_hudson_plugins_folder_Folder',
         freestyleType: 'li.hudson_model_FreeStyleProject',
-        submit: '#ok-button',
-        save: 'span.yui-button[name="Submit"]'
+        submit: '#newFormSubmitButtonForATH',
+        configForm: 'form[name="config"]',
+        configSave: '#newFormSubmitButtonForATH'
     }
 };
 
@@ -40,7 +41,6 @@ module.exports.commands = [{
         const link = url.getJobUrl(this.api.launchUrl, basePath);
         self.navigate(link+ suffix);
         self.setValue('@nameInput', jobName);
-        self.moveClassicBottomStickyButtons();
         self.click('@freestyleType');
         self.click('@submit');
 
@@ -48,8 +48,9 @@ module.exports.commands = [{
 
         // Navigate to the job config page and set the freestyle script.
         self.api.page.freestyleConfig()
+            .waitForElementPresent('@configForm')
             .setFreestyleScript(script)
-            .click('@save', function () {
+            .click('@configSave', function () {
             });
     },
     /**
@@ -69,8 +70,9 @@ module.exports.commands = [{
         self.setValue('@nameInput', firstChild);
         self.click('@folderType');
         self.click('@submit');
-        self.waitForElementPresent('@save')
-            .click('@save');
+        self.waitForElementPresent('@configForm')
+        self.waitForElementPresent('@configSave')
+            .click('@configSave');
 
         clone.map(function(item) {
             browser.url(function (response) {
@@ -81,8 +83,9 @@ module.exports.commands = [{
                 self.setValue('@nameInput', item);
                 self.click('@folderType');
                 self.click('@submit');
-                self.waitForElementPresent('@save')
-                   .click('@save');
+                self.waitForElementPresent('@configForm')
+                self.waitForElementPresent('@configSave')
+                   .click('@configSave');
                 return self;
             })
         })

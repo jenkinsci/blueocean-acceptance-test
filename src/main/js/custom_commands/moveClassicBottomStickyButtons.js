@@ -25,47 +25,72 @@ Cmd.prototype.command = function () {
                     // In classic Jenkins, we can try dipping into the js-modules
                     // and get jQuery. If it's not there, then we're not in classic Jenkins
                     // and we don't care.
-                    var $ = window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports;
-                    doTweaks($);
+                    var $jquery = window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports;
+                    doTweaks($jquery);
                 } catch(e) {
                     setTimeout(waitForJQuery, 50);
                 }
             }
-            function doTweaks($) {
-                $(function() {
-                    // Make the new item page stick buttons non-sticky
-                    var createButtonsDiv = $('#createItem .footer');
-                    var thebutton = $('.btn-decorator', createButtonsDiv);
+            function doTweaks($jquery) {
+                $jquery(function() {
+                    function waitForElement(selector, callback) {
+                        var theSelection = $jquery(selector);
+                        if (theSelection.length > 0) {
+                            callback(theSelection);
+                        } else {
+                            setTimeout(function() {
+                                waitForElement(selector, callback)
+                            }, 50);
+                        }
+                    }
+                    function replaceStickFormButtons(formSelector, removeStickiesSelector, submitCallback) {
+                        waitForElement(removeStickiesSelector, function (sticky) {
+                            // Completely remove the sticky controls because they can
+                            // play havoc with selenium tests. We tried moving etc,
+                            // but in most cases doesn't work because of other
+                            // listeners etc in jenkins that keep putting them back.
+                            sticky.remove();
 
-                    createButtonsDiv.css('position', 'inherit');
-                    thebutton.css('bottom', 'null');
+                            // In replacement of that, lets add a completely new button
+                            // that we use to submit the config form.
+                            var form = $jquery(formSelector);
+                            var newSubmitButton = $jquery('<button id="newFormSubmitButtonForATH" type="submit">Form Submit Button For ATH</button>');
 
-                    // Need to remove the window scroll listeners because they'll
-                    // reapply all styles etc.
-                    $(window).off('scroll');
+                            newSubmitButton.css({
+                                'height': '30px',
+                                'color': 'red'
+                            });
+                            newSubmitButton.click(function() {
+                                submitCallback(form);
+                            });
+                            form.append(newSubmitButton);
 
-                    // Make the config page buttons non-sticky
-                    function moveConfigButtons() {
-                        var condfigButtonsDiv = $('#bottom-sticker');
-                        condfigButtonsDiv.css({
-                            'right': '0px',
-                            'display': 'inline-block'
+                            // And now the page is ready from this pov.
+                            markAsDone();
                         });
                     }
-                    moveConfigButtons();
-                    $(window).scroll(function() {
-                        // There's all sorts of prototype gunk on classic Jenkins,
-                        // some of which we can't get at to remove the listeners etc,
-                        // so only option that seems to be left is to listen for scroll
-                        // events and set a timeout to undo the prototype gunk.
-                        setTimeout(function() {
-                            moveConfigButtons();
-                        }, 10);
-                    });
+                    function markAsDone() {
+                        // Make the emission of the "complete" event (below) a bit
+                        // more deterministic.
+                        $jquery('body').addClass('bottom-buttons-unstickied');
+                    }
 
-                    // Make the emission of the "complete" event (below) a bit
-                    // more deterministic.
-                    $('body').addClass('bottom-buttons-unstickied');
+                    var pageUrl = window.location.href;
+
+                    if (pageUrl.match(/\/newJob$/)) {
+                        // The new item page
+                        replaceStickFormButtons('form[name="createItem"]', '#add-item-panel .footer', function (form) {
+                            form.submit();
+                        });
+                    } else if (pageUrl.match(/\/configure$/)) {
+                        // A config page
+                        replaceStickFormButtons('form[name="config"]', '#bottom-sticker', function (form) {
+                            form.attr('path', '/Submit');
+                            form.submit();
+                        });
+                    } else {
+                        markAsDone();
+                    }
                 });
             }
             waitForJQuery();
