@@ -40,15 +40,11 @@ node ('docker') {
         // Build an image from the the local Dockerfile
         def athImg = docker.build('blueocean-ath-builder')
 
-        // Expose the port on which the ATH Jenkins instance runs (12345), allowing the
-        // Firefox browser (running in the selenium container) to make requests back
-        // in etc.
-        //
         // To bind in the local ~/.m2 when running in dev mode, simply add the following
         // volume binding to the "inside" container run settings (change username from "tfennelly"):
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
         //
-        athImg.inside("--expose=12345 -p 12345:12345") {
+        athImg.inside() {
             withEnv(["BLUEO_SELENIUM_SERVER_ADDR=${seleniumIP}"]) {
                 try {
                     sh "echo 'Starting build stage'"
