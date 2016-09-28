@@ -10,7 +10,7 @@ node ('docker') {
     // Blue Ocean.
     properties([parameters([
             string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run.'),
-            string(name: 'TRIGGERED_BY_BUILD_NUM', defaultValue: NOT_TRIGGERED, description: 'The Blue Ocean build number, if triggered by the building of a Blue Ocean branch. Used to get pre-assembled Jenkins plugins.')
+            string(name: 'TRIGGERED_BY_BUILD_NUM', defaultValue: NOT_TRIGGERED, description: 'The Blue Ocean build number, if triggered by the building of a Blue Ocean branch. Used to get pre-assembled Jenkins plugins. Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise just use the default value.')
     ]), pipelineTriggers([])])
 
     def branchName;
@@ -20,10 +20,10 @@ node ('docker') {
         buildNumber = "${TRIGGERED_BY_BUILD_NUM}"
     } catch (e) {
         echo "*************************************************************************************************************************"
-        echo "Sorry, please run the build again if running manually. Parameters not yet initialized (or were modified) for this branch."
-        echo "Otherwise, just wait for the next blue ocean build to trigger. This failed run will have initialized the Parameters."
+        echo "Sorry, this build was aborted because the build parameters for this branch are not yet initialized (or were modified)."
+        echo "Please run the build again if running manually, or wait for the next blue ocean build to trigger it again."
         echo "*************************************************************************************************************************"
-        currentBuild.result = "UNSTABLE"
+        currentBuild.result = "ABORTED"
         return
     }
 
@@ -54,7 +54,6 @@ node ('docker') {
                     sh "echo 'Starting build stage'"
                     // Build blueocean and the ATH
                     stage 'build'
-                    sh 'rm -rf blueocean-plugin'
                     if (buildNumber == NOT_TRIGGERED) {
                         // This build of the ATH was not triggered from an upstream build of blueocean itself
                         // so we must get and build blueocean.
@@ -75,12 +74,22 @@ node ('docker') {
                             sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
                         }
                     } else {
-                        // This run was triggered from a build of a Blue Ocean branch. That build already
-                        // has the right plugins pre-assembled and archived in a tar on the build.
-                        // Let's just extract that tar to where the ATH would expect the plugins to be.
+                        def selector;
+
+                        // Get the ATH plugin set from an upstream build of the "blueocean" job. All blueocean builds
+                        // already have the plugins pre-assembled and archived in a tar on the build.
+                        if (buildNumber.toLowerCase() == "latest") {
+                            selector = [$class: 'LastCompletedBuildSelector'];
+                        } else {
+                            // Get from a specific build number. This run may have been triggered from a
+                            // build of a Blue Ocean branch.
+                            selector = [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"];
+                        }
+
+                        // Let's copy and extract that tar to where the ATH would expect the plugins to be.
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/${branchName}",
-                               selector: [$class: 'SpecificBuildSelector', buildNumber: "${buildNumber}"],
+                               selector: selector,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                         sh 'mkdir -p blueocean-plugin/blueocean'
                         sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
@@ -99,7 +108,6 @@ node ('docker') {
                     currentBuild.result = "FAILURE"
                 } finally {
                     sendhipchat()
-                    //deleteDir()
                 }
             }
         }
