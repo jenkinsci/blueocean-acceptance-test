@@ -38,6 +38,10 @@ node ('docker') {
         // Build an image from the the local Dockerfile
         def athImg = docker.build('blueocean-ath-builder')
 
+        //
+        // Run the build container, giving it the same network stack as the selenium
+        // container.
+        //
         // To bind in the local ~/.m2 when running in dev mode, simply add the following
         // volume binding to the "inside" container run settings (change username from "tfennelly"):
         //       -v /home/tfennelly/.m2:/home/bouser/.m2
