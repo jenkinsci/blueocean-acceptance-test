@@ -2,7 +2,9 @@
 
 node ('docker') {
 
+    def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
     def NOT_TRIGGERED = 'not-triggered'
+
 
     // Allow the pipeline to be built with parameters, defaulting the
     // Blue Ocean branch name to be that of the ATH branch name. If no such branch
@@ -10,14 +12,17 @@ node ('docker') {
     // Blue Ocean.
     properties([parameters([
             string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run.'),
-            string(name: 'TRIGGERED_BY_BUILD_NUM', defaultValue: NOT_TRIGGERED, description: 'The Blue Ocean build number, if triggered by the building of a Blue Ocean branch. Used to get pre-assembled Jenkins plugins. Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise just use the default value.')
+            string(name: 'TRIGGERED_BY_BUILD_NUM', defaultValue: NOT_TRIGGERED, description: 'The Blue Ocean build number, if triggered by the building of a Blue Ocean branch. Used to get pre-assembled Jenkins plugins. Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise just use the default value.'),
+            string(name: 'REPO', defaultValue: DEFAULT_REPO, description: 'The repo to build. If you want to validate a fork, you can change this.')
     ]), pipelineTriggers([])])
 
     def branchName;
     def buildNumber;
+    def repoUrl;
     try {
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
         buildNumber = "${TRIGGERED_BY_BUILD_NUM}"
+        repoUrl = "${REPO}"
     } catch (e) {
         echo "*************************************************************************************************************************"
         echo "Sorry, this build was aborted because the build parameters for this branch are not yet initialized (or were modified)."
@@ -28,7 +33,6 @@ node ('docker') {
     }
 
     stage 'init'
-    //deleteDir()
     checkout scm
 
     // Run selenium in a docker container of its own on the host.
@@ -58,7 +62,7 @@ node ('docker') {
                         // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
                         // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
                         try {
-                            git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "${branchName}")
+                            git(url: "${repoUrl}", branch: "${branchName}")
                             echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
                         } catch (Exception e) {
                             echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
@@ -104,7 +108,7 @@ node ('docker') {
             } catch (err) {
                 currentBuild.result = "FAILURE"
             } finally {
-                sendhipchat()
+                sendhipchat(repoUrl, branchName)
             }
         }
     } finally {
@@ -112,12 +116,12 @@ node ('docker') {
     }
 }
 
-def sendhipchat() {
+def sendhipchat(repoUrl, branchName) {
     res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
     }
-    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}, status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER} ${repoUrl}/${branchName}, status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
     color = null
     if(res == "UNSTABLE") {
         color = "YELLOW"
