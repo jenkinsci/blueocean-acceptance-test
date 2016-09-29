@@ -122,13 +122,11 @@ def sendhipchat(repoUrl, branchName) {
         res = "SUCCESS"
     }
 
-    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
-    if (repoUrl != DEFAULT_REPO) {
-        message += ", run against ${repoUrl}/${branchName}"
-    } else {
-        message += ", run against blueocean/${branchName}"
-    }
-    message += ", status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+    def shortRepoURL = toShortRepoURL(repoUrl);
+    def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
+    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}<br/>"
+    message += "- run against <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}<br/>"
+    message += "- status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
 
     color = null
     if(res == "UNSTABLE") {
@@ -141,4 +139,25 @@ def sendhipchat(repoUrl, branchName) {
     if(color != null) {
         hipchatSend message: message, color: color
     }
+}
+
+def toShortRepoURL(repoURL) {
+    def parsedReproUri = new URI(repoURL)
+    def repoPath = parsedReproUri.getPath();
+
+    if (repoPath.startsWith("/")) {
+        repoPath = repoPath.substring(1);
+    }
+    repoPath = repoPath.replace('.git', '');
+
+    return repoPath;
+}
+
+def toRepoBranchURL(repoURL, branchName) {
+    def repoBranchURL = repoURL;
+
+    repoBranchURL = repoBranchURL.replace('.git', '');
+    repoBranchURL += '/tree/' + branchName;
+
+    return repoBranchURL;
 }
