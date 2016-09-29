@@ -24,12 +24,13 @@ node ('docker') {
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
         buildNumber = "${BUILD_NUM}"
     } catch (e) {
-        echo "*************************************************************************************************************************"
-        echo "Sorry, this build was aborted because the build parameters for this branch are not yet initialized (or were modified)."
-        echo "Please run the build again if running manually, or wait for the next blue ocean build to trigger it again."
-        echo "*************************************************************************************************************************"
-        currentBuild.result = "ABORTED"
-        return
+        echo "********************************************************************************************"
+        echo "The build parameters for this branch are not yet initialized (or were modified)."
+        echo "Will attempt to run the ATH against the pre-assembled HPIs from the latest build of master."
+        echo "********************************************************************************************"
+        repoUrl = DEFAULT_REPO
+        branchName = "master"
+        buildNumber = "latest"
     }
 
     stage 'init'
@@ -66,6 +67,7 @@ node ('docker') {
                             echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
                         } catch (Exception e) {
                             echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
+                            branchName = "master";
                             git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
                         }
                         // Need test-compile because the rest-impl has a test-jar that we
@@ -88,10 +90,21 @@ node ('docker') {
                     }
 
                     // Let's copy and extract that tar to where the ATH would expect the plugins to be.
-                    step ([$class: 'CopyArtifact',
-                           projectName: "blueocean/${branchName}",
-                           selector: selector,
-                           filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
+                    // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
+                    try {
+                        step ([$class: 'CopyArtifact',
+                               projectName: "blueocean/${branchName}",
+                               selector: selector,
+                               filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    } catch (Exception e) {
+                        echo "No CI build for Blue Ocean branch named '${branchName}', or doesn't have a pre-assembled plugin tar. Trying the 'master' build instead."
+                        branchName = "master";
+                        step ([$class: 'CopyArtifact',
+                               projectName: "blueocean/master",
+                               selector: selector,
+                               filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    }
                     sh 'mkdir -p blueocean-plugin/blueocean'
                     sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
                     // Mark this as a pre-assembly. This tells the run.sh script to
