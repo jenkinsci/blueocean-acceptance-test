@@ -77,7 +77,7 @@ module.exports = {
      * Regression test @see {@link https://issues.jenkins-ci.org/browse/JENKINS-38240|JENKINS-38240}
      * @param browser
      */
-    'Step 05': function (browser) {
+    'Step 07': function (browser) {
         var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         blueActivityPage.clickRunButtonAndOpenDetail();
         // Check the run itself
