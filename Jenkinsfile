@@ -3,8 +3,8 @@
 node ('docker') {
 
     def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
+    def DEFAULT_BUILD_NUM = 'latest'
     def NO_BUILD_NUM = ''
-
 
     // Allow the pipeline to be built with parameters, defaulting the
     // Blue Ocean branch name to be that of the ATH branch name. If no such branch
@@ -13,7 +13,7 @@ node ('docker') {
     properties([parameters([
             string(name: 'BLUEOCEAN_REPO_URL', defaultValue: DEFAULT_REPO, description: 'The Blue Ocean repository against which the tests on this ATH branch will run. If you want to validate a fork, you can change this.'),
             string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name (on the above repository) against which the tests on this ATH branch will run.'),
-            string(name: 'BUILD_NUM', defaultValue: NO_BUILD_NUM, description: 'The Blue Ocean build number from the CI server. Used to get pre-assembled Jenkins plugins Vs building (see above repo settings). Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise just leave blank (default value). Uses the above BLUEOCEAN_BRANCH_NAME to determine the upstream build Job name from which to get the pre-assembled archives.')
+            string(name: 'BUILD_NUM', defaultValue: DEFAULT_BUILD_NUM, description: 'The Blue Ocean build number from the CI server. Used to get pre-assembled Jenkins plugins Vs building (see above repo settings). Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise, leave blank to build the latest code from the branch.<br/><strong>NOTE:</strong> Uses the above BLUEOCEAN_BRANCH_NAME to determine the upstream build Job name from which to get the pre-assembled archives.')
     ]), pipelineTriggers([])])
 
     def repoUrl;
@@ -24,12 +24,15 @@ node ('docker') {
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
         buildNumber = "${BUILD_NUM}"
     } catch (e) {
-        echo "*************************************************************************************************************************"
-        echo "Sorry, this build was aborted because the build parameters for this branch are not yet initialized (or were modified)."
-        echo "Please run the build again if running manually, or wait for the next blue ocean build to trigger it again."
-        echo "*************************************************************************************************************************"
-        currentBuild.result = "ABORTED"
-        return
+        echo "********************************************************************************************"
+        echo "The build parameters for this branch are not yet initialized (or were modified)."
+        echo "Will attempt to run the ATH against the pre-assembled HPIs from the latest build of."
+        echo "${env.BRANCH_NAME}, falling back to the master branch build if there are no builds"
+        echo "on that branch Job."
+        echo "********************************************************************************************"
+        repoUrl = DEFAULT_REPO
+        branchName = env.BRANCH_NAME
+        buildNumber = DEFAULT_BUILD_NUM
     }
 
     stage 'init'
@@ -66,6 +69,7 @@ node ('docker') {
                             echo "Found a Blue Ocean branch named '${branchName}'. Running ATH against that branch."
                         } catch (Exception e) {
                             echo "No Blue Ocean branch named '${branchName}'. Running ATH against 'master' instead."
+                            branchName = "master";
                             git(url: 'https://github.com/jenkinsci/blueocean-plugin.git', branch: "master")
                         }
                         // Need test-compile because the rest-impl has a test-jar that we
@@ -88,10 +92,21 @@ node ('docker') {
                     }
 
                     // Let's copy and extract that tar to where the ATH would expect the plugins to be.
-                    step ([$class: 'CopyArtifact',
-                           projectName: "blueocean/${branchName}",
-                           selector: selector,
-                           filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
+                    // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
+                    try {
+                        step ([$class: 'CopyArtifact',
+                               projectName: "blueocean/${branchName}",
+                               selector: selector,
+                               filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    } catch (Exception e) {
+                        echo "No CI build for Blue Ocean branch named '${branchName}', or doesn't have a pre-assembled plugin tar. Trying the 'master' build instead."
+                        branchName = "master";
+                        step ([$class: 'CopyArtifact',
+                               projectName: "blueocean/master",
+                               selector: selector,
+                               filter: 'blueocean/target/ath-plugins.tar.gz']);
+                    }
                     sh 'mkdir -p blueocean-plugin/blueocean'
                     sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
                     // Mark this as a pre-assembly. This tells the run.sh script to
@@ -108,7 +123,7 @@ node ('docker') {
             } catch (err) {
                 currentBuild.result = "FAILURE"
             } finally {
-                sendhipchat(repoUrl, branchName)
+                sendhipchat(repoUrl, branchName, buildNumber)
             }
         }
     } finally {
@@ -116,19 +131,24 @@ node ('docker') {
     }
 }
 
-def sendhipchat(repoUrl, branchName) {
-    res = currentBuild.result
+def sendhipchat(repoUrl, branchName, buildNumber) {
+    def res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
     }
 
     def shortRepoURL = toShortRepoURL(repoUrl);
     def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
-    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}<br/>"
-    message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a><br/>"
-    message += "- result: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+    message = "ATH: <a href='${currentBuild.absoluteUrl}'>${env.JOB_NAME} #${env.BUILD_NUMBER}</a><br/>"
+    message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a>"
+    if (buildNumber == '') {
+        message += ' (HPIs built from branch source)<br/>'
+    } else {
+        message += " (HPIs from build #${buildNumber})<br/>"
+    }
+    message += "- result: ${res}"
 
-    color = null
+    def color = null
     if(res == "UNSTABLE") {
         color = "YELLOW"
     } else if(res == "SUCCESS"){
