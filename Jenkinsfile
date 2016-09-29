@@ -3,7 +3,7 @@
 node ('docker') {
 
     def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
-    def NOT_TRIGGERED = 'not-triggered'
+    def NO_BUILD_NUM = ''
 
 
     // Allow the pipeline to be built with parameters, defaulting the
@@ -11,18 +11,18 @@ node ('docker') {
     // of Blue Ocean exists, then the ATH will just run against the master branch of
     // Blue Ocean.
     properties([parameters([
-            string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name against which the tests on this ATH branch will run.'),
-            string(name: 'TRIGGERED_BY_BUILD_NUM', defaultValue: NOT_TRIGGERED, description: 'The Blue Ocean build number, if triggered by the building of a Blue Ocean branch. Used to get pre-assembled Jenkins plugins. Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise just use the default value.'),
-            string(name: 'REPO', defaultValue: DEFAULT_REPO, description: 'The repo to build. If you want to validate a fork, you can change this.')
+            string(name: 'BLUEOCEAN_REPO_URL', defaultValue: DEFAULT_REPO, description: 'The Blue Ocean repository against which the tests on this ATH branch will run. If you want to validate a fork, you can change this.'),
+            string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name (on the above repository) against which the tests on this ATH branch will run.'),
+            string(name: 'BUILD_NUM', defaultValue: NO_BUILD_NUM, description: 'The Blue Ocean build number from the CI server. Used to get pre-assembled Jenkins plugins Vs building (see above repo settings). Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise just leave blank (default value). Uses the above BLUEOCEAN_BRANCH_NAME to determine the upstream build Job name from which to get the pre-assembled archives.')
     ]), pipelineTriggers([])])
 
+    def repoUrl;
     def branchName;
     def buildNumber;
-    def repoUrl;
     try {
+        repoUrl = "${BLUEOCEAN_REPO_URL}"
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
-        buildNumber = "${TRIGGERED_BY_BUILD_NUM}"
-        repoUrl = "${REPO}"
+        buildNumber = "${BUILD_NUM}"
     } catch (e) {
         echo "*************************************************************************************************************************"
         echo "Sorry, this build was aborted because the build parameters for this branch are not yet initialized (or were modified)."
@@ -55,7 +55,7 @@ node ('docker') {
                 sh "echo 'Starting build stage'"
                 // Build blueocean and the ATH
                 stage 'build'
-                if (buildNumber == NOT_TRIGGERED) {
+                if (buildNumber == NO_BUILD_NUM) {
                     // This build of the ATH was not triggered from an upstream build of blueocean itself
                     // so we must get and build blueocean.
                     dir('blueocean-plugin') {
@@ -121,7 +121,15 @@ def sendhipchat(repoUrl, branchName) {
     if(res == null) {
         res = "SUCCESS"
     }
-    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER} ${repoUrl}/${branchName}, status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+
+    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+    if (repoUrl != DEFAULT_REPO) {
+        message += ", run against ${repoUrl}/${branchName}"
+    } else {
+        message += ", run against blueocean/${branchName}"
+    }
+    message += ", status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+
     color = null
     if(res == "UNSTABLE") {
         color = "YELLOW"
