@@ -126,7 +126,7 @@ def sendhipchat(repoUrl, branchName) {
     def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
     message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}<br/>"
     message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a><br/>"
-    message += "- status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+    message += "- result: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
 
     color = null
     if(res == "UNSTABLE") {
