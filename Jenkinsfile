@@ -1,10 +1,10 @@
 #!groovy
 
-def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
-def DEFAULT_BUILD_NUM = 'latest'
-def NO_BUILD_NUM = ''
-
 node ('docker') {
+
+    def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
+    def DEFAULT_BUILD_NUM = 'latest'
+    def NO_BUILD_NUM = ''
 
     // Allow the pipeline to be built with parameters, defaulting the
     // Blue Ocean branch name to be that of the ATH branch name. If no such branch
@@ -141,7 +141,7 @@ def sendhipchat(repoUrl, branchName, buildNumber) {
     def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
     message = "ATH: <a href='${currentBuild.absoluteUrl}'>${env.JOB_NAME} #${env.BUILD_NUMBER}</a><br/>"
     message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a>"
-    if (buildNumber == NO_BUILD_NUM) {
+    if (buildNumber == '') {
         message += ' (HPIs built from branch source)<br/>'
     } else {
         message += " (HPIs from build #${buildNumber})<br/>"
