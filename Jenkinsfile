@@ -4,7 +4,7 @@ node ('docker') {
 
     def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
     def DEFAULT_BUILD_NUM = 'latest'
-
+    def NO_BUILD_NUM = ''
 
     // Allow the pipeline to be built with parameters, defaulting the
     // Blue Ocean branch name to be that of the ATH branch name. If no such branch
@@ -26,10 +26,12 @@ node ('docker') {
     } catch (e) {
         echo "********************************************************************************************"
         echo "The build parameters for this branch are not yet initialized (or were modified)."
-        echo "Will attempt to run the ATH against the pre-assembled HPIs from the latest build of master."
+        echo "Will attempt to run the ATH against the pre-assembled HPIs from the latest build of."
+        echo "${env.BRANCH_NAME}, falling back to the master branch build if there are no builds"
+        echo "on that branch Job."
         echo "********************************************************************************************"
         repoUrl = DEFAULT_REPO
-        branchName = "master"
+        branchName = env.BRANCH_NAME
         buildNumber = DEFAULT_BUILD_NUM
     }
 
@@ -56,7 +58,7 @@ node ('docker') {
                 sh "echo 'Starting build stage'"
                 // Build blueocean and the ATH
                 stage 'build'
-                if (buildNumber == DEFAULT_BUILD_NUM) {
+                if (buildNumber == NO_BUILD_NUM) {
                     // This build of the ATH was not triggered from an upstream build of blueocean itself
                     // so we must get and build blueocean.
                     dir('blueocean-plugin') {
@@ -121,7 +123,7 @@ node ('docker') {
             } catch (err) {
                 currentBuild.result = "FAILURE"
             } finally {
-                sendhipchat(repoUrl, branchName)
+                sendhipchat(repoUrl, branchName, buildNumber)
             }
         }
     } finally {
@@ -129,7 +131,7 @@ node ('docker') {
     }
 }
 
-def sendhipchat(repoUrl, branchName) {
+def sendhipchat(repoUrl, branchName, buildNumber) {
     res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
@@ -138,7 +140,12 @@ def sendhipchat(repoUrl, branchName) {
     def shortRepoURL = toShortRepoURL(repoUrl);
     def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
     message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER}<br/>"
-    message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a><br/>"
+    message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a>"
+    if (buildNumber == NO_BUILD_NUM) {
+        message += ' (HPIs built from branch source)<br/>'
+    } else {
+        message += " (HPIs from build #${buildNumber})<br/>"
+    }
     message += "- result: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
 
     color = null
