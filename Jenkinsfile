@@ -18,6 +18,7 @@ node ('docker') {
 
     def branchName;
     def buildNumber;
+    def repoUrl;
     try {
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
         buildNumber = "${TRIGGERED_BY_BUILD_NUM}"
@@ -107,7 +108,7 @@ node ('docker') {
             } catch (err) {
                 currentBuild.result = "FAILURE"
             } finally {
-                sendhipchat(branchName)
+                sendhipchat(repoUrl, branchName)
             }
         }
     } finally {
@@ -115,12 +116,12 @@ node ('docker') {
     }
 }
 
-def sendhipchat(branchName) {
+def sendhipchat(repoUrl, branchName) {
     res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
     }
-    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER} branch: ${branchName}, status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
+    message = "ATH: ${env.JOB_NAME} #${env.BUILD_NUMBER} ${repoUrl}/${branchName}, status: ${res} (<a href='${currentBuild.absoluteUrl}'>Open</a>)"
     color = null
     if(res == "UNSTABLE") {
         color = "YELLOW"
