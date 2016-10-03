@@ -11,7 +11,8 @@ module.exports = {
     elements: {
         nameInput: '#name',
         freestyleType: 'li.hudson_model_FreeStyleProject',
-        submit: '#newFormSubmitButtonForATH'
+        submit: '#newFormSubmitButtonForATH',
+        jobIndexPageHeader: 'h1.job-index-headline'
     }
 };
 
@@ -33,8 +34,6 @@ module.exports.commands = [{
         self.click('@freestyleType');
         self.click('@submit');
 
-        self.waitForJobCreated(jobName);
-
         if (!oncreated) {
             // If no oncreated function was supplied then we manufacture
             // a dummy. This ensures that this function does not return
@@ -42,10 +41,15 @@ module.exports.commands = [{
             oncreated = function() {};
         }
 
-        // Navigate to the job config page and set the freestyle script.
-        self.api.page.freestyleConfig().forJob(jobName)
+        // Clicking submit above should result in us ending up on the
+        // job config page. Set the freestyle script.
+        self.api.page.freestyleConfig()
+            .moveClassicBottomStickyButtons()
             .setFreestyleScript(script)
-            .waitForElementPresent('@save')
-            .click('@save', oncreated);
+            .click('@save');
+
+        // Wait for the signal that the config page has saved
+        // and we're back on the job index page.
+        self.waitForElementPresent('@jobIndexPageHeader');
     },
 }];

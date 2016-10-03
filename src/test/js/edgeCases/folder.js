@@ -38,8 +38,6 @@ function getProjectName(nameArray, seperator) {
 // here we need to escape the real projectName to a urlEncoded string
 const projectName = getProjectName(anotherFolders, '%2F');
 
-console.log('*** ', pathToRepo, 'jobName', jobName);
-
 module.exports = {
     //
     // TODO: Fix createBranch and re-inable these tests
@@ -50,42 +48,58 @@ module.exports = {
     //
     // ** creating a git repo */
     before: function (browser, done) {
-
-       // we creating a git repo in target based on the src repo (see above)
-       git.createRepo(soureRep, pathToRepo)
-           .then(function () {
-               git.createBranch('feature/1', pathToRepo)
-                   .then(done);
-           });
+        browser.waitForJobDeleted('firstFolder', function () {
+            browser.waitForJobDeleted('anotherFolder', function () {
+                // we creating a git repo in target based on the src repo (see above)
+                git.createRepo(soureRep, pathToRepo)
+                    .then(function () {
+                        git.createBranch('feature/1', pathToRepo)
+                            .then(done);
+                    });
+            });
+        });
     },
-    /** Create folder and then a freestyle job - "firstFolder"*/
+    /** Create folder - "firstFolder"*/
     'step 01': function (browser) {
        // Initial folder create page
        const folderCreate = browser.page.folderCreate().navigate();
        // create nested folder for the project
        folderCreate.createFolders(folders);
-       // create the freestyle job in the folder
-       folderCreate.createFreestyle(folders.join('/'), jobName, 'freestyle.sh');
     },
-    /** Create folder and then a multibranch job - "anotherFolder"
-    *
-    * @see  {@link https://issues.jenkins-ci.org/browse/JENKINS-36618|JENKINS-36618} part 1 - create same job but in another folder
-    */
+    /** Create freestyle job - "Sohn"*/
     'step 02': function (browser) {
-       // Initial folder create page
-       const folderCreate = browser.page.folderCreate().navigate();
-       // create nested folder for the project
-       folderCreate.createFolders(anotherFolders);
-       // go to the multibranch creation page
-       const branchCreate = browser.page.multibranchCreate().newItem(anotherFolders.join('/'));
-       // Let us create a multibranch object in the nested folders
-       branchCreate.createBranch(jobName, pathToRepo);
+        // create the freestyle job in the folder
+        browser.page.jobUtils().newItem();
+        const freestyleCreate = browser.page.freestyleCreate();
+        freestyleCreate.createFreestyle(jobName, 'freestyle.sh');
+
+    },
+    /** Create folder - "anotherFolder"
+     *
+     * @see  {@link https://issues.jenkins-ci.org/browse/JENKINS-36618|JENKINS-36618} part 1 - create same job but in another folder
+     */
+    'step 03': function (browser) {
+        // Initial folder create page
+        const folderCreate = browser.page.folderCreate().navigate();
+        // create nested folder for the project
+        folderCreate.createFolders(anotherFolders);
+    },
+    /** Create multibranch job - "Sohn"
+     *
+     * @see  {@link https://issues.jenkins-ci.org/browse/JENKINS-36618|JENKINS-36618} part 1 - create same job but in another folder
+     */
+    'step 04': function (browser) {
+        // go to the newItem page
+        browser.page.jobUtils().newItem();
+        // and then use the multibranchCreate page object to create
+        // a multibranch project
+        browser.page.multibranchCreate().createBranch(jobName, pathToRepo);
     },
     /** Jobs can have the same name in different folders, they should show up in the gui
     *
     * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36618|JENKINS-36618} part 2 - verify
     */
-    'step 03': function (browser) {
+    'step 05': function (browser) {
        const bluePipelinesPage = browser.page.bluePipelines().navigate();
        // simply validate that the pipline listing is showing the basic things
        bluePipelinesPage.assertBasicLayoutOkay();
@@ -93,7 +107,7 @@ module.exports = {
        bluePipelinesPage.countJobToBeEqual(browser, jobName, 2);
     },
     /** Build freestyle job */
-    'step 04': function (browser) {
+    'step 06': function (browser) {
        const freestyleJob = browser.page.jobUtils()
            .forJob(getProjectName(folders));
        // start a build on the nested freestyle project
@@ -113,7 +127,7 @@ module.exports = {
     },
     //FIXME the test is disabled due to https://cloudbees.atlassian.net/browse/OSS-1438
     /** Validate correct encoding, pipeline graph and steps */
-    'step 05': !function (browser) {
+    'step 07': !function (browser) {
        // /JENKINS-36616 - Unable to load multibranch projects in a folder
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
        // {@link https://issues.jenkins-ci.org/browse/JENKINS-36773|JENKINS-36773} / JENKINS-37605 verify encoding and spacing of details
@@ -128,7 +142,7 @@ module.exports = {
     },
     //FIXME the test is disabled due to https://cloudbees.atlassian.net/browse/OSS-1438
     /** Check whether the artifacts tab shows artifacts*/
-    'step 06': !function (browser) {
+    'step 08': !function (browser) {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
        // go to the artifact page by clicking the tab
        blueRunDetailPage.clickTab('artifacts');
@@ -140,7 +154,7 @@ module.exports = {
     *
     * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36674|JENKINS-36674} Tests are not being reported
     */
-    'step 07': !function (browser) {
+    'step 09': !function (browser) {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
        // Go to the test page by clicking the tab
        blueRunDetailPage.clickTab('tests');
@@ -149,7 +163,7 @@ module.exports = {
     },
     //FIXME the test is disabled due to https://cloudbees.atlassian.net/browse/OSS-1438
     /** Check whether the changes tab shows changes - one commit*/
-    'step 08': !function (browser) {
+    'step 10': !function (browser) {
        // magic number
        const magic = 1;
        // creating an array
@@ -204,7 +218,7 @@ module.exports = {
     *
     * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36615|JENKINS-36615} the multibranch project has the branch 'feature/1'
     */
-    'step 09': !function (browser) {
+    'step 11': !function (browser) {
        // first get the activity screen for the project
        const blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
        // validate that we have 3 activities from the previous tests
@@ -220,7 +234,7 @@ module.exports = {
     },
     //FIXME the test is disabled due to https://cloudbees.atlassian.net/browse/OSS-1438
     /** Check whether the changes tab shows changes - condensed*/
-    'step 10': !function (browser) {
+    'step 12': !function (browser) {
        // magic number of how many commits we want to create
        const magic = 15;
        // creating an array
