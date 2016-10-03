@@ -12,8 +12,9 @@ module.exports = {
     elements: {
         nameInput: '#name',
         multibranchType: 'li.org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject',
-        submit: '#ok-button',
-        save: 'span.yui-button[name="Submit"]',
+        submit: '#newFormSubmitButtonForATH',
+        configForm: 'form[name="config"]',
+        configSave: '#newFormSubmitButtonForATH',
         button: {
             selector: '//button[@path="/hetero-list-add[sources]"]',
             locateStrategy: 'xpath',
@@ -65,6 +66,7 @@ branchCreate.createBranch(multiBranchJob, pathToRepo);
 
         // We should now be on the configuration page for
         // the multibranch job.
+        self.waitForElementPresent('@configForm');
         self.waitForElementPresent('@button');
         self.click('@button');
         self.waitForElementPresent('@gitA');
@@ -72,8 +74,8 @@ branchCreate.createBranch(multiBranchJob, pathToRepo);
         self.waitForElementPresent('@scriptHook');
         self.setValue('@scriptHook', path);
 
-        self.waitForElementPresent('@save')
-            .click('@save');
+        self.waitForElementPresent('@configSave')
+            .click('@configSave');
 
     },
 }];

@@ -58,11 +58,18 @@ public class NightwatchRunner {
         Map<String, String> env = new HashMap<>();
 
         System.out.println("------------- NightwatchRunner <<Start>> -------------");
-        System.out.println(" command: [" + command + "]");
-        System.out.println(" env: " + env);
-        System.out.println();
-        frontendPluginFactory.getGulpRunner().execute(command, env);
-        System.out.println("-------------- NightwatchRunner <<End>> --------------");
+        try {
+            System.out.println(" command: [" + command + "]");
+            System.out.println(" env: " + env);
+            System.out.println();
+            frontendPluginFactory.getGulpRunner().execute(command, env);
+            System.out.println("**** NightwatchRunner - No failures.");
+        } catch (TaskRunnerException e) {
+            System.out.println("**** NightwatchRunner - failure.");
+            throw e;
+        } finally {
+            System.out.println("-------------- NightwatchRunner <<End>> --------------");
+        }
     }
     
     public static void runIntegrationSpec(String testFile) throws TaskRunnerException {

@@ -11,7 +11,7 @@ module.exports = {
     elements: {
         nameInput: '#name',
         freestyleType: 'li.hudson_model_FreeStyleProject',
-        submit: '#ok-button'
+        submit: '#newFormSubmitButtonForATH'
     }
 };
 
@@ -29,6 +29,7 @@ module.exports.commands = [{
         self.waitForJobDeleted(jobName);
 
         self.setValue('@nameInput', jobName);
+        self.waitForElementPresent('@submit');
         self.click('@freestyleType');
         self.click('@submit');
 
@@ -44,6 +45,7 @@ module.exports.commands = [{
         // Navigate to the job config page and set the freestyle script.
         self.api.page.freestyleConfig().forJob(jobName)
             .setFreestyleScript(script)
+            .waitForElementPresent('@save')
             .click('@save', oncreated);
     },
 }];

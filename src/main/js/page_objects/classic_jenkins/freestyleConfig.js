@@ -21,7 +21,7 @@ exports.elements = {
         selector: '//textarea[@name="command"]',
         locateStrategy: 'xpath',
     },
-    save: 'span.yui-button[name="Submit"]'
+    save: '#newFormSubmitButtonForATH'
 };
 exports.commands = [
     {
@@ -42,8 +42,7 @@ exports.commands = [
          */
         setFreestyleScript: function (script) {
             const scriptText = readTestScript(script);
-            this.moveConfigpageButtons() // Need to move the config page buttons as they block clicking on the build step button
-                .waitForElementVisible('@button')
+            this.waitForElementVisible('@button')
                 .click('@button')
                 .waitForElementVisible('@shell')
                 .click('@shell')

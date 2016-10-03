@@ -18,7 +18,7 @@ module.exports = {
         activityTableEntries: 'table.activity-table tbody tr',
         runButton: 'a.run-button',
         toastOpenButton: {
-            selector: '//a[@class="action" and position()=1]',
+            selector: '//div[@class="toast"]/a[@class="action" and text()="Open"]',
             locateStrategy: 'xpath',
         },
     }

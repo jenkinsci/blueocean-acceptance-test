@@ -38,7 +38,7 @@ public class DevRunner extends BOJUnitTest {
         System.out.println("");
         System.out.println("------------------------------------------------------------------------------------");
         System.out.println("    A clean dev instance of Jenkins is running now.");
-        System.out.println("     - " + jenkins.getCurrentUrl());
+        System.out.println("     - " + getJenkinsUrl());
         System.out.println("");
         System.out.println("    You should now be able to develop tests against this instance without");
         System.out.println("    having to constantly restart Jenkins.");
@@ -46,6 +46,14 @@ public class DevRunner extends BOJUnitTest {
         System.out.println("    Open another terminal and run nightwatchjs commands to run specific tests.");
         System.out.println("    Iterate and rerun tests.");
         System.out.println("    See http://nightwatchjs.org/");
+        System.out.println("");
+        System.out.println("    NOTE:");
+        System.out.println("        Selenium and the browser (Firefox) are running in a docker");
+        System.out.println("        container that also has VNC. This allows you to connect if");
+        System.out.println("        you'd like to look at the browser while the tests run.");
+        System.out.println("        Simple run:");
+        System.out.println("         $ open vnc://:secret@localhost:15900");
+        System.out.println("");
         System.out.println("------------------------------------------------------------------------------------");
         System.out.println("");
         System.out.println("ctrl-c to exit...");

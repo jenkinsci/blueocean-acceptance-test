@@ -10,7 +10,7 @@ module.exports = {
     elements: {
         nameInput: '#name',
         pipelineJobType: 'li.org_jenkinsci_plugins_workflow_job_WorkflowJob',
-        submit: '#ok-button'
+        submit: '#newFormSubmitButtonForATH'
     }
 };
 
@@ -28,6 +28,7 @@ module.exports.commands = [{
         self.waitForJobDeleted(jobName);
 
         self.setValue('@nameInput', jobName);
+        self.waitForElementPresent('@submit');
         self.click('@pipelineJobType');
         self.click('@submit');
 
@@ -41,8 +42,10 @@ module.exports.commands = [{
         }
 
         // Navigate to the job config page and set the pipeline script.
-        self.api.page.pipelineConfig().forJob(jobName)
+        var pipelineConfig = self.api.page.pipelineConfig();
+        pipelineConfig.forJob(jobName)
             .setPipelineScript(script)
+            .waitForElementPresent('@configForm')
             .click('@save', oncreated);
     },
 }];

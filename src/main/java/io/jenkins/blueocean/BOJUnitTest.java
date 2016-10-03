@@ -37,9 +37,22 @@ public abstract class BOJUnitTest extends AbstractJUnitTest {
     @Before
     public void doInit() throws IOException {
         FileWriter fileWriter = new FileWriter("./target/.jenkins_url");
-        fileWriter.write(jenkins.getCurrentUrl());
+        fileWriter.write(getJenkinsUrl());
         fileWriter.flush();
         fileWriter.close();
         new FileWriter("./target/.jenkins_test").close();
+    }
+
+    protected String getJenkinsUrl() {
+        String jenkinsUrl = jenkins.getCurrentUrl();
+        String host = System.getenv("blueoceanHost");
+
+        if (host != null) {
+            host = host.trim();
+            jenkinsUrl = jenkinsUrl.replace("127.0.0.1", host);
+            jenkinsUrl = jenkinsUrl.replace("localhost", host);
+        }
+
+        return jenkinsUrl;
     }
 }

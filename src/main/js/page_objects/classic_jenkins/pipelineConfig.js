@@ -10,7 +10,8 @@ var fs = require('fs');
 
 exports.elements = {
     scriptInput: '#workflow-editor-1 .ace_text-input',
-    save: 'span.yui-button[name="Submit"]'
+    configForm: 'form[name="config"]',
+    save: '#newFormSubmitButtonForATH'
 };
 
 exports.commands = [
