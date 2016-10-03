@@ -186,14 +186,8 @@ module.exports.commands = [{
             // validate that we have changed the url
             browser.url(function (responseInner) {
                 sanityCheck(self, responseInner);
-                // is the "full log" link gone?
-                self.fullLogButtonNotPresent();
-                // is the progressbar visible and not the code?
-                self.validateLoading();
-                // did we changed the url on  change?
-                self.assert.equal(responseInner.value.includes('start=0'), true);
             })
-        })
+        });
         return self;
 
     },
