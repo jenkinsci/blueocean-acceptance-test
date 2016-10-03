@@ -60,15 +60,6 @@
     </properties>
     <dependencies>
         <!--
-        Add the Blue Ocean Aggregator dependency.
-        NOTE: this needs to be updated in line with the POM version updates in Blue Ocean.
-        -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-aggregator</artifactId>
-            <version>1.0.0-b08-SNAPSHOT</version>
-        </dependency>
-        <!--
         Add dependencies that all of our tests need, but are not provided via
         the Blue Ocean Aggregator plugin.
         -->
@@ -78,18 +69,21 @@
             <version>2.4</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jenkins-ci.tools</groupId>
-                <artifactId>maven-hpi-plugin</artifactId>
-                <configuration>
-                    <loggers>
-                        <org.jenkinsci.plugins.workflow>FINE</org.jenkinsci.plugins.workflow>
-                        <org.jenkinsci.plugins.durabletask>FINE</org.jenkinsci.plugins.durabletask>
-                    </loggers>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>with-blueocean-deps</id>
+            <!-- activate by adding -Pwith-blueocean-deps -->
+            <dependencies>
+                <!--
+                Add the Blue Ocean Aggregator dependency.
+                NOTE: this needs to be updated in line with the POM version updates in Blue Ocean.
+                -->
+                <dependency>
+                    <groupId>io.jenkins.blueocean</groupId>
+                    <artifactId>blueocean</artifactId>
+                    <version>1.0.0-b08-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
