@@ -17,7 +17,7 @@ module.exports = {
     elements: {
         code: 'code',
         progressBar: 'div.loadingContainer',
-        logHeader: '.dialog .log-header',
+        logHeader: '.log-header',
         fullLog: 'div.fullLog a',
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
