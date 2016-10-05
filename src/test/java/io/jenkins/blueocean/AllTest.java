@@ -28,7 +28,7 @@ import org.jenkinsci.test.acceptance.junit.WithPlugins;
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-@WithPlugins({"workflow-aggregator@2.1"})
+@WithPlugins({"git@3.0.0"})
 public class AllTest extends NightwatchTest {
     public AllTest() {
         super(null);
