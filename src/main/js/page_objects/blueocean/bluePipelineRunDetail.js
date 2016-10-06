@@ -35,11 +35,11 @@ module.exports = {
         circleSuccess: 'svg circle.success',
         runningResult: 'span.result-item-icon.running',
         firstResult: {
-            selector: '//div[contains(@class, "result-item") and position()=1]',
+            selector: '//div[contains(@class, "result-item")]',
             locateStrategy: 'xpath',
         },
         firstErrorResult: {
-            selector: '//div[contains(@class, "failure") and position()=1]',
+            selector: '//div[contains(@class, "failure")]',
             locateStrategy: 'xpath',
         },
     }
@@ -389,6 +389,33 @@ module.exports.commands = [{
     validateNotRunningResults: function () {
         this.expect.element('@runningResult').to.not.be.present.before(1000);
         return this;
-    }
+    },
+  /**
+   * @description Nightwatch command to test whether log lines are navigable
+   * @param {Number} [position] - which log line do we want to click
+   * */
+  validateLogConsole: function (position) {
+      const self = this;
+      const browser = this.api;
+      const aXpath = '(//table[@class="highlight"]//tr/td/a)[' + position + ']';
+
+      // first turn on xpath to get the nodes we want
+      browser
+        .useXpath()
+        .waitForElementVisible(aXpath)
+        .getAttribute(aXpath, 'href', function (result) {
+          this.assert.equal(typeof result, "object");
+          this.assert.equal(result.status, 0);
+          const value = result.value;
+          browser
+            .click(aXpath)
+            .url(function (response) {
+              // did we changed the url on  change?
+              this.assert.equal(response.value, result.value);
+            })
+        });
+      browser.useCss();
+      return self;
+  }
 
 }];

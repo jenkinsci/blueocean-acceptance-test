@@ -1,5 +1,6 @@
-/**
- * Nightwatch command to move the config page buttons out of the way.
+/**@module moveClassicBottomStickyButtons
+ * @memberof custom_commands
+ * @description Nightwatch command to move the config page buttons out of the way.
  * See http://nightwatchjs.org/guide#writing-custom-commands
  * <p/>
  * The config page save/apply buttons in classic Jenkins is sticky positioned at the bottom
