@@ -80,41 +80,18 @@ module.exports = {
                 this.assert.equal('Shell Script', result.value);
             })
         ;
+        // wait for job to finish
+        nodeDetail.waitForJobRunEnded(cases[0].name);
         // test whether the expand works
         nodeDetail.clickFirstResultItem();
         // test whether the stage we seeing is highlighted
         nodeDetail.waitForElementVisible('g.pipeline-node-selected');
-        // test whether log lines are navigatable
-        // first turn on xpath to get the nodes we want
-        browser.useXpath();
-        var aXpath = '//code/p/a[1]';
-        nodeDetail
-            .waitForElementVisible(aXpath)
-            .getAttribute(aXpath, 'href', function (result) {
-                this.assert.equal(typeof result, "object");
-                this.assert.equal(result.status, 0);
-                const value = result.value;
-                this
-                    .click(aXpath)
-                    .url(function (response) {
-                        // did we changed the url on  change?
-                        this.assert.equal(response.value, result.value);
-                        // controll whether we can still see the log and the link is still the same
-                        this.waitForElementVisible(aXpath)
-                            .getAttribute(aXpath, 'href', function (inner) {
-                                this.assert.equal(inner.value, result.value);
-                            })
-                    })
-
-            });
-        // turn on css again
-        browser.useCss();
-        // wait for job to finish
-        nodeDetail.waitForJobRunEnded(cases[0].name);
+        // test whether log lines are navigable
+        nodeDetail.validateLogConsole(2);
     },
 /** Check whether there is an EmptyStateView for stages with no steps*/
     'Step 05': function (browser) {
-        async.mapSeries(cases, function (useCase, callback) {
+        async.mapSeries(caqqses, function (useCase, callback) {
             // the pipeline-model cannot have "noSteps" need to skip the test for that
             if (useCase.name !== "stagesPM") {
                 const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
