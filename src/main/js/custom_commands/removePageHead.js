@@ -1,13 +1,13 @@
-/**
- * Nightwatch command to remove the breadcrumb bar on classic jenkins pages.
+/** @module removePageHead
+ * @memberof custom_commands
+ * @description Nightwatch command to remove the breadcrumb bar on classic jenkins pages.
  * See http://nightwatchjs.org/guide#writing-custom-commands
  * <p/>
  * The breadcrumb bar in classic Jenkins is sticky positioned at the top
  * of the page and can block events getting to elements e.g. selecting
  * the job type on the create item page. This command removes it completely
  * by injecting some JS into the page.
- */
-
+ * */
 const util = require('util');
 const events = require('events');
 
