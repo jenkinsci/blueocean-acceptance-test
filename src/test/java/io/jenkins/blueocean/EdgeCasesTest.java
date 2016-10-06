@@ -25,7 +25,7 @@ package io.jenkins.blueocean;
 
 import org.jenkinsci.test.acceptance.junit.WithPlugins;
 
-@WithPlugins({"workflow-aggregator@2.1"})
+@WithPlugins({"git@3.0.0"})
 public class EdgeCasesTest extends NightwatchTest {
     public EdgeCasesTest() {
         super("edgeCases/*.js");
