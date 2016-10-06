@@ -91,7 +91,7 @@ module.exports = {
     },
 /** Check whether there is an EmptyStateView for stages with no steps*/
     'Step 05': function (browser) {
-        async.mapSeries(caqqses, function (useCase, callback) {
+        async.mapSeries(cases, function (useCase, callback) {
             // the pipeline-model cannot have "noSteps" need to skip the test for that
             if (useCase.name !== "stagesPM") {
                 const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(useCase.name, 'jenkins', 1);
