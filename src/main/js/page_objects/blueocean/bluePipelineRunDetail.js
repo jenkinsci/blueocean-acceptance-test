@@ -412,11 +412,6 @@ module.exports.commands = [{
             .url(function (response) {
               // did we changed the url on  change?
               this.assert.equal(response.value, result.value);
-              // controll whether we can still see the log and the link is still the same
-              this.waitForElementVisible(aXpath)
-                .getAttribute(aXpath, 'href', function (inner) {
-                  this.assert.equal(inner.value, result.value);
-                })
             })
         });
       browser.useCss();
