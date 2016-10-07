@@ -45,6 +45,9 @@ node ('docker') {
         // Build an image from the the local Dockerfile
         def athImg = docker.build('blueocean-ath-builder')
 
+        // fetch Maven configuration
+        configFileProvider([configFile(fileId: 'blueocean-maven-settings', targetLocation: 'settings.xml')]) {
+
         //
         // Run the build container, giving it the same network stack as the selenium
         // container.
@@ -76,7 +79,7 @@ node ('docker') {
                         // need to make sure gets compiled and installed for other modules.
                         // Must cd into blueocean-plugin before running build
                         // see https://issues.jenkins-ci.org/browse/JENKINS-33510
-                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
+                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests -s settings.xml"
                     }
                 } else {
                     def selector;
@@ -113,7 +116,7 @@ node ('docker') {
                     // not perform the assembly again.
                     sh 'touch blueocean-plugin/blueocean/.pre-assembly'
                 }
-                sh "mvn -B clean install -DskipTests"
+                sh "mvn -B clean install -DskipTests -s settings.xml"
 
                 // Run the ATH. Tell the run script to not try starting selenium. Selenium is
                 // already running in a docker container of it's on in the host. See call to
@@ -126,6 +129,7 @@ node ('docker') {
                 sendhipchat(repoUrl, branchName, buildNumber)
             }
         }
+        } // configFileProvider
     } finally {
         sh "./stop-selenium.sh"
     }
