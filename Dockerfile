@@ -59,3 +59,9 @@ RUN sudo useradd bouser --shell /bin/bash --create-home \
 
 USER bouser
 WORKDIR /home/bouser
+
+#========================================
+# Configure the local git user.
+#========================================
+RUN git config --global user.name "John Doe"
+RUN git config --global user.email johndoe@example.com
