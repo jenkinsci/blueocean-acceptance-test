@@ -21,6 +21,7 @@ exports.elements = {
         selector: '//textarea[@name="command"]',
         locateStrategy: 'xpath',
     },
+    configForm: 'form[name="config"]',
     save: '#newFormSubmitButtonForATH'
 };
 exports.commands = [
@@ -42,6 +43,8 @@ exports.commands = [
          */
         setFreestyleScript: function (script) {
             const scriptText = readTestScript(script);
+            this.waitForElementPresent('@configForm');
+            this.waitForElementPresent('@save');
             this.waitForElementVisible('@button')
                 .click('@button')
                 .waitForElementVisible('@shell')
@@ -61,6 +64,7 @@ exports.commands = [
                 codemirror.save();
                 return true;
             }, ['//*[@name="command"]/following-sibling::div', scriptText]);
+            this.waitForElementPresent('@save');
 
             return this;
         }

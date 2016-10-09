@@ -31,7 +31,6 @@ ATH_SERVER_HOST=""
 ATH_SERVER_PORT=""
 PLUGINS=""
 AGGREGATOR_DIR=""
-AGGREGATOR_ENV=""
 DEV_JENKINS=false
 PROFILES="-P runTests"
 JENKINS_JAVA_OPTS="-Djava.util.logging.config.file=./logging.properties"
@@ -161,8 +160,6 @@ if [ "${AGGREGATOR_DIR}" != "" ]; then
         fi
         popd
     fi
-
-    AGGREGATOR_ENV="PLUGINS_DIR=${AGGREGATOR_DIR}/target/plugins"
 fi
 
 if [ "${MAVEN_SETTINGS}" != "" ]; then
@@ -175,7 +172,14 @@ if [ "${ATH_SERVER_PORT}" != "" ]; then
     ATH_SERVER_PORT="httpPort=${ATH_SERVER_PORT}"
 fi
 
-EXECUTION="env JENKINS_JAVA_OPTS=\"${JENKINS_JAVA_OPTS}\" ${ATH_SERVER_HOST} ${ATH_SERVER_PORT} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} ${AGGREGATOR_ENV} PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn ${MAVEN_SETTINGS} test ${PROFILES} ${TEST_TO_RUN}"
+echo "Assembling ATH dependency plugins (non Blue Ocean) ..."
+pushd runtime-deps
+mvn clean install -DskipTests
+mvn hpi:assemble-dependencies
+popd
+cp -f $AGGREGATOR_DIR/target/plugins/*.hpi ./runtime-deps/target/plugins
+
+EXECUTION="env JENKINS_JAVA_OPTS=\"${JENKINS_JAVA_OPTS}\" ${ATH_SERVER_HOST} ${ATH_SERVER_PORT} BROWSER=phantomjs LOCAL_SNAPSHOTS=${LOCAL_SNAPSHOTS} ${PLUGINS} PLUGINS_DIR=./runtime-deps/target/plugins PATH=./node:./node/npm/bin:./node_modules/.bin:${PATH} JENKINS_WAR=./bin/jenkins-${JENKINS_VERSION}.war mvn ${MAVEN_SETTINGS} test ${PROFILES} ${TEST_TO_RUN}"
 
 echo ""
 echo "> ${EXECUTION}"

@@ -10,8 +10,9 @@ module.exports = {
     getJobUrl: function (launchUrl, jobName) {
         const nameArray = jobName.split('/');
         var jobUrl = launchUrl;
+        jobUrl = jobUrl.replace(/\/$/, ""); // trim trailing slash if there is one
         nameArray.map(function (item) {
-            jobUrl += 'job/' + item + '/';
+            jobUrl += '/job/' + item + '/';
         });
         return jobUrl;
     },
