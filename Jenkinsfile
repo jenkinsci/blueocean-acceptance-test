@@ -45,7 +45,8 @@ node ('docker') {
         // Build an image from the the local Dockerfile
         def athImg = docker.build('blueocean-ath-builder')
 
-        // fetch Maven configuration
+        // fetch Maven configuration managed by Config File Provider plugin
+        // to change it, go to Manage Jenkins > Managed files
         configFileProvider([configFile(fileId: 'blueocean-maven-settings', targetLocation: 'settings.xml')]) {
 
         //
