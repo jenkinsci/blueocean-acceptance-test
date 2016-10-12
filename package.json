@@ -24,7 +24,7 @@
   "homepage": "https://github.com/cloudbees/blueocean-acceptance-test#readme",
   "devDependencies": {
     "@jenkins-cd/js-modules": "0.0.8",
-    "@jenkins-cd/sse-gateway": "0.0.9",
+    "@jenkins-cd/sse-gateway": "0.0.10-beta2",
     "async": "^2.0.1",
     "events": "1.1.1",
     "eventsource": "0.2.1",
