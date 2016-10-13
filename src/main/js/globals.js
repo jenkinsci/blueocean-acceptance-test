@@ -19,6 +19,7 @@ module.exports = {
                 browser.end();
             } finally {
                 sse.disconnect(function() {
+                    console.log('>> Test suite "done". Okay to start next test.');
                     done();
                 });
             }

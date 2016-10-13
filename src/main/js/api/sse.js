@@ -2,6 +2,7 @@ var sseClient = require('@jenkins-cd/sse-gateway/headless-client');
 var jobChannel = undefined;
 var jobEventListeners = [];
 var jobEventHistory = [];
+var sseConnection;
 
 /**
  * Connect to the SSE Gateway.
@@ -12,22 +13,20 @@ var jobEventHistory = [];
  * @param done
  */
 exports.connect = function(browser, done) {
-    if (jobChannel) {
+    if (sseConnection) {
         exports.disconnect(function() {
             exports.connect(browser, done);
         });
     } else {
-        sseClient.connect({
+        sseConnection = sseClient.connect({
             clientId: 'blueocean-acceptance-tests',
             jenkinsUrl: browser.launchUrl,
             onConnect: function() {
-                browser.sseClient = sseClient;
-
                 console.log('Connected to the Jenkins SSE Gateway.');
 
                 // Subscribe to job channel so we have it ready to listen 
                 // before any tests start running.
-                jobChannel = sseClient.subscribe({
+                jobChannel = sseConnection.subscribe({
                     channelName: 'job',
                     onEvent: function (event) {
                         callJobEventListeners(event);
@@ -40,7 +39,6 @@ exports.connect = function(browser, done) {
             }
         });
     }
-    browser.sseClient = sseClient;
 };
 
 /**
@@ -52,22 +50,22 @@ exports.connect = function(browser, done) {
  */
 exports.disconnect = function(onDisconnected) {
     function clientDisconnect() {
-        sseClient.disconnect();
+        if (sseConnection) {
+            sseConnection.disconnect();
+        }
+        sseConnection = undefined;
         jobEventListeners = [];
         jobEventHistory = [];
         console.log('Disconnected from the Jenkins SSE Gateway.');
+        if (onDisconnected) {
+            onDisconnected();
+        }
     }
 
     if (jobChannel) {
-        sseClient.unsubscribe(jobChannel, function() {
-            try {
-                jobChannel = undefined;
-                clientDisconnect();
-            } finally {
-                if (onDisconnected) {
-                    onDisconnected();
-                }
-            }
+        sseConnection.unsubscribe(jobChannel, function() {
+            jobChannel = undefined;
+            clientDisconnect();
         });
     } else {
         clientDisconnect();
