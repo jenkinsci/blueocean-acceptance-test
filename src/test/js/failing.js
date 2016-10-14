@@ -56,5 +56,14 @@ module.exports = {
             });
 
         });
+    },
+    
+    /** 
+     * Check that the failed item shows up and has a replay icon
+     */
+    'Step 04' : function(browser) {
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob(JOB, 'jenkins');
+        blueActivityPage.waitForRunFailureVisible(JOB + '-1');
+        blueActivityPage.waitForElementVisible('.replay-button');
     }
 };

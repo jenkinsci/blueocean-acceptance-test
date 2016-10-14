@@ -57,6 +57,15 @@ module.exports.commands = [{
         this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.success');
     },
     /**
+     * Wait for a specific run to appear in the activity table as a failure
+     * @param runName name of the job
+     */
+    waitForRunFailureVisible: function(runName) {
+        this.waitForElementVisible('.activity-table tr#' + runName);
+        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
+        this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.failure');
+    },    
+    /**
      * Wait for a specific run to appear in the activity table as running
      * @param runName name of the job
      * @param [callback] {Function} - callback to be invoke when finished, will pass the sse event to the callback
