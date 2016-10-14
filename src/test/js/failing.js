@@ -54,6 +54,9 @@ module.exports = {
                 // however if the browser is too quick there can still be two open
                 this.assert.equal(codeCollection.value.length <= 2, true);
             });
+            
+            // as it has failed, should get a replay button
+            blueRunDetailPage.waitForElementVisible('.replay-button');
 
         });
     },
