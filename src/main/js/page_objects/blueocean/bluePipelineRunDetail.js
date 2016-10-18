@@ -416,6 +416,18 @@ module.exports.commands = [{
         });
       browser.useCss();
       return self;
+  },
+  
+  /**
+   * failed pipelines have a rerun/replace button button
+   */
+  clickReRunButton: function () {
+    var self = this;
+    const browser = this.api;    
+    self.waitForElementVisible('.replay-button');
+    self.click('.replay-button');
+    return self;
   }
+
 
 }];
