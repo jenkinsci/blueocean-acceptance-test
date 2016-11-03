@@ -20,7 +20,14 @@ exports.assertion = function(expected, msg) {
     this.expected = expected;
 
     this.pass = function(value) {
-        return value.endsWith(expected);
+        // hmmm ... for some reason, nightwatch/selenium is URL endcoding
+        // the URL. So, lets decode the patch tokens and reassemble before
+        // testing it.
+        var urlTokens = value.split('/');
+        urlTokens.filter(function(token) {
+            return decodeURIComponent(token);
+        });
+        return value.endsWith(urlTokens.join('/'));
     };
 
     this.value = function(result) {
