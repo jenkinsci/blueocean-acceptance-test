@@ -73,6 +73,13 @@ module.exports = {
         const freestyleCreate = browser.page.freestyleCreate();
         freestyleCreate.createFreestyle(jobName, 'freestyle.sh');
 
+        // make sure the open blue ocean button works. In this case,
+        // it should bring the browser to an empty pipeline activity
+        // page.
+        var bluePipelineActivity = browser.page.bluePipelineActivity();
+        browser.openBlueOcean();
+        bluePipelineActivity.assertEmptyLayoutOkay(jobName);
+        browser.assert.urlEndsWith('/blue/organizations/jenkins/firstFolder%2F三百%2Fñba%2F七%2FSohn/activity');
     },
     /** Create folder - "anotherFolder"
      *
