@@ -4,7 +4,7 @@
   ],
   "output_folder": "target/surefire-reports",
   "custom_commands_path": "src/main/js/custom_commands",
-  "custom_assertions_path": "",
+  "custom_assertions_path": "src/main/js/custom_assertions",
   "globals_path": "src/main/js/globals.js",
   "page_objects_path": [
     "src/main/js/page_objects/classic_jenkins",
