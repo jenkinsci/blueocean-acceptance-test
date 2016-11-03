@@ -59,7 +59,8 @@ function doClassicPageIntercepts(browser) {
                 // page adjustments.
                 return navFunc.apply(this, arguments)
                     .removePageHead()
-                    .moveClassicBottomStickyButtons();
+                    .moveClassicBottomStickyButtons()
+                    .addOpenBlueOceanLinkToFooter();
             };
 
             return thePage;
