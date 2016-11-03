@@ -132,6 +132,17 @@ module.exports = {
            browser.assert.equal(response.value.indexOf('firstFolder') > -1, true);
        })
     },
+    'test open blueocean from classic - run details': function(browser) {
+        var classicRunPage = browser.page.classicRun();
+
+        classicRunPage.navigateToRun('anotherFolder/job/三百/job/ñba/job/七/job/Sohn/job/feature%252F1');
+
+        // make sure the open blue ocean button works. In this case,
+        // it should bring the browser to the run details page for the first run.
+        browser.openBlueOcean();
+        browser.assert.urlEndsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature%2F1/1/pipeline');
+
+    },
     //FIXME the test is disabled due to https://cloudbees.atlassian.net/browse/OSS-1438
     /** Validate correct encoding, pipeline graph and steps */
     'step 07': !function (browser) {
