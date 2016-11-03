@@ -46,14 +46,14 @@ module.exports.commands = [{
     assertBasicLayoutOkay: function(jobName) {
         const baseHref = url.viewPipeline('jenkins', (jobName?jobName:this.jobName));
         this.waitForElementVisible('@pipelinesNav');
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/activity"]');
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/branches"]');
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/pr"]');
+        this.waitForElementVisible('nav.page-tabs a');
         this.waitForElementVisible('.Site-footer');
+        // Test the end of the active url and make sure it's on the
+        // expected activity page.
         if (jobName) {
-            // Test the end of the active url and make sure it's on the
-            // expected activity page.
             this.assert.urlEndsWith(jobName + '/activity');
+        } else {
+            this.assert.urlEndsWith('/activity');
         }
     },
     /**
