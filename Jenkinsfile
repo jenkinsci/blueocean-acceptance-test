@@ -100,16 +100,17 @@ node ('docker') {
                     // Let's copy and extract that tar to where the ATH would expect the plugins to be.
                     // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
                     // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
+                    // Need to URL encode the branch name to get rid of slashes etc.
+                    def urlEncodedBranchName = URLEncoder.encode(branchName, "UTF-8").replace("+", "%20");
                     try {
-                        // Need to URL encode the branch name to get rid of slashes etc.
-                        def urlEncodedBranchName = URLEncoder.encode(string, "UTF-8").replace("+", "%20");
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/${urlEncodedBranchName}",
                                selector: selector,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     } catch (Exception e) {
-                        echo "No CI build for Blue Ocean branch named '${branchName}', or doesn't have a pre-assembled plugin tar. Trying the last completed 'master' build instead."
+                        echo "No CI build for Blue Ocean branch named '${urlEncodedBranchName}', or doesn't have a pre-assembled plugin tar. Trying the last completed 'master' build instead."
                         branchName = "master";
+                        buildNumber = DEFAULT_BUILD_NUM;
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/master",
                                selector: LAST_COMPLETED_BUILD_SELSECTOR,
