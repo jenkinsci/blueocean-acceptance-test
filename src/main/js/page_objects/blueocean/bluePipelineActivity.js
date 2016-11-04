@@ -31,6 +31,9 @@ module.exports.commands = [{
     * @returns {Object} self - nightwatch page object
     */
     forJob: function(jobName, orgName) {
+        if (!orgName) {
+            orgName = 'jenkins';
+        }
         const pageUrl = this.api.launchUrl + url.viewPipelineActivity(orgName, jobName);
         this.jobName = jobName;
         this.orgName = orgName;
@@ -40,12 +43,26 @@ module.exports.commands = [{
      * Different test on general elements that should be visible on the page
      * @returns {Object} self - nightwatch page object
      */
-    assertBasicLayoutOkay: function() {
-        const baseHref = url.viewPipeline(this.orgName, this.jobName);
+    assertBasicLayoutOkay: function(jobName) {
+        const baseHref = url.viewPipeline('jenkins', (jobName?jobName:this.jobName));
         this.waitForElementVisible('@pipelinesNav');
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/activity"]');
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/branches"]');
-        this.waitForElementVisible('nav.page-tabs a[href="' + baseHref + '/pr"]');
+        this.waitForElementVisible('nav.page-tabs a');
+        this.waitForElementVisible('.Site-footer');
+        // Test the end of the active url and make sure it's on the
+        // expected activity page.
+        if (jobName) {
+            this.assert.urlEndsWith(jobName + '/activity');
+        } else {
+            this.assert.urlEndsWith('/activity');
+        }
+    },
+    /**
+     * Different test on general elements that should be visible on an empty activity page
+     * @returns {Object} self - nightwatch page object
+     */
+    assertEmptyLayoutOkay: function(jobName) {
+        this.assertBasicLayoutOkay(jobName);
+        this.waitForElementVisible('@emptyStateShoes');
     },
     /**
      * Wait for a specific run to appear in the activity table as a success
