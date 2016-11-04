@@ -19,6 +19,8 @@ node ('docker') {
     def repoUrl;
     def branchName;
     def buildNumber;
+    def LAST_COMPLETED_BUILD_SELSECTOR = [$class: 'LastCompletedBuildSelector'];
+
     try {
         repoUrl = "${BLUEOCEAN_REPO_URL}"
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
@@ -88,7 +90,7 @@ node ('docker') {
                     // Get the ATH plugin set from an upstream build of the "blueocean" job. All blueocean builds
                     // already have the plugins pre-assembled and archived in a tar on the build.
                     if (buildNumber.toLowerCase() == "latest") {
-                        selector = [$class: 'LastCompletedBuildSelector'];
+                        selector = LAST_COMPLETED_BUILD_SELSECTOR;
                     } else {
                         // Get from a specific build number. This run may have been triggered from a
                         // build of a Blue Ocean branch.
@@ -104,11 +106,11 @@ node ('docker') {
                                selector: selector,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     } catch (Exception e) {
-                        echo "No CI build for Blue Ocean branch named '${branchName}', or doesn't have a pre-assembled plugin tar. Trying the 'master' build instead."
+                        echo "No CI build for Blue Ocean branch named '${branchName}', or doesn't have a pre-assembled plugin tar. Trying the last completed 'master' build instead."
                         branchName = "master";
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/master",
-                               selector: selector,
+                               selector: LAST_COMPLETED_BUILD_SELSECTOR,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     }
                     sh 'mkdir -p blueocean-plugin/blueocean'
