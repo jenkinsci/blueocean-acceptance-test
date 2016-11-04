@@ -160,7 +160,7 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
         message += "- result: ${res}"
     } else {
         message += "- result: ${res}<br/>"
-        message += "<code>${drainStacktrace(err)}'</code>"
+        message += "/code ${drainStacktrace(err)}"
     }
 
     def color = null
