@@ -200,5 +200,9 @@ def toRepoBranchURL(repoURL, branchName) {
 def drainStacktrace(throwable) {
     def stringWriter = new StringWriter();
     throwable.printStackTrace(new PrintWriter(stringWriter));
-    return stringWriter.toString();
+    def string = stringWriter.toString()
+    if (string.length() > 650) {
+        string = string.substring(0, 650) + ' (truncated) ...';
+    }
+    return string;
 }
