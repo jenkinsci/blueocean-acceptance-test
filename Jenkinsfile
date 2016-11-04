@@ -160,7 +160,7 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
         message += "- result: ${res}"
     } else {
         message += "- result: ${res}<br/>"
-        message += "- error: See following message ..."
+        message += "<pre style='max-height: 100px; scroll: auto;'>${drainStacktrace(err)}'</pre>"
     }
 
     def color = null
@@ -173,9 +173,6 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
     }
     if(color != null) {
         hipchatSend message: message, color: color
-        if (err != null) {
-            hipchatSend message: "/code ${drainStacktrace(err)}", color: color
-        }
     }
 }
 
