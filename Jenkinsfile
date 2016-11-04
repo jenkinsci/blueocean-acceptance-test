@@ -100,8 +100,9 @@ node ('docker') {
                     // Let's copy and extract that tar to where the ATH would expect the plugins to be.
                     // Try checking out the Blue Ocean branch having the name supplied by build parameter. If that fails
                     // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
-                    // Need to URL encode the branch name to get rid of slashes etc.
-                    def urlEncodedBranchName = URLEncoder.encode(branchName, "UTF-8").replace("+", "%20");
+                    // Need to URL encode the branch name to get rid of slashes etc. but can't use URLEncoded because
+                    // the expected script approval is never added to /scriptApproval.
+                    def urlEncodedBranchName = branchName.replace("/", "%2F").replace(" ", "%20");
                     try {
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/${urlEncodedBranchName}",
