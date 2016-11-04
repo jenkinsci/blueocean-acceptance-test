@@ -129,10 +129,10 @@ node ('docker') {
                 // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
                 stage 'run'
                 sh "./run.sh -a=./blueocean-plugin/blueocean/ --no-selenium"
+                sendhipchat(repoUrl, branchName, buildNumber, null)
             } catch (err) {
                 currentBuild.result = "FAILURE"
-            } finally {
-                sendhipchat(repoUrl, branchName, buildNumber)
+                sendhipchat(repoUrl, branchName, buildNumber, err)
             }
         }
         } // configFileProvider
@@ -141,7 +141,7 @@ node ('docker') {
     }
 }
 
-def sendhipchat(repoUrl, branchName, buildNumber) {
+def sendhipchat(repoUrl, branchName, buildNumber, err) {
     def res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
@@ -156,7 +156,12 @@ def sendhipchat(repoUrl, branchName, buildNumber) {
     } else {
         message += " (HPIs from build #${buildNumber})<br/>"
     }
-    message += "- result: ${res}"
+    if (err == null) {
+        message += "- result: ${res}"
+    } else {
+        message += "- result: ${res}<br/>"
+        message += "- <span style='color: blue;' title='${drainStacktrace(err)}'>error</span>"
+    }
 
     def color = null
     if(res == "UNSTABLE") {
@@ -190,4 +195,10 @@ def toRepoBranchURL(repoURL, branchName) {
     repoBranchURL += '/tree/' + branchName;
 
     return repoBranchURL;
+}
+
+def drainStacktrace(throwable) {
+    def stringWriter = new StringWriter();
+    throwable.printStackTrace(new PrintWriter(stringWriter));
+    return stringWriter.toString();
 }
