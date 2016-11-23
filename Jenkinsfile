@@ -19,6 +19,8 @@ node ('docker') {
     def repoUrl;
     def branchName;
     def buildNumber;
+    def LAST_COMPLETED_BUILD_SELSECTOR = [$class: 'LastCompletedBuildSelector'];
+
     try {
         repoUrl = "${BLUEOCEAN_REPO_URL}"
         branchName = "${BLUEOCEAN_BRANCH_NAME}"
@@ -41,9 +43,16 @@ node ('docker') {
     // Run selenium in a docker container of its own on the host.
     sh "./start-selenium.sh"
 
+    // Encode the branch name. Need to do it out here because of JENKINS-34973.
+    def urlEncodedBranchName = URLEncoder.encode(branchName, "UTF-8").replace("+", "%20");
+
     try {
         // Build an image from the the local Dockerfile
         def athImg = docker.build('blueocean-ath-builder')
+
+        // fetch Maven configuration managed by Config File Provider plugin
+        // to change it, go to Manage Jenkins > Managed files
+        configFileProvider([configFile(fileId: 'blueocean-maven-settings', targetLocation: 'settings.xml')]) {
 
         //
         // Run the build container, giving it the same network stack as the selenium
@@ -76,7 +85,7 @@ node ('docker') {
                         // need to make sure gets compiled and installed for other modules.
                         // Must cd into blueocean-plugin before running build
                         // see https://issues.jenkins-ci.org/browse/JENKINS-33510
-                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests"
+                        sh "cd blueocean-plugin && mvn -B clean test-compile install -DskipTests -s ../settings.xml"
                     }
                 } else {
                     def selector;
@@ -84,7 +93,7 @@ node ('docker') {
                     // Get the ATH plugin set from an upstream build of the "blueocean" job. All blueocean builds
                     // already have the plugins pre-assembled and archived in a tar on the build.
                     if (buildNumber.toLowerCase() == "latest") {
-                        selector = [$class: 'LastCompletedBuildSelector'];
+                        selector = LAST_COMPLETED_BUILD_SELSECTOR;
                     } else {
                         // Get from a specific build number. This run may have been triggered from a
                         // build of a Blue Ocean branch.
@@ -96,15 +105,16 @@ node ('docker') {
                     // (i.e. doesn't exist ), just use the default/master branch and run the ATH tests against that.
                     try {
                         step ([$class: 'CopyArtifact',
-                               projectName: "blueocean/${branchName}",
+                               projectName: "blueocean/${urlEncodedBranchName}",
                                selector: selector,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     } catch (Exception e) {
-                        echo "No CI build for Blue Ocean branch named '${branchName}', or doesn't have a pre-assembled plugin tar. Trying the 'master' build instead."
+                        echo "No CI build for Blue Ocean branch named '${urlEncodedBranchName}', or doesn't have a pre-assembled plugin tar. Trying the last completed 'master' build instead."
                         branchName = "master";
+                        buildNumber = DEFAULT_BUILD_NUM;
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/master",
-                               selector: selector,
+                               selector: LAST_COMPLETED_BUILD_SELSECTOR,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     }
                     sh 'mkdir -p blueocean-plugin/blueocean'
@@ -113,25 +123,26 @@ node ('docker') {
                     // not perform the assembly again.
                     sh 'touch blueocean-plugin/blueocean/.pre-assembly'
                 }
-                sh "mvn -B clean install -DskipTests"
+                sh "mvn -B clean install -DskipTests -s settings.xml"
 
                 // Run the ATH. Tell the run script to not try starting selenium. Selenium is
                 // already running in a docker container of it's on in the host. See call to
                 // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
                 stage 'run'
                 sh "./run.sh -a=./blueocean-plugin/blueocean/ --no-selenium"
+                sendhipchat(repoUrl, branchName, buildNumber, null)
             } catch (err) {
                 currentBuild.result = "FAILURE"
-            } finally {
-                sendhipchat(repoUrl, branchName, buildNumber)
+                sendhipchat(repoUrl, branchName, buildNumber, err)
             }
         }
+        } // configFileProvider
     } finally {
         sh "./stop-selenium.sh"
     }
 }
 
-def sendhipchat(repoUrl, branchName, buildNumber) {
+def sendhipchat(repoUrl, branchName, buildNumber, err) {
     def res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
@@ -146,7 +157,12 @@ def sendhipchat(repoUrl, branchName, buildNumber) {
     } else {
         message += " (HPIs from build #${buildNumber})<br/>"
     }
-    message += "- result: ${res}"
+    if (err == null) {
+        message += "- result: ${res}"
+    } else {
+        message += "- result: ${res}<br/>"
+        message += "<pre>${drainStacktrace(err)}</pre>"
+    }
 
     def color = null
     if(res == "UNSTABLE") {
@@ -180,4 +196,14 @@ def toRepoBranchURL(repoURL, branchName) {
     repoBranchURL += '/tree/' + branchName;
 
     return repoBranchURL;
+}
+
+def drainStacktrace(throwable) {
+    def stringWriter = new StringWriter();
+    throwable.printStackTrace(new PrintWriter(stringWriter));
+    def string = stringWriter.toString()
+    if (string.length() > 650) {
+        string = string.substring(0, 650) + ' (truncated) ...';
+    }
+    return string;
 }

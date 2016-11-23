@@ -1,7 +1,7 @@
 node {
    stage ('Stage 1'){
-       sh 'sleep 3; echo `date` Stage 1;'
-       sh 'sleep 3; echo `date` Stage 1;'
+       sh 'sleep 6; echo `date` Stage 1;'
+       sh 'sleep 6; echo `date` Stage 1;'
    }
     stage ('Stage 2'){
         parallel firstBranch: {

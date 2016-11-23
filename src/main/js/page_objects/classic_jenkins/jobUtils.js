@@ -5,6 +5,10 @@ const url = require('../../../../main/js/util/url');
  * @example const freestylePage = browser.page.jobUtils().forJob('hijo');
  * */
 exports.elements = {
+    newItem: {
+        selector: '//a[text()="New Item"]',
+        locateStrategy: 'xpath',
+    },
     build: {
         selector: '//a[text()="Build Now"]',
         locateStrategy: 'xpath',
@@ -53,6 +57,13 @@ exports.commands = [{
     forUrl: function (url, jobName) {
         this.jobName = jobName;
         return this.navigate(url);
+    },
+    newItem: function() {
+        this.waitForElementVisible('@newItem');
+        this.click('@newItem');
+        this.waitForElementVisible('#add-item-panel', function() {
+            this.moveClassicBottomStickyButtons();
+        });
     },
     /**
      * Try to build the job, invoke callback when build is complete

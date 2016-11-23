@@ -67,6 +67,7 @@ branchCreate.createBranch(multiBranchJob, pathToRepo);
         // We should now be on the configuration page for
         // the multibranch job.
         self.waitForElementPresent('@configForm');
+        self.moveClassicBottomStickyButtons();
         self.waitForElementPresent('@button');
         self.click('@button');
         self.waitForElementPresent('@gitA');

@@ -1,13 +1,10 @@
-/** @module removePageHead
+/**
+ * @module addOpenBlueOceanLinkToFooter
  * @memberof custom_commands
- * @description Nightwatch command to remove the breadcrumb bar on classic jenkins pages.
+ * @description Nightwatch command to add a link to Blue Ocean in the footer. Only relevant for classic Jenkins.
  * See http://nightwatchjs.org/guide#writing-custom-commands
- * <p/>
- * The breadcrumb bar in classic Jenkins is sticky positioned at the top
- * of the page and can block events getting to elements e.g. selecting
- * the job type on the create item page. This command removes it completely
- * by injecting some JS into the page.
- * */
+ */
+
 const util = require('util');
 const events = require('events');
 
@@ -17,6 +14,7 @@ function Cmd() {
 util.inherits(Cmd, events.EventEmitter);
 
 Cmd.prototype.command = function () {
+    var self = this;
 
     this.api.execute(function() {
         (function () {
@@ -25,29 +23,33 @@ Cmd.prototype.command = function () {
                     // In classic Jenkins, we can try dipping into the js-modules
                     // and get jQuery. If it's not there, then we're not in classic Jenkins
                     // and we don't care.
-                    var $ = window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports;
-                    doTweaks($);
+                    var $jquery = window.jenkinsCIGlobal.plugins["jquery-detached"].jquery2.exports;
+                    doTweaks($jquery);
                 } catch(e) {
                     setTimeout(waitForJQuery, 50);
                 }
             }
-            function doTweaks($) {
-                $(function() {
-                    // Remove the page-head
-                    $('#page-head').remove();
-
+            function doTweaks($jquery) {
+                $jquery(function() {
+                    var contextUrlDiv = $jquery('#blueocean-context-url');
+                    if (contextUrlDiv.length !== 0) {
+                        var footer = $jquery('#footer');
+                        var link = $jquery('<a>Open Blue Ocean</a>');
+                        link.attr('id', 'open-blueocean-in-context');
+                        link.attr('href', contextUrlDiv.attr('data-context-url'));
+                        footer.append(link);
+                    }
                     // Make the emission of the "complete" event (below) a bit
                     // more deterministic.
-                    $('body').addClass('page-head-removed');
+                    $jquery('body').addClass('open-blueocean-link-added');
                 });
             }
             waitForJQuery();
         }());
     });
 
-    var self = this;
     setTimeout(function() {
-        self.api.waitForElementPresent('body.page-head-removed', function() {
+        self.api.waitForElementPresent('body.open-blueocean-link-added', function() {
             self.emit('complete');
         });
     }, 10);

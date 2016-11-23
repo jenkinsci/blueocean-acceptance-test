@@ -17,8 +17,17 @@ module.exports = {
      * @param browser
      */
     'Step 02': function (browser) {
-        var bluePipelinesPage = browser.page.bluePipelines().navigate();
-        
+        var bluePipelineActivity = browser.page.bluePipelineActivity();
+        var bluePipelinesPage = browser.page.bluePipelines();
+
+        // make sure the open blue ocean button works. In this case,
+        // it should bring the browser to an empty pipeline activity
+        // page.
+        browser.openBlueOcean();
+        bluePipelineActivity.assertEmptyLayoutOkay('my-pipeline');
+        browser.assert.urlEndsWith('/blue/organizations/jenkins/my-pipeline/activity');
+
+        bluePipelinesPage.navigate();
         bluePipelinesPage.assertBasicLayoutOkay();
         bluePipelinesPage.assertJob('my-pipeline');
     },

@@ -19,6 +19,7 @@ module.exports = {
                 browser.end();
             } finally {
                 sse.disconnect(function() {
+                    console.log('>> Test suite "done". Okay to start next test.');
                     done();
                 });
             }
@@ -58,7 +59,8 @@ function doClassicPageIntercepts(browser) {
                 // page adjustments.
                 return navFunc.apply(this, arguments)
                     .removePageHead()
-                    .moveClassicBottomStickyButtons();
+                    .moveClassicBottomStickyButtons()
+                    .addOpenBlueOceanLinkToFooter();
             };
 
             return thePage;
