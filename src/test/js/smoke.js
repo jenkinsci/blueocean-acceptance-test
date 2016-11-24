@@ -6,6 +6,8 @@
  * To wrap up we are trying different urls which should result in 404 pages.
  */
 const async = require("async");
+const pageHelper = require("../../main/js/util/pageHelper");
+const createCallbackWrapper = pageHelper.createCallbackWrapper;
 module.exports = {
     /**
      * Create Pipeline Job
@@ -52,7 +54,7 @@ module.exports = {
      * @param browser
      */
     'Step 04': function (browser) {
-        const pipelinePage = browser.page.jobUtils().forJob('my-pipeline');
+        var pipelinePage = browser.page.jobUtils().forJob('my-pipeline');
         pipelinePage.build(function() {
             // Reload the job page and check that there was a build done.
             pipelinePage = browser.page.jobUtils().forJob('my-pipeline');
@@ -103,13 +105,15 @@ module.exports = {
      */
     'Step 08': function (browser) {
         // FIXME: we need to test runs that not yet exist
+        // add the following as soon we have fixed them
+        // '/blue/organizations/gibtEsNicht', '/blue/organizations/jenkins/my-pipeline/detail/my-pipeline/20/pipeline'
         // test different levels for 404
-        var urls = ['/blue/gibtEsNicht', '/blue/organizations/gibtEsNicht', '/blue/organizations/gibtEsNicht/gibtEsNicht/detail/gibtEsNicht/'];
+        var urls = ['/blue/gibtEsNicht', '/blue/organizations/jenkins/gibtEsNicht/activity/', '/blue/organizations/gibtEsNicht/gibtEsNicht/detail/gibtEsNicht/'];
         async.mapSeries(urls, function (url, callback) {
-            console.log('trying url', url);
+            console.log('trying url', browser.launchUrl, url);
             // navigate to the url
-            browser.url(url, function(result) {
-                browser.page.blueNotFound().assertBasicLayoutOkay();
+            browser.url(browser.launchUrl + url, function(result) {
+                browser.page.blueNotFound().assertBasicLayoutOkay(createCallbackWrapper(callback));
             });
         });
     }

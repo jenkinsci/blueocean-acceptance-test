@@ -18,11 +18,11 @@ module.exports.commands = [{
    * Different test on general elements that should be visible on the page
    * @returns {Object} self - nightwatch page object
    */
-  assertBasicLayoutOkay: function () {
+  assertBasicLayoutOkay: function (callback) {
     this.waitForElementVisible('@fullscreenDiv');
     this.waitForElementVisible('@title');
     this.waitForElementVisible('@message');
-    this.waitForElementVisible('@link');
+    this.waitForElementVisible('@link', callback);
   },
 
 }];
