@@ -3,7 +3,7 @@
  * @description Test running non multibranch projects
  *
  * @see {@link module:notMultibranch.freestyleRunning}
- * @see {@link module:karaoke.pipelineRunning}
+ * @see {@link module:notMultibranch.pipelineRunning}
  */
 module.exports = {
 
