@@ -70,10 +70,14 @@ branchCreate.createBranch(multiBranchJob, pathToRepo);
         self.moveClassicBottomStickyButtons();
         self.waitForElementPresent('@button');
         self.click('@button');
-        self.waitForElementPresent('@gitA');
-        self.click('@gitA');
-        self.waitForElementPresent('@scriptHook');
-        self.setValue('@scriptHook', path);
+
+        // Create a job with a git repo. Otherwise don't.'
+        if (path) {
+            self.waitForElementPresent('@gitA');
+            self.click('@gitA');
+            self.waitForElementPresent('@scriptHook');
+            self.setValue('@scriptHook', path);
+        }
 
         self.waitForElementPresent('@configSave')
             .click('@configSave');
