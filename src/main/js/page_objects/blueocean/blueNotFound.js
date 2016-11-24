@@ -3,7 +3,7 @@
  * @description Represents the default 404 page in blueocean
  *
  * @example
- *   browser.page.blueNotFound().xxx();
+ *   browser.page.blueNotFound().assertBasicLayoutOkay();
  * */
 module.exports = {
     elements: {

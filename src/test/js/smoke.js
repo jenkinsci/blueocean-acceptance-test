@@ -102,13 +102,13 @@ module.exports = {
      * @param browser
      */
     'Step 08': function (browser) {
+        // FIXME: we need to test runs that not yet exist
         // test different levels for 404
         var urls = ['/blue/gibtEsNicht', '/blue/organizations/gibtEsNicht', '/blue/organizations/gibtEsNicht/gibtEsNicht/detail/gibtEsNicht/'];
         async.mapSeries(urls, function (url, callback) {
             console.log('trying url', url);
             // navigate to the url
             browser.url(url, function(result) {
-                console.log(result)
                 browser.page.blueNotFound().assertBasicLayoutOkay();
             });
         });
