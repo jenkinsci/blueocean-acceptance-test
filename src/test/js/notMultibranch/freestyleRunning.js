@@ -1,16 +1,17 @@
 /** @module freestyleRunning
- * @description Check can run non multibranch
+ * @memberof notMultibranch
+ * @description Freestyle running from activity screen
  */
 module.exports = {
-    /** Create freestyle Job "hijo"*/
+    /** Create freestyle Job */
     'Step 01': function (browser) {
         const freestyleCreate = browser.page.freestyleCreate().navigate();
-        freestyleCreate.createFreestyle('hijo', 'freestyle.sh');
+        freestyleCreate.createFreestyle('freeRun', 'freestyle.sh');
     },
     
     /** Build freestyle Job*/
     'Step 02': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('hijo', 'jenkins');
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob('freeRun', 'jenkins');
         blueActivityPage.waitForElementVisible('.run-button');
         
         // run the job
@@ -18,7 +19,7 @@ module.exports = {
         blueActivityPage.waitForElementVisible('@toastOpenButton')
         
         //check it spins and then is done  
-        blueActivityPage.waitForElementVisible('#hijo-1');                
+        blueActivityPage.waitForElementVisible('#freeRun-1');                
         blueActivityPage.waitForElementVisible('.progress-spinner');
         blueActivityPage.waitForElementVisible('.success');         
         blueActivityPage.waitForElementNotPresent('.progress-spinner');       
