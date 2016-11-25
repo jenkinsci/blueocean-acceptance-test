@@ -1,14 +1,20 @@
 /** @module smoke
  * @memberof testcases
- * @description TEST: basic tests around the pipeline.
+ * @description TEST: basic tests around the pipeline. This includes creating and running a pipeline job, validating
+ * the activity view for empty and populated state. Further we validate the detail page with very basic matchers.
+ * We then try to press the "run" button on the activities tab and validate the Toast.
+ * To wrap up we are trying different urls which should result in 404 pages.
  */
+const async = require("async");
+const pageHelper = require("../../main/js/util/pageHelper");
+const createCallbackWrapper = pageHelper.createCallbackWrapper;
 module.exports = {
     /**
      * Create Pipeline Job
      * @param browser
      */
     'Step 01': function (browser) {
-        var pipelinesCreate = browser.page.pipelineCreate().navigate();
+        const pipelinesCreate = browser.page.pipelineCreate().navigate();
         pipelinesCreate.createPipeline('my-pipeline', 'three-stages.groovy');
     },
 
@@ -17,8 +23,8 @@ module.exports = {
      * @param browser
      */
     'Step 02': function (browser) {
-        var bluePipelineActivity = browser.page.bluePipelineActivity();
-        var bluePipelinesPage = browser.page.bluePipelines();
+        const bluePipelineActivity = browser.page.bluePipelineActivity();
+        const bluePipelinesPage = browser.page.bluePipelines();
 
         // make sure the open blue ocean button works. In this case,
         // it should bring the browser to an empty pipeline activity
@@ -37,7 +43,7 @@ module.exports = {
      * @param browser
      */
     'Step 03': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         
         blueActivityPage.assertBasicLayoutOkay();
         blueActivityPage.waitForElementVisible('@emptyStateShoes');
@@ -61,7 +67,7 @@ module.exports = {
      * @param browser
      */
     'Step 05': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         
         blueActivityPage.assertBasicLayoutOkay();
         blueActivityPage.expect.element('@emptyStateShoes').to.not.be.present.before(1000);
@@ -75,7 +81,7 @@ module.exports = {
      * @param browser
      */
     'Step 06': function (browser) {
-        var blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 'jenkins', 1);
+        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('my-pipeline', 'jenkins', 1);
         
         blueRunDetailPage.assertBasicLayoutOkay();
     },
@@ -87,10 +93,29 @@ module.exports = {
      * @param browser
      */
     'Step 07': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob('my-pipeline', 'jenkins');
         blueActivityPage.clickRunButtonAndOpenDetail();
         // Check the run itself
         browser.page.bluePipelineRunDetail().assertBasicLayoutOkay();
+    },
+
+    /**
+     * Trying out different urls that should result in the same 404 page
+     * @param browser
+     */
+    'Step 08': function (browser) {
+        // FIXME: we need to test runs that not yet exist
+        // add the following as soon we have fixed them
+        // '/blue/organizations/gibtEsNicht', '/blue/organizations/jenkins/my-pipeline/detail/my-pipeline/20/pipeline'
+        // test different levels for 404
+        var urls = ['/blue/gibtEsNicht', '/blue/organizations/jenkins/gibtEsNicht/activity/', '/blue/organizations/gibtEsNicht/gibtEsNicht/detail/gibtEsNicht/'];
+        async.mapSeries(urls, function (url, callback) {
+            console.log('trying url', browser.launchUrl, url);
+            // navigate to the url
+            browser.url(browser.launchUrl + url, function(result) {
+                browser.page.blueNotFound().assertBasicLayoutOkay(createCallbackWrapper(callback));
+            });
+        });
     }
 
 };
