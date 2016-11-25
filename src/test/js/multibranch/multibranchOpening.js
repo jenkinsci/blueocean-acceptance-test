@@ -1,9 +1,22 @@
 const jobName = 'withGitFlow';
 const path = require("path");
-const pathToRepo = path.resolve('./target/test-project-folder');
+const pathToRepo = path.resolve('./target/test2-project-folder');
+const soureRep = './src/test/resources/multibranch_1';
+const git = require("../../../main/js/api/git");
+
 
 module.exports = {
 
+
+    // ** creating a git repo */
+    before: function (browser, done) {
+          // we creating a git repo in target based on the src repo (see above)
+          git.createRepo(soureRep, pathToRepo)
+              .then(function () {
+                  git.createBranch('feature/1', pathToRepo)
+                      .then(done);
+              });
+    },
     /**
      * Create Multibranch Pipeline Job with git flow named branches 
      * @param browser
