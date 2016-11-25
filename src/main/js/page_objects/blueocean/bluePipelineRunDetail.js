@@ -110,6 +110,19 @@ module.exports.commands = [{
         // E.g. nothing on the pipeline graph that allows us to find it.
         return this;
     },
+    assertMultiBranchResult: function (callback) {
+        const self = this;
+        //check results look kosher:
+        self.waitForElementVisible('.progress-spinner.running');
+        self.waitForElementVisible('.header.running');
+        self.waitForElementVisible('.pipeline-node-selected');
+        self.waitForElementVisible('.download-log-button');
+        self.waitForElementVisible('.pipeline-selection-highlight');
+        self.waitForElementVisible('.pipeline-connector');
+        self.waitForElementVisible('.pipeline-node-hittarget');
+        self.waitForElementVisible('.success', callback);
+
+    },
     /**
      * Validate that the detail title contains the expected value
      * @param {String} expected - the title we await

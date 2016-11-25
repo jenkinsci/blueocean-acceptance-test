@@ -1,12 +1,13 @@
 const jobName = 'withGitFlow';
-const path = require("path");
+const path = require('path');
 const pathToRepo = path.resolve('./target/test2-project-folder');
 const soureRep = './src/test/resources/multibranch_2';
-const git = require("../../../main/js/api/git");
-
+const git = require('../../../main/js/api/git');
+const async = require('async');
+const pageHelper = require('../../main/js/util/pageHelper');
+const createCallbackWrapper = pageHelper.createCallbackWrapper;
 
 module.exports = {
-
 
     // ** creating a git repo */
     before: function (browser, done) {
@@ -17,124 +18,58 @@ module.exports = {
                       .then(done);
               });
     },
-    
-    /**
-     * Make sure we can open the master branch results screen from activity
-     */
-    'open master branch from activity': function (browser) {
 
-         var jobName = "masterActivityMB";      
-         var multibranchCreate = browser.page.multibranchCreate().navigate();      
-         multibranchCreate.createBranch(jobName, pathToRepo);
-
-         var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-
-         blueActivityPage.waitForElementVisible('tr[id^="master"]');
-         blueActivityPage.click('tr[id^="master"]');
-         
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
-                  
-         
+  /**
+   * Make sure we can open the master and the feature/1 branch results screen from activity
+   * Regression: https://issues.jenkins-ci.org/browse/JENKINS-40027
+   */
+    'open master and feature/1 branch from activity': function (browser) {
+        const cases = [{
+            regexp: 'tr[id^="master"]',
+            name: 'masterActivityMB',
+          }, {
+            regexp: 'tr[id^="feature"]',
+            name: 'featureActivityMB',
+          },
+        ];
+        async.mapSeries(cases, function (usecase, callback) {
+           const jobname = usecase.name;
+           const regexp = usecase.regexp;
+           const multibranchCreate = browser.page.multibranchCreate().navigate();
+           multibranchCreate.createBranch(jobName, pathToRepo);
+           multibranchCreate.createBranch(jobname, pathToRepo);
+           const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+           blueActivityPage.waitForElementVisible(regexp);
+           blueActivityPage.click(regexp);
+           browser.page.bluePipelineRunDetail().assertMultiBranchResult(createCallbackWrapper(callback));
+        });
     },
-    
-    
+
+
     /**
-     * Make sure we can open the master branch from branch screen
+     * Make sure we can open the master and the feature/1 branch results screen from branch
+     * Regression: https://issues.jenkins-ci.org/browse/JENKINS-40027
      */
     'open master branch from branches tab': function (browser) {
-      
-        var jobName = "masterBranchesMB";      
-        var multibranchCreate = browser.page.multibranchCreate().navigate();      
-        multibranchCreate.createBranch(jobName, pathToRepo);
-
-         var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-         blueActivityPage.click(".branches");
-
-         blueActivityPage.waitForElementVisible('tr[id^="master"]');
-         blueActivityPage.click('tr[id^="master"]');
-         
-         
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
-
+        const cases = [{
+            regexp: 'tr[id^="master"]',
+            name: 'masterBranchesMB',
+          }, {
+            regexp: 'tr[id^="feature"]',
+            name: 'featureBranchesMB',
+          },
+        ];
+        async.mapSeries(cases, function (usecase, callback) {
+           const jobname = usecase.name;
+           const regexp = usecase.regexp;
+           const multibranchCreate = browser.page.multibranchCreate().navigate();
+           multibranchCreate.createBranch(jobName, pathToRepo);
+           multibranchCreate.createBranch(jobname, pathToRepo);
+           const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+           blueActivityPage.click(".branches");
+           browser.waitForElementVisible(regexp);
+           browser.click(regexp);
+           browser.page.bluePipelineRunDetail().assertMultiBranchResult(createCallbackWrapper(callback));
+        });
     },
-    
-    /**
-     * Make sure we can open the feature/1 branch results screen from activity
-     * Regression: https://issues.jenkins-ci.org/browse/JENKINS-40027     
-     */
-    'open feature/1 branch from activity': function (browser) {
-      
-        var jobName = "featureActivityMB";      
-        var multibranchCreate = browser.page.multibranchCreate().navigate();      
-        multibranchCreate.createBranch(jobName, pathToRepo);
-
-         var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-
-         blueActivityPage.waitForElementVisible('tr[id^="feature"]');
-         blueActivityPage.click('tr[id^="feature"]');
-         
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
-         
-         
-    },
-    
-    
-    /**
-     * Make sure we can open the feature/1 branch from branch screen
-     * Regression: https://issues.jenkins-ci.org/browse/JENKINS-40027     
-     */
-    'open feature/1 from branches tab': function (browser) {
-      
-        var jobName = "featureBranchesMB";      
-        var multibranchCreate = browser.page.multibranchCreate().navigate();      
-        multibranchCreate.createBranch(jobName, pathToRepo);
-
-      
-         var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-         blueActivityPage.click(".branches");
-
-         blueActivityPage.waitForElementVisible('tr[id^="feature"]');
-         blueActivityPage.click('tr[id^="feature"]');
-         
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
-         
-    }
-
-
-}
+};
