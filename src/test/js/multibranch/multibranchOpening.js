@@ -9,6 +9,7 @@ const sourceRep = './src/test/resources/multibranch_2';
 const git = require('../../../main/js/api/git');
 const pageHelper = require('../../../main/js/util/pageHelper');
 const createCallbackWrapper = pageHelper.createCallbackWrapper;
+const sanityCheck = pageHelper.sanityCheck;
 
 module.exports = {
   // ** creating a git repo */
@@ -51,9 +52,13 @@ module.exports = {
       multiBranchCreate.createBranch(jobName, pathToRepo);
       const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
       console.log('clicking from' , branch ? 'branches' : 'activities', 'tab');
-      function detailCheck() {
+      function detailCheck(initialResponse) {
+        if (initialResponse) {
+          sanityCheck(browser, initialResponse);
+        }
         blueActivityPage.waitForElementVisible(regexp);
-        blueActivityPage.click(regexp, function () {
+        blueActivityPage.click(regexp, function (response) {
+          sanityCheck(browser, response);
           browser.page.bluePipelineRunDetail().assertMultiBranchResult(createCallbackWrapper(callback));
         });
       }
