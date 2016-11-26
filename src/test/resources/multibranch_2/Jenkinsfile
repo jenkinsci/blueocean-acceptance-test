@@ -1,0 +1,10 @@
+node {
+    stage('Stage 1') {
+        echo "hey"
+        sleep 5
+    }
+    
+    stage('Stage 2') {
+        echo "ho"
+    }
+}
