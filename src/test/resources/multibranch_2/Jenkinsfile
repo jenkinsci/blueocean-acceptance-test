@@ -1,7 +1,7 @@
 node {
     stage('Stage 1') {
         echo "hey"
-        sleep 10
+        sleep 5
     }
     
     stage('Stage 2') {
