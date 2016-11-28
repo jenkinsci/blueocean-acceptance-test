@@ -27,6 +27,7 @@ module.exports = {
         browser.elements('css selector', '#hijo-1', function(res) {
           browser.assert.equal(1, res.value.length);          
         })
+
     },
 
 };
