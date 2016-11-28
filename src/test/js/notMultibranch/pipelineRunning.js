@@ -1,3 +1,4 @@
+const jobName = 'pipeRun';
 /** @module pipelineRunning
  * @memberof notMultibranch
  * @description Check can run non multibranch pipelines from activity
@@ -7,13 +8,13 @@ module.exports = {
     'Step 01': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
         // we have used the noStages script as basis
-        pipelinesCreate.createPipeline("pipeRun", 'no-stages.groovy');
+        pipelinesCreate.createPipeline(jobName, 'noStagesSmallWait.groovy');
     },
 
     
     /** Build pipeline Job*/
     'Step 02': function (browser) {
-        var blueActivityPage = browser.page.bluePipelineActivity().forJob('pipeRun', 'jenkins');
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         blueActivityPage.waitForElementVisible('.run-button');
         
         // run the job
@@ -25,6 +26,10 @@ module.exports = {
         blueActivityPage.waitForElementVisible('.progress-spinner');
         blueActivityPage.waitForElementVisible('.success');         
         blueActivityPage.waitForElementNotPresent('.progress-spinner');       
+
+        browser.elements('css selector', `#${jobName}-1`, function(res) {
+          browser.assert.equal(1, res.value.length, 'Correct number of runs started');          
+        })
     },
 
 };
