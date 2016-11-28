@@ -133,7 +133,7 @@ node ('docker') {
                 sendhipchat(repoUrl, branchName, buildNumber, null)
             } catch (err) {
                 currentBuild.result = "FAILURE"
-                sendhipchat(repoUrl, branchName, buildNumber, err)
+                sendhipchat(repoUrl, branchName, buildNumber, null)
             }
         }
         } // configFileProvider
