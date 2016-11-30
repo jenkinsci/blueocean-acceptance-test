@@ -4,7 +4,11 @@ const pathToRepo = path.resolve('./target/test2-project-folder');
 const soureRep = './src/test/resources/multibranch_2';
 const git = require("../../../main/js/api/git");
 
-
+/** @module multibranchOpening
+ * @memberof multibranch
+ * @description Check we run and open results screen for multibranch projects, 
+ *              and that the stage graph shows and completes.
+ */
 module.exports = {
 
 
@@ -32,16 +36,7 @@ module.exports = {
          blueActivityPage.waitForElementVisible('tr[id^="master"]');
          blueActivityPage.click('tr[id^="master"]');
          
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
+         blueActivityPage.assertStageGraphShows();
                   
          
     },
@@ -61,18 +56,8 @@ module.exports = {
 
          blueActivityPage.waitForElementVisible('tr[id^="master"]');
          blueActivityPage.click('tr[id^="master"]');
-         
-         
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
+                  
+         blueActivityPage.assertStageGraphShows();
 
     },
     
@@ -91,17 +76,7 @@ module.exports = {
          blueActivityPage.waitForElementVisible('tr[id^="feature"]');
          blueActivityPage.click('tr[id^="feature"]');
          
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
-         
+         blueActivityPage.assertStageGraphShows();
          
     },
     
@@ -122,19 +97,9 @@ module.exports = {
 
          blueActivityPage.waitForElementVisible('tr[id^="feature"]');
          blueActivityPage.click('tr[id^="feature"]');
-         
-         //check results look kosher:
-         blueActivityPage.waitForElementVisible('.progress-spinner.running');                           
-         blueActivityPage.waitForElementVisible('.header.running')
-         
-         blueActivityPage.waitForElementVisible('.pipeline-node-selected');                  
-         blueActivityPage.waitForElementVisible('.download-log-button');                  
-         blueActivityPage.waitForElementVisible('.pipeline-selection-highlight');                    
-         blueActivityPage.waitForElementVisible('.pipeline-connector');     
-         blueActivityPage.waitForElementVisible('.pipeline-node-hittarget');     
-         blueActivityPage.waitForElementVisible('.success');  
-         
-    }
 
+         blueActivityPage.assertStageGraphShows();
+   
+    }
 
 }
