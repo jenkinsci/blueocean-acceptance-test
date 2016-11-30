@@ -7,5 +7,6 @@ node {
     stage 'Stage archiveArtifacts'
     archiveArtifacts 'TEST-*.xml'
     stage 'Stage test'
+    sh 'touch *.xml'
     step([$class: 'JUnitResultArchiver', testResults: 'TEST-*.xml'])
 }
