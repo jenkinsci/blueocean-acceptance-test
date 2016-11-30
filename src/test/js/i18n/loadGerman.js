@@ -14,7 +14,7 @@ module.exports = {
     },
 
     /** Load it in The Queens English, God Bless The Queen */
-    'Step 01': function (browser) {
+    'Step 02': function (browser) {
         var bluePipelines = browser.page.bluePipelines().navigateLanguage("en");
         bluePipelines.waitForElementVisible('.btn-secondary.inverse');
         browser.getText('.btn-secondary.inverse', function(response) {            
