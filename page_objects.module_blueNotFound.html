@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Module: blueNotFound</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.spacelab.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="custom_commands.module_addOpenBlueOceanLinkToFooter.html">custom_commands.addOpenBlueOceanLinkToFooter</a></li><li><a href="custom_commands.module_moveClassicBottomStickyButtons.html">custom_commands.moveClassicBottomStickyButtons</a></li><li><a href="custom_commands.module_removePageHead.html">custom_commands.removePageHead</a></li><li><a href="custom_commands.module_waitForJobCreated.html">custom_commands.waitForJobCreated</a></li><li><a href="custom_commands.module_waitForJobDeleted.html">custom_commands.waitForJobDeleted</a></li><li><a href="custom_commands.module_waitForJobRunEnded.html">custom_commands.waitForJobRunEnded</a></li><li><a href="custom_commands.module_waitForJobRunStarted.html">custom_commands.waitForJobRunStarted</a></li><li><a href="edgeCases.module_folder.html">edgeCases.folder</a></li><li><a href="edgeCases.module_initialStage.html">edgeCases.initialStage</a></li><li><a href="i18n.module_loadGerman.html">i18n.loadGerman</a></li><li><a href="karaoke.module_freestyle.html">karaoke.freestyle</a></li><li><a href="karaoke.module_freestylePing.html">karaoke.freestylePing</a></li><li><a href="karaoke.module_noStages.html">karaoke.noStages</a></li><li><a href="karaoke.module_stages.html">karaoke.stages</a></li><li><a href="module-custom_commands.html">custom_commands</a></li><li><a href="module-page_objects.html">page_objects</a></li><li><a href="module-testcases.html">testcases</a></li><li><a href="module-util_pageHelper.html">util/pageHelper</a></li><li><a href="module-util_url.html">util/url</a></li><li><a href="multibranch.module_multibranchOpening.html">multibranch.multibranchOpening</a></li><li><a href="notMultibranch.module_freestyleRunning.html">notMultibranch.freestyleRunning</a></li><li><a href="notMultibranch.module_pipelineRunning.html">notMultibranch.pipelineRunning</a></li><li><a href="page_objects.module_blueNotFound.html">page_objects.blueNotFound</a></li><li><a href="page_objects.module_bluePipelineActivity.html">page_objects.bluePipelineActivity</a></li><li><a href="page_objects.module_bluePipelineBranch.html">page_objects.bluePipelineBranch</a></li><li><a href="page_objects.module_bluePipelineRunDetails.html">page_objects.bluePipelineRunDetails</a></li><li><a href="page_objects.module_bluePipelines.html">page_objects.bluePipelines</a></li><li><a href="page_objects.module_classicRun.html">page_objects.classicRun</a></li><li><a href="page_objects.module_computer.html">page_objects.computer</a></li><li><a href="page_objects.module_folderCreate.html">page_objects.folderCreate</a></li><li><a href="page_objects.module_freestyleConfig.html">page_objects.freestyleConfig</a></li><li><a href="page_objects.module_freestyleCreate.html">page_objects.freestyleCreate</a></li><li><a href="page_objects.module_jobUtils.html">page_objects.jobUtils</a></li><li><a href="page_objects.module_multibranchCreate.html">page_objects.multibranchCreate</a></li><li><a href="page_objects.module_pipelineConfig.html">page_objects.pipelineConfig</a></li><li><a href="page_objects.module_pipelineCreate.html">page_objects.pipelineCreate</a></li><li><a href="testcases.module_edgeCases.html">testcases.edgeCases</a></li><li><a href="testcases.module_failing.html">testcases.failing</a></li><li><a href="testcases.module_freestyle.html">testcases.freestyle</a></li><li><a href="testcases.module_karaoke.html">testcases.karaoke</a></li><li><a href="testcases.module_notMultibranch.html">testcases.notMultibranch</a></li><li><a href="testcases.module_queued.html">testcases.queued</a></li><li><a href="testcases.module_smoke.html">testcases.smoke</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html#connect">connect</a></li><li><a href="global.html#createBranch">createBranch</a></li><li><a href="global.html#createCommit">createCommit</a></li><li><a href="global.html#createRepo">createRepo</a></li><li><a href="global.html#disable">disable</a></li><li><a href="global.html#disconnect">disconnect</a></li><li><a href="global.html#enable">enable</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#setDEBUG">setDEBUG</a></li><li><a href="global.html#urlEndsWith">urlEndsWith</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	<h1 class="page-title">Module: blueNotFound</h1>
+<section>
+
+<header>
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Represents the default 404 page in blueocean</p></div>
+        
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">browser.page.blueNotFound().assertBasicLayoutOkay();</pre>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="~assertBasicLayoutOkay"><span class="type-signature">&lt;inner> </span>assertBasicLayoutOkay()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Different test on general elements that should be visible on the page</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>self - nightwatch page object</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on November 30th 2016, 11:38:39 pm
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
