@@ -182,7 +182,7 @@ module.exports = {
     },
     // FIXME: this and the test 12 is failing because the test is not closing probably. DEACTIVATED FOR NOW
     /** Check whether the changes tab shows changes - one commit*/
-    'step 10': !function (browser) {
+    'step 10': function (browser) {
        // magic number
        const magic = 1;
        // creating an array
