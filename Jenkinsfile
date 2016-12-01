@@ -1,8 +1,5 @@
 #!groovy
 
-// only 40 builds
-properties([buildDiscarder(logRotator(artifactNumToKeepStr: '40', numToKeepStr: '40'))])
-
 node ('docker') {
 
     def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
