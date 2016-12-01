@@ -11,7 +11,7 @@ function Cmd() {
 util.inherits(Cmd, events.EventEmitter);
 
 /**
- * @description Nightwatch command to wait for a job run to end.
+ * @description Nightwatch command to wait for a stage event to be published.
  * @param {String} pipelineName - the name of the job we are waiting on
  * @param {Function} [onPipelineStageEvent] - callback to be invoke when finished, will pass the sse event to the callback
  * */
