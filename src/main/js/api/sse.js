@@ -1,7 +1,10 @@
 var sseClient = require('@jenkins-cd/sse-gateway/headless-client');
 var jobChannel = undefined;
+var pipelineChannel = undefined;
 var jobEventListeners = [];
+var pipelineEventListeners = [];
 var jobEventHistory = [];
+var pipelineEventHistory = [];
 var sseConnection;
 
 /**
@@ -36,6 +39,18 @@ exports.connect = function(browser, done) {
                         done();
                     }
                 });
+                // Subscribe to job channel so we have it ready to listen
+                // before any tests start running.
+                pipelineChannel = sseConnection.subscribe({
+                    channelName: 'pipeline',
+                    onEvent: function (event) {
+                        callPipelineEventListeners(event);
+                    },
+                    onSubscribed: function () {
+                        console.log('Subscribed to the "pipeline" event channel.');
+                        done();
+                    }
+                });
             }
         });
     }
@@ -55,7 +70,9 @@ exports.disconnect = function(onDisconnected) {
         }
         sseConnection = undefined;
         jobEventListeners = [];
+        pipelineEventListeners = [];
         jobEventHistory = [];
+        pipelineEventHistory = [];
         console.log('Disconnected from the Jenkins SSE Gateway.');
         if (onDisconnected) {
             onDisconnected();
@@ -65,6 +82,11 @@ exports.disconnect = function(onDisconnected) {
     if (jobChannel) {
         sseConnection.unsubscribe(jobChannel, function() {
             jobChannel = undefined;
+            clientDisconnect();
+        });
+    } else if (pipelineChannel) {
+        sseConnection.unsubscribe(pipelineChannel, function() {
+            pipelineChannel = undefined;
             clientDisconnect();
         });
     } else {
@@ -97,6 +119,39 @@ exports.onJobEvent = function(filter, callback, checkEventHistory) {
     };
     
     jobEventListeners.push(listener);
+};
+
+exports.onPipelineEvent = function(filter, callback, checkEventHistory) {
+    if(typeof checkEventHistory === 'boolean' ? checkEventHistory : true) {
+        var sendHistoricalEvent = function(event) {
+            setTimeout(function() {
+                callback(event);
+            }, 1);
+        };
+        for (var i = 0; i < pipelineEventHistory.length; i++) {
+            if (isMatchingEvent(pipelineEventHistory[i], filter)) {
+                // If we find a matching event in the event history then we
+                // create a timeout to send the event to the callback and then
+                // bail immediately, without adding the listener to the list
+                // of pipeline listeners.
+                sendHistoricalEvent(pipelineEventHistory[i]);
+                return;
+            }
+        }
+    }
+
+    var listener = {
+        filter: filter,
+        callback: callback
+    };
+
+    pipelineEventListeners.push(listener);
+};
+exports.onPipelineStage = function (pipelineName, callback) {
+    exports.onPipelineEvent({
+        jenkins_event: 'pipeline_stage',
+        pipeline_job_name: pipelineName
+    }, callback);
 };
 
 exports.onJobCreated = function(jobName, callback) {
@@ -143,6 +198,30 @@ function callJobEventListeners(event) {
     } finally {
         jobEventHistory.push(event);
     }
+}
+
+function callPipelineEventListeners(event) {
+    try {
+        var newListenerList = [];
+        for (var i = 0; i < pipelineEventListeners.length; i++) {
+            var pipelineEventListener = pipelineEventListeners[i];
+
+            if (isMatchingEvent(event, pipelineEventListener.filter)) {
+                try {
+                    pipelineEventListener.callback(event);
+                } catch(e) {
+                    console.error(e);
+                }
+            } else {
+                // Only add the handlers that were not called.
+                newListenerList.push(pipelineEventListener);
+            }
+        }
+        pipelineEventListeners = newListenerList;
+    } finally {
+        pipelineEventHistory.push(event);
+    }
+
 }
 
 // Check the event against the event filter.
