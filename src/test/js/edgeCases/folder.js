@@ -143,7 +143,9 @@ module.exports = {
     'step 08': function (browser) {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
        // go to the artifact page by clicking the tab
-       blueRunDetailPage.clickTab('artifacts');
+       blueRunDetailPage.clickTab('artifacts', function (result) {
+           sanityCheck(result);
+       });
        // we have added 2 files as artifact
        blueRunDetailPage.validateNotEmptyArtifacts(2);
     },
