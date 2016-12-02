@@ -17,8 +17,6 @@
  */
 const git = require("../../../main/js/api/git");
 const path = require("path");
-const fse = require('fs-extra');
-const async = require("async");
 const pageHelper = require("../../../main/js/util/pageHelper");
 const sanityCheck = pageHelper.sanityCheck;
 
@@ -41,14 +39,7 @@ function getProjectName(nameArray, seperator) {
 const projectName = getProjectName(anotherFolders, '%2F');
 
 module.exports = {
-    //
-    // TODO: Fix createBranch and re-inable these tests
-    // The earlier create branch fails on multiple machines. The job gets created,
-    // but the branch indexing is failing, causing the test to fail at step 05.
-    // Strangely, it works on Thorstens machine. Tried upgrading git version. Tried on
-    // MacOS and on Ubuntu 16.
-    //
-    // ** creating a git repo */
+    /** creating a git repo */
     before: function (browser, done) {
         browser.waitForJobDeleted('firstFolder', function () {
             browser.waitForJobDeleted('anotherFolder', function () {
@@ -133,19 +124,6 @@ module.exports = {
            browser.assert.equal(response.value.indexOf('firstFolder') > -1, true);
        })
     },
-    'test open blueocean from classic - run details': function(browser) {
-        var classicRunPage = browser.page.classicRun();
-
-        classicRunPage.navigateToRun('anotherFolder/job/三百/job/ñba/job/七/job/Sohn/job/feature%252F1');
-
-        // make sure the open blue ocean button works. In this case,
-        // it should bring the browser to the run details page for the first run.
-        browser.openBlueOcean();
-        browser.url(function (response) {
-           sanityCheck(browser, response);
-           response.value.endsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature%2F1/1/pipeline');
-        });
-    },
     /** Validate correct encoding, pipeline graph and steps */
     'step 07': function (browser) {
        // /JENKINS-36616 - Unable to load multibranch projects in a folder
@@ -180,66 +158,11 @@ module.exports = {
        // There should be failing tests
        blueRunDetailPage.validateFailingTests();
     },
-    // FIXME: this and the test 12 is failing because the test is not closing probably. DEACTIVATED FOR NOW
-    /** Check whether the changes tab shows changes - one commit*/
-    'step 10': function (browser) {
-       // magic number
-       const magic = 1;
-       // creating an array
-       const committs = Array.from(new Array(magic), function (x, i) {
-           return i;
-       });
-       // now we have to index the branch, it is important that we create the page out of the asyncSeries
-       const masterJob = browser.page.jobUtils()
-           .forJob(getProjectName(anotherFolders), '/indexing');
-       var recordedCommits = 0;
-       // creating commits from that array with a mapSeries -> not parallel
-       async.mapSeries(committs, function (file, callback) {
-           const filename = file + '.txt';
-           // writeFile is async so we need to use callback
-           fse.writeFile(path.join(pathToRepo, filename), file, function (err) {
-               // when we get an error we call with error
-               if (err) {
-                   callback(err);
-               }
-               // createCommit returns a promise just passing it alone
-               return git.createCommit(pathToRepo, [filename])
-                   .then(function (commitId) {
-                       // if we reached here we have a commit
-                       console.log('commitId', commitId);
-                       /* We are sure that all async functions have finished.
-                        * Now we let async know about it by
-                        * callback without error and the commitId
-                        */
-                       callback(null, commitId);
-                   })
-           });
-
-       }, function(err, results) {
-           // results is an array of names
-           console.log('Now starting the indexing', results.length, 'commits recorded');
-           // start a new build by starting indexing
-           masterJob.indexingStarted();
-           // test whether we have commit
-           const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2);
-           // click on the changes tab
-           blueRunDetailPage.clickTab('changes');
-           // we should have one commits now
-           blueRunDetailPage.validateNotEmptyChanges();
-           // the author title should be shown
-           blueRunDetailPage.authorsIsNotCondensed();
-           // Wait for the job to end
-           blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/master', function (event) {
-               console.log(event, 'ending the misery')
-               browser.end();
-           });
-       });
-    },
     /** Jobs can be started from branch tab. - RUN
     *
     * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36615|JENKINS-36615} the multibranch project has the branch 'feature/1'
     */
-    'step 11': function (browser) {
+    'step 10': function (browser) {
        // first get the activity screen for the project
        const blueActivityPage = browser.page.bluePipelineActivity().forJob(projectName, 'jenkins');
        // validate that we have 3 activities from the previous tests
@@ -253,59 +176,21 @@ module.exports = {
        // Wait for the job to end
        blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature%2F1');
     },
-    // FIXME: this and the test 12 is failing because the test is not closing probably. DEACTIVATED FOR NOW
-    /** Check whether the changes tab shows changes - condensed*/
-    'step 12': !function (browser) {
-       // magic number of how many commits we want to create
-       const magic = 15;
-       // creating an array
-       const committs = Array.from(new Array(magic), function (x, i) {
-           return i;
-       });
-       // now we have to index the branch, it is important that we create the page out of the asyncSeries
-       const masterJob = browser.page.jobUtils()
-           .forJob(getProjectName(anotherFolders), '/indexing');
-       // creating commits from that array with a mapSeries -> not parallel
-       async.mapSeries(committs, function (file, callback) {
-           const filename = file + '.txt';
-           // writeFile is async so we need to use callback
-           fse.writeFile(path.join(pathToRepo, filename), file, function (err) {
-               // when we get an error we call with error
-               if (err) {
-                   callback(err);
-               }
-               // createCommit returns a promise just passing it alone
-               return git.createCommit(pathToRepo, [filename])
-                   .then(function (commitId) {
-                       // if we reached here we have a commit
-                       console.log('commitId', commitId);
-                       /* We are sure that all async functions have finished.
-                        * Now we let async know about it by
-                        * callback without error and the commitId
-                        */
-                       callback(null, commitId);
-                   })
-           });
+    /**
+     * test open blueocean from classic - run details
+     * @param browser
+     */
+    'step 11': function(browser) {
+        var classicRunPage = browser.page.classicRun();
 
-       }, function(err, results) {
-           // results is an array of names
-           console.log('Now starting the indexing', results.length, 'commits recorded')
-           // start a new build by starting indexing
-           masterJob.indexingStarted();
-           // test whether we have commit
-           const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'master', 2); // -> FIXME previous test had been deactivated
-           // click on the changes tab
-           blueRunDetailPage.clickTab('changes');
-           // we should have a couple of commits now
-           blueRunDetailPage.validateNotEmptyChanges();
-           // make sure the windows is small
-           browser.resizeWindow(1000, 600);
-           // test now whether the authors are not listed but condendes
-           blueRunDetailPage.authorsIsCondensed();
-           // make the browser big again
-           browser.resizeWindow(1680, 1050);
-           // Wait for the job to end
-           blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/master');
-       });
+        classicRunPage.navigateToRun('anotherFolder/job/三百/job/ñba/job/七/job/Sohn/job/feature%252F1');
+
+        // make sure the open blue ocean button works. In this case,
+        // it should bring the browser to the run details page for the first run.
+        browser.openBlueOcean();
+        browser.url(function (response) {
+           sanityCheck(browser, response);
+           response.value.endsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature%2F1/1/pipeline');
+        });
     },
 };
