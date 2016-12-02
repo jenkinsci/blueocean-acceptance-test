@@ -34,7 +34,7 @@ AGGREGATOR_DIR=""
 DEV_JENKINS=false
 PROFILES="-P runTests"
 JENKINS_JAVA_OPTS="-Djava.util.logging.config.file=./logging.properties"
-TEST_TO_RUN="-Dtest=AllTest"
+TEST_TO_RUN="-Dtest=EdgeCasesTest"
 
 for i in "$@"
 do
