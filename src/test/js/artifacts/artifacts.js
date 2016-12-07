@@ -1,13 +1,14 @@
 const jobName = 'pipeRunArtifacts';
-/** @module pipelineRunning
- * @memberof notMultibranch
- * @description Check can run non multibranch pipelines from activity
+/** 
+ * @module artifacts
+ * @memberof artifacts
+ * @description Makes sure artifacts show correctly.
  */
 module.exports = {
     /** Create pipeline Job */
     'Step 01': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        // we have used the noStages script as basis
+    
         pipelinesCreate.createPipeline(jobName, 'lots-of-artifacts.groovy');
     },
 
@@ -23,13 +24,10 @@ module.exports = {
         });
     },
 
-     /** Check Job Blue Ocean Pipeline Activity Page has run  - stop follow
-     * need to click on an element so the up_arrow takes place in the window
-     * */
     'Step 03': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-        // Check the run itself
-        blueActivityPage.waitForRunSuccessVisible(`${jobName}-1`);
+       
+       blueActivityPage.waitForRunSuccessVisible(`${jobName}-1`);
 
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         
