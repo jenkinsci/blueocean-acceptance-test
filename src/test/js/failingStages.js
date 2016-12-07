@@ -55,10 +55,6 @@ module.exports = {
                 this.assert.equal(codeCollection.value.length <= 2, true);
             });
             
-            // as it has failed, should get a replay button
-            blueRunDetailPage.waitForElementVisible('.replay-button');
-            
-            
 
         });
         
@@ -70,7 +66,7 @@ module.exports = {
     'Step 04' : function(browser) {
         var blueActivityPage = browser.page.bluePipelineActivity().forJob(JOB, 'jenkins');
         blueActivityPage.waitForRunFailureVisible(JOB + '-1');
-        blueActivityPage.waitForElementVisible('.replay-button');        
+        blueActivityPage.waitForElementVisible('.replay-button');         
     },
     
     /** 
@@ -80,7 +76,9 @@ module.exports = {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(JOB, 'jenkins', 1);
         
         //click the re run button
-        blueRunDetailPage.clickReRunButton();
+        blueRunDetailPage.waitForElementVisible('.result-item.failure.expanded');          
+        blueRunDetailPage.clickReRunButton();        
+        blueRunDetailPage.waitForElementNotPresent('.result-item.failure.expanded');  
         
         //Ccheck that it runs and we could stop if if we want to
         blueRunDetailPage.waitForElementVisible('.progress-spinner');
@@ -97,6 +95,7 @@ module.exports = {
         
         // this will show up when it has finished replaying
         blueRunDetailPage.waitForElementVisible('.replay-button');
+        blueRunDetailPage.waitForElementVisible('.result-item.failure.expanded');          
 
     }
 };
