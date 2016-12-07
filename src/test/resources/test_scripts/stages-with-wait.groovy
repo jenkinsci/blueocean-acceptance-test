@@ -11,7 +11,7 @@ node {
     },
     failFast: true
     stage 'fin'
-    sh 'echo `date` fin;sleep 10; echo `date` fin;'
+    sh 'echo `date` fin;sleep 6; echo `date` fin;'
     sh 'echo yeah > foo.txt'
     archiveArtifacts 'foo.txt'
     stage 'NoSteps'
