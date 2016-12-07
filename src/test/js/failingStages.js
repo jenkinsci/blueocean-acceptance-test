@@ -1,11 +1,11 @@
 const JOB = 'stagesFail';
-/** @module failing
+/** @module failingStages
  * @memberof testcases
- * @description TEST: basic tests around the failing pipeline. Test whether the result is not collapsed.
+ * @description Tests around a failing pipeline with stages, and re-running in place.
  */
 module.exports = {
     /**
-     * Create Pipeline Job "noStagesFail", create a simple pipeline, that will produce a failure
+     * Create a simple pipeline, that will produce a failure
      * @param browser
      */
     'Step 01': function (browser) {
