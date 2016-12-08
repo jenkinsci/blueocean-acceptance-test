@@ -188,6 +188,7 @@ echo ""
 echo "------------------------------------------------"
 
 # Download the jenkins war
+rm "bin/jenkins-${JENKINS_VERSION}.war"
 source download.sh "http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war" "bin/jenkins-${JENKINS_VERSION}.war"
 
 if [ "${RUN_SELENIUM}" == "true" ]; then
