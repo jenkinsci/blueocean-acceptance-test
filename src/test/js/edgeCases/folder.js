@@ -134,8 +134,8 @@ module.exports = {
        blueRunDetailPage.closeModal();
        // JENKINS-36613 Unable to load steps for multibranch pipelines with / in them
        // FIXME should show the graph but it is failing because underlying 500 -> is under inverstigation currently
-       //blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
-       //blueRunDetailPage.validateSteps(); // validate that steps are displayed
+       blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
+       blueRunDetailPage.validateSteps(); // validate that steps are displayed
        // There should be no authors
        blueRunDetailPage.authorsIsNotSet();
     },
