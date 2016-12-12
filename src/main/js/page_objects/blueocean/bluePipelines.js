@@ -33,7 +33,7 @@ module.exports.commands = [{
         this.waitForElementVisible('@pipelinesNav');
         this.waitForElementVisible('@newPipelineButton');
         this.waitForElementVisible('@pipelinesTable');
-        // this.waitForElementVisible('.Site-footer'); -> FIXME activate again
+        this.waitForElementVisible('.Site-footer');
     },
     assertJob: function(jobName) {
         this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]');
