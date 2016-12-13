@@ -130,15 +130,14 @@ module.exports = {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
        // {@link https://issues.jenkins-ci.org/browse/JENKINS-36773|JENKINS-36773} / JENKINS-37605 verify encoding and spacing of details
        blueRunDetailPage.assertTitle('feature/1');
-       // FIXME JENKINS-36619 -> somehow the close in AT is not working
-       blueRunDetailPage.closeModal();
        // JENKINS-36613 Unable to load steps for multibranch pipelines with / in them
        // FIXME should show the graph but it is failing because underlying 500 -> is under inverstigation currently
-       //blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
-       //blueRunDetailPage.validateSteps(); // validate that steps are displayed
+       blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
+       blueRunDetailPage.validateSteps(); // validate that steps are displayed
        // There should be no authors
        blueRunDetailPage.authorsIsNotSet();
-       
+       // FIXME JENKINS-36619 -> somehow the close in AT is not working
+       blueRunDetailPage.closeModal();
     },
     /** Check whether the artifacts tab shows artifacts*/
     'step 08': function (browser) {
