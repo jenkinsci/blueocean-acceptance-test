@@ -138,16 +138,19 @@ module.exports = {
        //blueRunDetailPage.validateSteps(); // validate that steps are displayed
        // There should be no authors
        blueRunDetailPage.authorsIsNotSet();
+       
     },
     /** Check whether the artifacts tab shows artifacts*/
     'step 08': function (browser) {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+       // make sure we are finished before doing the next validations
+       blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature%2F1');
        // go to the artifact page by clicking the tab
        blueRunDetailPage.clickTab('artifacts', function (result) {
            sanityCheck(result);
+           // we have added 2 files as artifact
+           blueRunDetailPage.validateNotEmptyArtifacts(2); // -> ATH is failing but local is not
        });
-       // we have added 2 files as artifact
-       //blueRunDetailPage.validateNotEmptyArtifacts(2); -> ATH is failing but local is not
     },
     /** Check whether the test tab shows failing tests
     *
@@ -156,9 +159,11 @@ module.exports = {
     'step 09': function (browser) {
        const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
        // Go to the test page by clicking the tab
-       blueRunDetailPage.clickTab('tests');
-       // There should be failing tests
-       // blueRunDetailPage.validateFailingTests(); -> ATH is failing but local is not
+       blueRunDetailPage.clickTab('tests', function (result) {
+           sanityCheck(result);
+           // There should be failing tests
+           blueRunDetailPage.validateFailingTests(); // -> ATH is failing but local is not
+       });
     },
     /** Jobs can be started from branch tab. - RUN
     *
