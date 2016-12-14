@@ -82,6 +82,16 @@ module.exports.commands = [{
         this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
         this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.failure');
     },    
+
+    /**
+     * Wait for a specific run to appear in the activity table as unstable
+     * @param runName name of the job
+     */
+    waitForRunUnstableVisible: function(runName) {
+        this.waitForElementVisible('.activity-table tr#' + runName);
+        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
+        this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.unstable');
+    },  
     /**
      * Wait for a specific run to appear in the activity table as running
      * @param runName name of the job
