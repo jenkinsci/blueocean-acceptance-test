@@ -35,10 +35,14 @@ module.exports = {
         blueActivityPage.waitForRunUnstableVisible(`${jobName}-1`)
     },
 
-    'Create new commits and check activity and branches page for correct commit messages': (client) => {
-        const blueRunDetailsPage = brower.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 'master', 1);
+    'Create new commits and check activity and branches page for correct commit messages': (browser) => {
+        const blueRunDetailsPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 'master', 1);
 
         blueRunDetailsPage.clickTab('tests');
+
+        browser.useXpath().click('//div[@class="result-item-head"]');
+
+        browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4')
     },
 
 }

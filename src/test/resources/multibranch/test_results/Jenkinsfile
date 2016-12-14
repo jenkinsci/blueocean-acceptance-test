@@ -1,7 +1,10 @@
 node {
-    stage 'test'
-    sh 'mvn test'
-
-    stage 'finish'
-    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])    
+    stage 'Stage 1 - scm'
+    echo 'Stage 1 - scm'
+    checkout scm
+    stage 'Stage test'
+    echo 'stuff'
+    sh 'touch TEST-*.xml'
+    step([$class: 'JUnitResultArchiver', testResults: 'TEST-*.xml'])
+    
 }
