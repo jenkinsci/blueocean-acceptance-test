@@ -1,5 +1,4 @@
 const tmp = require('tmp');
-const async = require('async');
 
 const repo = tmp.dirSync();
 const pathToRepo = repo.name;
@@ -9,25 +8,25 @@ const sourceRep = './src/test/resources/multibranch/test_results';
 const git = require("../../../main/js/api/git");
 
 /** 
- * @module commitMessages
+ * @module testResults
  * @memberof multibranch
- * @description Creates 2 commits and checks that the latest commit message is shown
+ * @description Tests the tests tab
  */
 module.exports = {
 
     // ** creating a git repo */
-    before: function (browser, done) {
+    before: (browser, done) => {
           // we creating a git repo in target based on the src repo (see above)
           git.createRepo(sourceRep, pathToRepo).then(done);
     },
     
     // Create the multibranch job
-    'Create Job': function (browser) {
+    'Create Job': (browser) => {
         var multibranchCreate = browser.page.multibranchCreate().navigate();      
         multibranchCreate.createBranch(jobName, pathToRepo);
     },
 
-    'Open acitivty page wait for first run to finish': function(browser) {
+    'Open acitivty page wait for first run to finish': (browser) => {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName);
         // validate that we have 3 activities from the previous tests
         blueActivityPage.assertActivitiesToBeEqual(1);
@@ -35,14 +34,14 @@ module.exports = {
         blueActivityPage.waitForRunUnstableVisible(`${jobName}-1`)
     },
 
-    'Create new commits and check activity and branches page for correct commit messages': (browser) => {
+    'Check that the tests tab displays correctly': (browser) => {
         const blueRunDetailsPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 'master', 1);
 
         blueRunDetailsPage.clickTab('tests');
 
+        // Expand the test.
         browser.useXpath().click('//div[@class="result-item-head"]');
 
         browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4')
     },
-
 }
