@@ -157,7 +157,7 @@ module.exports.commands = [{
             // current, this is the reason, why no url change is triggered. The question remains
             // why that is happening
             // this.pause(10000)
-        })
+        });
         return self;
     },
     /**

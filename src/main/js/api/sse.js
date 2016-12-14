@@ -78,8 +78,15 @@ exports.disconnect = function(onDisconnected) {
             onDisconnected();
         }
     }
-
-    if (jobChannel) {
+    if (jobChannel && pipelineChannel) {
+        sseConnection.unsubscribe(jobChannel, function() {
+            jobChannel = undefined;
+            sseConnection.unsubscribe(pipelineChannel, function() {
+                pipelineChannel = undefined;
+                clientDisconnect();
+            });
+        });
+    } else if (jobChannel) {
         sseConnection.unsubscribe(jobChannel, function() {
             jobChannel = undefined;
             clientDisconnect();

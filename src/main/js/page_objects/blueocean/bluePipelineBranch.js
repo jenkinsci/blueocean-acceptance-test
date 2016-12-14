@@ -9,7 +9,7 @@ var url = require('../../util/url');
  * */
 module.exports = {
     elements: {
-        runButton: 'div.actions a.run-button',
+        runButton: '.actions a.run-button',
         toasts: 'div.toaster div.toast span.text'
     }
 };
@@ -24,8 +24,9 @@ module.exports.commands = [{
         const browser = this.api;
         self.waitForElementVisible('@runButton');
         self.click('@runButton');
+        self.waitForElementVisible('@toasts');
         browser.elements('css selector', 'div.toaster div.toast span.text', function (codeCollection) {
-            this.assert.equal(codeCollection.value.length, 2);
+            this.assert.equal(codeCollection.value.length, 1);
             codeCollection.value.map(function (item) {
                 browser.elementIdText(item.ELEMENT, function (value) {
                     var passed = value.value.indexOf('Queued');
