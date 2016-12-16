@@ -1,5 +1,8 @@
 #!groovy
 
+// only 40 builds
+properties([buildDiscarder(logRotator(artifactNumToKeepStr: '40', numToKeepStr: '40'))])
+
 node ('docker') {
 
     def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
@@ -133,7 +136,7 @@ node ('docker') {
                 sendhipchat(repoUrl, branchName, buildNumber, null)
             } catch (err) {
                 currentBuild.result = "FAILURE"
-                sendhipchat(repoUrl, branchName, buildNumber, err)
+                sendhipchat(repoUrl, branchName, buildNumber, null)
             }
         }
         } // configFileProvider

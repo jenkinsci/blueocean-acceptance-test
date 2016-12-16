@@ -127,15 +127,55 @@ exports.createBranch = function (branchName, pathToRepo) {
         });
 };
 
+/** 
+ * Creates a file and adds it to repo.
+ * 
+ * FIXME: doesnt seem to actally git add the file, altohugh it does create the commit hash.
+ * 
+ * @param pathToRepo {String} the route to the repository
+ * @param fileName {String} name of the file
+ * @param options {Object} 
+ * @param options.contents {string} optional contents to write to file.
+ * @param options.message {string} optional commit message.
+ * @returns {*}
+ */
+exports.createFile = function (pathToRepo, fileName, options) {
+    let { contents, message } = options || {}; 
+
+    if  (!contents) {
+        contents = fileName;
+    }
+    return new Promise(function (resolve, reject) {
+        fse.writeFile(path.join(pathToRepo, fileName), contents, function (err) {
+            // when we get an error we call with error
+            if (err) {
+                reject(err);
+            }
+            // createCommit returns a promise just passing it alone
+            return exports.createCommit(pathToRepo, [fileName], { message })
+                .then(function (commitId) {
+                    // if we reached here we have a commit
+                    console.log('commitId', commitId)
+                    /* We are sure that all async functions have finished.
+                        * Now we let async know about it by
+                        * callback without error and the commitId
+                        */
+                    resolve(commitId);
+                })
+        }); 
+    });
+};
+
 /**
  * Create and return a commit promise.
  * @param pathToRepo {String} the route to the repository
  * @param files {Array} to be committed
  */
-exports.createCommit = function (pathToRepo, files) {
+exports.createCommit = function (pathToRepo, files, options) {
+    const { message: messageFromOpts } = options || {};
 
     return new Promise(function (resolve, reject) {
-        const message = faker.lorem.sentence();
+        const message = messageFromOpts || faker.lorem.sentence();
         const signatureAuthor = NodeGit.Signature.now(faker.name.findName(), faker.internet.email());
         const committerAuthor = NodeGit.Signature.now(faker.name.findName(), faker.internet.email());
         var repo, index, oid, remote;

@@ -82,6 +82,16 @@ module.exports.commands = [{
         this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
         this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.failure');
     },    
+
+    /**
+     * Wait for a specific run to appear in the activity table as unstable
+     * @param runName name of the job
+     */
+    waitForRunUnstableVisible: function(runName) {
+        this.waitForElementVisible('.activity-table tr#' + runName);
+        this.waitForElementVisible('.activity-table tr#' + runName + ' svg.svgResultStatus');
+        this.waitForElementPresent('.activity-table tr#' + runName + ' svg circle.unstable');
+    },  
     /**
      * Wait for a specific run to appear in the activity table as running
      * @param runName name of the job
@@ -96,6 +106,24 @@ module.exports.commands = [{
             this.waitForElementPresent('.activity-table tr#' + runName + ' svg path.running', callback);
         }
     },
+    
+    /**
+     * Inspect that result screen runs, shows a stage graph, and completes.
+     */
+    assertStageGraphShows: function() {
+      //check results look kosher:
+      this.waitForElementVisible('.progress-spinner.running');                           
+      this.waitForElementVisible('.header.running')
+      
+      this.waitForElementVisible('.pipeline-node-selected');                  
+      this.waitForElementVisible('.download-log-button');                  
+      this.waitForElementVisible('.pipeline-selection-highlight');                    
+      this.waitForElementVisible('.pipeline-connector');     
+      this.waitForElementVisible('.pipeline-node-hittarget');     
+      this.waitForElementVisible('.success');  
+
+    },
+    
     /**
     * Click css selector of a specific tab
     * @param tab {string} the tab we want to select

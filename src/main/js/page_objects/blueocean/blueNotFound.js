@@ -22,7 +22,11 @@ module.exports.commands = [{
     this.waitForElementVisible('@fullscreenDiv');
     this.waitForElementVisible('@title');
     this.waitForElementVisible('@message');
-    this.waitForElementVisible('@link', callback);
+    if (callback) {
+      this.waitForElementVisible('@link', callback);
+    } else {
+      this.waitForElementVisible('@link');
+    }
   },
 
 }];
