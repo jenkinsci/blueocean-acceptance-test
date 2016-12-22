@@ -42,6 +42,11 @@ module.exports = {
             selector: '//div[contains(@class, "failure")]',
             locateStrategy: 'xpath',
         },
+        checkboxInput: '.Checkbox',
+        textInput: '.Text',
+        choiceInput: '.Choice',
+        stringInput: '.String',
+        inputStepSubmit: '.inputStepSubmit',
     }
 };
 
@@ -294,6 +299,16 @@ module.exports.commands = [{
         return notEmptyHelper(selector, self, expectedMinimum);
     },
     /**
+     * Validate that all supported input parameter are present
+     */
+    validateSupportedInputTypes: function () {
+        const self = this;
+        self.waitForElementVisible('@checkboxInput');
+        self.waitForElementVisible('@textInput');
+        self.waitForElementVisible('@choiceInput');
+        self.waitForElementVisible('@stringInput');
+    },
+    /**
      * validate that the authors in the modal header are condensed
      * @returns {Object} self - nightwatch page object
      */
@@ -428,6 +443,5 @@ module.exports.commands = [{
     self.click('.replay-button');
     return self;
   }
-
 
 }];
