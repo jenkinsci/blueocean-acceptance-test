@@ -14,21 +14,17 @@ module.exports = {
 
      /** Build Pipeline Job*/
     'Step 02': function (browser) {
-        const pipelinePage = browser.page.jobUtils().forJob(jobName);
-        pipelinePage.buildStarted(function() {
-            // Reload the job page and check that there was a build done.
-            pipelinePage
-                .waitForElementVisible('div#pipeline-box')
-                .forRun(1)
-                .waitForElementVisible('@executer');
-        });
+      var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+      blueActivityPage.waitForElementVisible('@runButton');
+      
+      // run the job
+      blueActivityPage.click('@runButton');
+      blueActivityPage.waitForElementVisible('@toastOpenButton');
+      blueActivityPage.waitForRunSuccessVisible(`${jobName}-1`);
+
     },
 
     'Step 03': function (browser) {
-        const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-       
-       blueActivityPage.waitForRunSuccessVisible(`${jobName}-1`);
-
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         
         blueRunDetailPage.waitForElementVisible('div.header.success');
