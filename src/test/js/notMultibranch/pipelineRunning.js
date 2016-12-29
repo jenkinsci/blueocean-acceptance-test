@@ -31,5 +31,19 @@ module.exports = {
           browser.assert.equal(1, res.value.length, 'Correct number of runs started');          
         })
     },
+    
+    
+    /** Build pipeline Job again */
+    'Step 03': function (browser) {
+        var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+        blueActivityPage.waitForElementVisible('.run-button');
+        
+        // run the job
+        blueActivityPage.click('.run-button');
+        blueActivityPage.waitForElementVisible('@toastOpenButton')
+        
+        //check it spins and then is done  
+        blueActivityPage.waitForElementVisible('#pipeRun-2');                
+    },
 
 };
