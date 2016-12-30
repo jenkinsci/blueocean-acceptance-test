@@ -42,6 +42,14 @@ module.exports = {
             selector: '//div[contains(@class, "failure")]',
             locateStrategy: 'xpath',
         },
+        resultItemHead: {
+            selector: '//div[@class="result-item-head"]',
+            locateStrategy: 'xpath',
+        },
+        testConsole: {
+            selector: '//div[@class="test-console"]/h4',
+            locateStrategy: 'xpath',
+        },
     }
 };
 
@@ -72,7 +80,7 @@ module.exports.commands = [{
      * @returns {String} url
      */
     pageUrl: function(relative) {
-        var runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
+        const runUrl =  url.makeRelative(url.viewRunPipeline(this.orgName, this.jobName, this.multiBranchJob, this.buildNumber));
 
         return !relative ?
         this.api.launchUrl + runUrl :
@@ -417,17 +425,25 @@ module.exports.commands = [{
       browser.useCss();
       return self;
   },
-  
+
   /**
    * failed pipelines have a rerun/replace button button
    */
   clickReRunButton: function () {
-    var self = this;
-    const browser = this.api;    
+    const self = this;
     self.waitForElementVisible('.replay-button');
     self.click('.replay-button');
     return self;
+  },
+ /**
+  * Expand the test.
+  */
+  expandTest: function () {
+    const self = this;
+    self.click('@resultItemHead"]', function (result) {
+        sanityCheck(self, result);
+        self.waitForElementVisible('@testConsole');
+    });
   }
-
 
 }];
