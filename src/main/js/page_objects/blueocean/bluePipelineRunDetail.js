@@ -143,21 +143,20 @@ module.exports.commands = [{
     },
    /**
      * Close the modal view
+     * @param {String} [urlFragment] expected URL fragment to test for after close.
      * @returns {Object} self - nightwatch page object
      */
-    closeModal: function () {
+    closeModal: function (urlFragment) {
         const self = this;
         const browser = self.api;
         self.waitForElementVisible('@closeButton');
         self.click('@closeButton');
-        browser.url(function (response) {
-            sanityCheck(self, response);
-            // FIXME JENKINS-36619 -> somehow the close in AT is not working as it should
-            // I debugged a bit and found out that the "previous" location is the same as
-            // current, this is the reason, why no url change is triggered. The question remains
-            // why that is happening
-            // this.pause(10000)
-        });
+
+        if (urlFragment) {
+            self.waitForLocationChange();
+            browser.assert.urlContains(urlFragment);
+        }
+
         return self;
     },
     /**
