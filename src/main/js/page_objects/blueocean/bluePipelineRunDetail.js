@@ -151,9 +151,9 @@ module.exports.commands = [{
         const browser = self.api;
         self.waitForElementVisible('@closeButton');
         self.click('@closeButton');
+        self.waitForLocationChange();
 
         if (urlFragment) {
-            self.waitForLocationChange();
             browser.assert.urlContains(urlFragment);
         }
 
