@@ -197,6 +197,11 @@ module.exports = {
         browser.url(function (response) {
            sanityCheck(browser, response);
            response.value.endsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature%2F1/1/pipeline');
+
+            // Make sure the page has all the bits and bobs
+            // See JENKINS-40137
+            const blueRunDetailPage = browser.page.bluePipelineRunDetail();
+            blueRunDetailPage.assertBasicLayoutOkay();
         });
     },
 };

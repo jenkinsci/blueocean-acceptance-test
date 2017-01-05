@@ -76,11 +76,14 @@ if [ "${DEV_JENKINS}" == "true" ]; then
     echo "*****"
     echo "***** Starting a test dev instance of Jenkins with the blueocean plugins."
     echo "***** Watch console output for the URL to use while developing your test."
+    echo "***** You can debug the Jenkins instance on port 15000."
     echo "*****"
     echo "***** Be sure your test doesn't use JenkinsAcceptanceTestRule in any way"
     echo "***** or you'll be defeating the purpose (e.g. via AbstractJUnitTest)."
     echo "*****"
     echo ""
+
+    JENKINS_JAVA_OPTS="${JENKINS_JAVA_OPTS} -Xrunjdwp:transport=dt_socket,server=y,address=15000,suspend=n"
     
     # Exclude the actual tests from this run and just run the skeleton test in
     # ExcludedRunnerTest. It will just run with the plugins and stay running
