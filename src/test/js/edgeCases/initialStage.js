@@ -16,13 +16,13 @@ module.exports = {
   /** Create Pipeline Job "initialStage" */
   'Step 01': function (browser) {
     const pipelinesCreate = browser.page.pipelineCreate().navigate();
-    pipelinesCreate.createPipeline(jobName, 'initialStage.groovy');
+    pipelinesCreate.createPipeline(jobName, jobName + '.groovy');
   },
   /** Build Pipeline Job*/
   'Step 02': function (browser) {
     const pipelinePage = browser.page.jobUtils().forJob(jobName);
     pipelinePage.buildStarted(function () {
-      // Reload the job page and check that there was a build done.
+      // Reload the job page and check that there was a build started.
       pipelinePage
         .waitForElementVisible('div#pipeline-box')
         .forRun(1)
@@ -33,11 +33,11 @@ module.exports = {
   'Step 03': function (browser) {
     const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
     // Check the run itself
-    blueActivityPage.waitForRunRunningVisible('initialStage-1');
+    blueActivityPage.waitForRunRunningVisible(jobName + '-1');
     const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
 
     blueRunDetailPage.assertBasicLayoutOkay();
-    blueRunDetailPage.waitForPipelineStageEvent('initialStage', function () {
+    blueRunDetailPage.waitForPipelineStageEvent(jobName, function () {
         blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
         blueRunDetailPage.waitForJobRunEnded(jobName);
     });
