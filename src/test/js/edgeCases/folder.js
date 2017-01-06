@@ -12,7 +12,7 @@
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36613|JENKINS-36613} Unable to load steps for multibranch pipelines with / in them
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36674|JENKINS-36674} Tests are not being reported
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36615|JENKINS-36615} the multibranch project has the branch 'feature/1'
- *
+ * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-39842|JENKINS-39842} - Open Blue Ocean button should not try to load /activity for a folder
  *
  */
 const git = require("../../../main/js/api/git");
@@ -210,7 +210,7 @@ module.exports = {
      * It should send the user to the top level blue ocean page (pipelines).
      * @param browser
      */
-    'step 11': function(browser) {
+    'step 12': function(browser) {
         var classicGeneral = browser.page.classicGeneral();
 
         // Go to a folder along the path to the MBP, but one
