@@ -204,4 +204,31 @@ module.exports = {
             blueRunDetailPage.assertBasicLayoutOkay();
         });
     },
+    /**
+     * test open blueocean from classic - a normal folder page in classic jenkins.
+     * <p>
+     * It should send the user to the top level blue ocean page (pipelines).
+     * @param browser
+     */
+    'step 11': function(browser) {
+        var classicGeneral = browser.page.classicGeneral();
+
+        // Go to a folder along the path to the MBP, but one
+        // of the parent folders i.e. not the MBP project folder.
+        classicGeneral.navigateToRun('job/anotherFolder/job/三百/job/ñba');
+
+        // make sure the open blue ocean button works. In this case,
+        // it should bring the browser to the main top-level pipelines page.
+        // See https://issues.jenkins-ci.org/browse/JENKINS-39842
+        browser.openBlueOcean();
+        browser.url(function (response) {
+            sanityCheck(browser, response);
+            response.value.endsWith('/blue/pipelines');
+
+            // Make sure the page has all the bits and bobs
+            // See JENKINS-40137
+            const bluePipelines = browser.page.bluePipelines();
+            bluePipelines.assertBasicLayoutOkay();
+        });
+    },
 };
