@@ -33,6 +33,7 @@ module.exports = {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         blueActivityPage.waitForRunRunningVisible(jobName + '-1');
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
+        blueRunDetailPage.waitForJobRunEnded(jobName);
         blueRunDetailPage.closeModal('/activity');
     },
 };
