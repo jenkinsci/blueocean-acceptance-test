@@ -9,4 +9,5 @@
  * @see {@link module:custom_commands.waitForJobDeleted}
  * @see {@link module:custom_commands.waitForJobRunEnded}
  * @see {@link module:custom_commands.waitForJobRunStarted}
+ * @see {@link module:custom_commands.waitForLocationChange}
  */
