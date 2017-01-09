@@ -20,6 +20,7 @@ module.exports = {
         blueActivityPage.waitForElementVisible('@toastOpenButton')
         
         //check it spins and then is done  
+        blueActivityPage.waitForElementVisible('.run-button.btn-secondary');
         blueActivityPage.waitForElementVisible('#freeRun-1');                
         blueActivityPage.waitForElementVisible('.progress-spinner');
         blueActivityPage.waitForElementVisible('.success');         
