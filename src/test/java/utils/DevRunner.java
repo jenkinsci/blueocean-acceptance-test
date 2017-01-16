@@ -42,6 +42,9 @@ public class DevRunner extends BOJUnitTest {
         System.out.println("    You should now be able to develop tests against this instance without");
         System.out.println("    having to constantly restart Jenkins.");
         System.out.println("");
+        System.out.println("    You should be able to connect your debugger to your running Jenkins.");
+        System.out.println("    instance on port 15000.");
+        System.out.println("");
         System.out.println("    Open another terminal and run nightwatchjs commands to run specific tests.");
         System.out.println("    Iterate and rerun tests.");
         System.out.println("    See http://nightwatchjs.org/");

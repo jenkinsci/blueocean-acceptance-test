@@ -11,4 +11,5 @@
  * @see {@link module:custom_commands.waitForJobRunStarted}
  * @see {@link module:custom_commands.waitForJobRunPaused}
  * @see {@link module:custom_commands.waitForJobRunUnpaused}
+ * @see {@link module:custom_commands.waitForLocationChange}
  */

@@ -12,7 +12,7 @@
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36613|JENKINS-36613} Unable to load steps for multibranch pipelines with / in them
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36674|JENKINS-36674} Tests are not being reported
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36615|JENKINS-36615} the multibranch project has the branch 'feature/1'
- *
+ * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-39842|JENKINS-39842} - Open Blue Ocean button should not try to load /activity for a folder
  *
  */
 const git = require("../../../main/js/api/git");
@@ -197,6 +197,38 @@ module.exports = {
         browser.url(function (response) {
            sanityCheck(browser, response);
            response.value.endsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature%2F1/1/pipeline');
+
+            // Make sure the page has all the bits and bobs
+            // See JENKINS-40137
+            const blueRunDetailPage = browser.page.bluePipelineRunDetail();
+            blueRunDetailPage.assertBasicLayoutOkay();
+        });
+    },
+    /**
+     * test open blueocean from classic - a normal folder page in classic jenkins.
+     * <p>
+     * It should send the user to the top level blue ocean page (pipelines).
+     * @param browser
+     */
+    'step 12': function(browser) {
+        var classicGeneral = browser.page.classicGeneral();
+
+        // Go to a folder along the path to the MBP, but one
+        // of the parent folders i.e. not the MBP project folder.
+        classicGeneral.navigateToRun('job/anotherFolder/job/三百/job/ñba');
+
+        // make sure the open blue ocean button works. In this case,
+        // it should bring the browser to the main top-level pipelines page.
+        // See https://issues.jenkins-ci.org/browse/JENKINS-39842
+        browser.openBlueOcean();
+        browser.url(function (response) {
+            sanityCheck(browser, response);
+            response.value.endsWith('/blue/pipelines');
+
+            // Make sure the page has all the bits and bobs
+            // See JENKINS-40137
+            const bluePipelines = browser.page.bluePipelines();
+            bluePipelines.assertBasicLayoutOkay();
         });
     },
 };
