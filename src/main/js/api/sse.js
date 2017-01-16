@@ -176,6 +176,22 @@ exports.onJobRunStarted = function(jobName, callback, runId) {
     }, callback);
 };
 
+exports.onJobRunPaused = function(jobName, callback, runId) {
+    exports.onJobEvent({
+        jenkins_event: 'job_run_paused',
+        job_name: jobName,
+        jenkins_object_id: (runId ? runId.toString() : '1')
+    }, callback);
+};
+
+exports.onJobRunUnpaused = function(jobName, callback, runId) {
+    exports.onJobEvent({
+        jenkins_event: 'job_run_unpaused',
+        job_name: jobName,
+        jenkins_object_id: (runId ? runId.toString() : '1')
+    }, callback);
+};
+
 exports.onJobRunEnded = function(jobName, callback, runId) {
     exports.onJobEvent({
         jenkins_event: 'job_run_ended',

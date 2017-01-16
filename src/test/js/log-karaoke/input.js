@@ -21,15 +21,26 @@ module.exports = {
                 .waitForElementVisible('@executer');
         });
     },
+    /** Check Job Blue Ocean Pipeline Activity Page has run */
+    'Step 03': function (browser) {
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+        // Check the run is turning to pause
+        blueActivityPage.waitForJobRunPaused(jobName, function () {
+            blueActivityPage.waitForRunPausedVisible(jobName + '-1');
+        });
+    },
     /** Check Job Blue Ocean Pipeline Activity Page has run  - then go to the detail page and validate the input form
      * */
-    'Step 03': function (browser) {
+    'Step 04': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         // test the input parameters
         blueRunDetailPage.validateSupportedInputTypes();
         // submit the form
         blueRunDetailPage.click('@inputStepSubmit');
-        // wait for job to finish
-        blueRunDetailPage.waitForJobRunEnded(jobName);
+        // Check the run is turning to unpaused
+        blueRunDetailPage.waitForJobRunUnpaused(jobName, function () {
+            // wait for job to finish
+            blueRunDetailPage.waitForJobRunEnded(jobName);
+        });
     }
 };
