@@ -4,26 +4,16 @@ node() {
      parameters([
        booleanParam(
          defaultValue: false,
-         description: 'isFoo should be false',
-         name: 'isFoo'
+         description: 'Should we start the build?',
+         name: 'ShouldBuild'
        ),
-       booleanParam(
-         defaultValue: true,
-         description: 'isBar should be true',
-         name: 'isBar'
-       ),
+       choice(
+           choices: 'master\ndevelopment\nfeatureXYZ\nhotfix69\nrevolution\nrefactor\nuglify',
+           description: 'Which branch do you want to build?',
+           name: 'Branch'),
      ])
    ])
+   if (params.ShouldBuild) { print "We are going to build now the branch " + params.Branch }
+   else { print "Not building anything nor branch "+ params.Branch }
 
-   // test the false value
-   print 'DEBUG: parameter isFoo = ' + params.isFoo
-   print "DEBUG: parameter isFoo = ${params.isFoo}"
-   sh "echo sh isFoo is ${params.isFoo}"
-   if (params.isFoo) { print "THIS SHOULD NOT DISPLAY" }
-
-   // test the true value
-   print 'DEBUG: parameter isBar = ' + params.isBar
-   print "DEBUG: parameter isBar = ${params.isBar}"
-   sh "echo sh isBar is ${params.isBar}"
-   if (params.isBar) { print "this should display" }
 }
