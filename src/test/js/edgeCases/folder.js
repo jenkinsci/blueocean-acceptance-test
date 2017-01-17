@@ -127,7 +127,7 @@ module.exports = {
     /** Validate correct encoding, pipeline graph and steps */
     'step 07': function (browser) {
        // /JENKINS-36616 - Unable to load multibranch projects in a folder
-       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature-1.605prg', 1);
        // {@link https://issues.jenkins-ci.org/browse/JENKINS-36773|JENKINS-36773} / JENKINS-37605 verify encoding and spacing of details
        blueRunDetailPage.assertTitle('feature/1');
        // JENKINS-36613 Unable to load steps for multibranch pipelines with / in them
@@ -141,9 +141,9 @@ module.exports = {
     },
     /** Check whether the artifacts tab shows artifacts*/
     'step 08': function (browser) {
-       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature-1.605prg', 1);
        // make sure we are finished before doing the next validations
-       blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature%2F1');
+       blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature-1.605prg');
        // go to the artifact page by clicking the tab
        blueRunDetailPage.clickTab('artifacts', function (result) {
            sanityCheck(result);
@@ -156,7 +156,7 @@ module.exports = {
     * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-36674|JENKINS-36674} Tests are not being reported
     */
     'step 09': function (browser) {
-       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 1);
+       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature-1.605prg', 1);
        // Go to the test page by clicking the tab
        blueRunDetailPage.clickTab('tests', function (result) {
            sanityCheck(result);
@@ -178,9 +178,9 @@ module.exports = {
        // click on the first matching run button (small one)
        browser.page.bluePipelineBranch().clickRunButton();
        // go to the detail page
-       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature%2F1', 2);
+       const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(projectName, 'jenkins', 'feature-1.605prg', 2);
        // Wait for the job to end
-       blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature%2F1');
+       blueRunDetailPage.waitForJobRunEnded(getProjectName(anotherFolders) + '/feature-1.605prg');
     },
     /**
      * test open blueocean from classic - run details
@@ -189,14 +189,14 @@ module.exports = {
     'step 11': function(browser) {
         var classicRunPage = browser.page.classicRun();
 
-        classicRunPage.navigateToRun('anotherFolder/job/三百/job/ñba/job/七/job/Sohn/job/feature%252F1');
+        classicRunPage.navigateToRun('anotherFolder/job/三百/job/ñba/job/七/job/Sohn/job/feature-1.605prg');
 
         // make sure the open blue ocean button works. In this case,
         // it should bring the browser to the run details page for the first run.
         browser.openBlueOcean();
         browser.url(function (response) {
            sanityCheck(browser, response);
-           response.value.endsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature%2F1/1/pipeline');
+           response.value.endsWith('/blue/organizations/jenkins/anotherFolder%2F三百%2Fñba%2F七%2FSohn/detail/feature-1.605prg/1/pipeline');
 
             // Make sure the page has all the bits and bobs
             // See JENKINS-40137
