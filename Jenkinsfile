@@ -112,7 +112,10 @@ node ('docker') {
                                selector: selector,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     } catch (Exception e) {
-                        echo "No CI build for Blue Ocean branch named '${urlEncodedBranchName}', or doesn't have a pre-assembled plugin tar. Trying the last completed 'master' build instead."
+                        echo "Error copying pre-assembled plugins tar from Blue Ocean branch named '${urlEncodedBranchName}'."
+                        echo "  - Error message: ${e.getMessage()}"
+                        echo "  - Build selector used: '${selector}'."
+                        echo "  - Trying the last completed 'master' build instead..."
                         branchName = "master";
                         buildNumber = DEFAULT_BUILD_NUM;
                         step ([$class: 'CopyArtifact',
