@@ -15,7 +15,7 @@ const notEmptyHelper = pageHelper.notEmptyHelper;
 module.exports = {
     // selectors
     elements: {
-        code: 'code',
+        code: 'pre',
         progressBar: 'div.loadingContainer',
         logHeader: '.log-header',
         fullLog: 'div.fullLog a',
@@ -411,7 +411,7 @@ module.exports.commands = [{
   validateLogConsole: function (position) {
       const self = this;
       const browser = this.api;
-      const aXpath = '(//table[@class="highlight"]//tr/td/a)[' + position + ']';
+      const aXpath = '(//pre//p/div/a)[' + position + ']';
 
       // first turn on xpath to get the nodes we want
       browser

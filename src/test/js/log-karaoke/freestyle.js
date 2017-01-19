@@ -31,7 +31,7 @@ module.exports = {
         blueRunDetailPage.assertBasicLayoutOkay();
 
         blueRunDetailPage.waitForJobRunEnded('hijo')
-            .waitForElementVisible('code')
+            .waitForElementVisible('pre')
             .fullLogButtonNotPresent();
     },
 /** Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear*/
