@@ -411,7 +411,7 @@ module.exports.commands = [{
   validateLogConsole: function (position) {
       const self = this;
       const browser = this.api;
-      const aXpath = '(//pre//p/div/a)[' + position + ']';
+      const aXpath = '(//pre/p/div[@class="log-boxes"]/a)[' + position + ']';
 
       // first turn on xpath to get the nodes we want
       browser
