@@ -112,16 +112,21 @@ node ('docker') {
                                selector: selector,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
                     } catch (Exception e) {
+                        echo ""
                         echo "Error copying pre-assembled plugins tar from Blue Ocean branch named '${urlEncodedBranchName}'."
                         echo "  - Error message: ${e.getMessage()}"
                         echo "  - Build selector used: '${selector}'."
                         echo "  - Trying the last completed 'master' build instead..."
+                        echo ""
                         branchName = "master";
                         buildNumber = DEFAULT_BUILD_NUM;
                         step ([$class: 'CopyArtifact',
                                projectName: "blueocean/master",
                                selector: LAST_COMPLETED_BUILD_SELSECTOR,
                                filter: 'blueocean/target/ath-plugins.tar.gz']);
+                        echo ""
+                        echo "Copying pre-assembled plugins tar from last completed 'master' build was successful."
+                        echo ""
                     }
                     sh 'mkdir -p blueocean-plugin/blueocean'
                     sh 'tar xzf blueocean/target/ath-plugins.tar.gz -C blueocean-plugin/blueocean'
