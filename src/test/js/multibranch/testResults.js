@@ -40,8 +40,11 @@ module.exports = {
         blueRunDetailsPage.clickTab('tests');
 
         // Expand the test.
-        browser.useXpath().click('//div[@class="result-item-head"]');
-
-        browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4')
+        browser.useXpath().waitForElementVisible('//span[contains(text(), "StdOut")]');
+  
+        browser.useXpath().click('//span[contains(text(), "StdOut")]');
+        browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4[contains(text(), "Stacktrace")]')
+        browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4[contains(text(), "Standard Error")]')
+        browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4[contains(text(), "Standard Output")]')
     },
 }
