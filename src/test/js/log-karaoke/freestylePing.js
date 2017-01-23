@@ -34,9 +34,9 @@ module.exports = {
         browser.resizeWindow(600, 600);
         // wait until the job has finished
         blueRunDetailPage.waitForJobRunEnded(jobName)
-            .waitForElementVisible('code')
+            .waitForElementVisible('pre')
             .fullLogButtonNotPresent()
-            .expect.element('code').text.to.contain('Finished: SUCCESS');
+            .expect.element('pre').text.to.contain('Finished: SUCCESS');
         // make sure we have scrolled
         blueRunDetailPage.validateScrollToBottom();
         // make the browser big again

@@ -89,8 +89,8 @@ module.exports = {
       const lastLogConsoleSelector = '.logConsole.step-6';
       blueRunDetailPage.waitForElementVisible(lastLogConsoleSelector);
       blueRunDetailPage.click(lastLogConsoleSelector);
-      blueRunDetailPage.waitForElementVisible('td.line');
-      blueRunDetailPage.getText('td.line', function (result) {
+      blueRunDetailPage.waitForElementVisible('span.line');
+      blueRunDetailPage.getText('span.line', function (result) {
         this.assert.equal(result.value, 'We are going to build now the branch master');
       })
     });

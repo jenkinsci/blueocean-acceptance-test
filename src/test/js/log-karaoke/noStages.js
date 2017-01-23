@@ -36,15 +36,15 @@ module.exports = {
         // The log appears in the <code> window, of which there an be only one.
         // Click on it to focus it so we make sure the key up is fired on the page and
         // not directly on the browser
-        browser.waitForElementVisible('code')
-            .click('code');
+        browser.waitForElementVisible('pre')
+            .click('pre');
         
         // Wait for the "step-7" to appear before we stop the karaoke.
         // See no-stages.groovy.
         browser.waitForElementVisible('.logConsole.step-7');        
 
         // Press the up-arrow key to tell karaoke mode to stop following the log i.e.
-        // after this point in time, the content of the <code> block should not change.
+        // after this point in time, the content of the <pre> block should not change.
         browser.keys(browser.Keys.UP_ARROW);
         
         // Wait for the table of pipeline steps to get marked with
@@ -68,7 +68,7 @@ module.exports = {
                 var results = resutlItems.value.length;
                 // to validate that we left follow, give it some time and then count the elements again
                 this.pause(3000)
-                    .elements('css selector', 'code', function (codeCollection) {
+                    .elements('css selector', 'pre', function (codeCollection) {
                         // JENKINS-36700 there can only be one code view open in follow stopped
                         this.assert.equal(codeCollection.value.length, 1);
                     })
@@ -93,7 +93,7 @@ module.exports = {
                     const count2 = collection2.value.length;
                     this.assert.notEqual(count, count2);
                 })
-                .elements('css selector', 'code', function (codeCollection) {
+                .elements('css selector', 'pre', function (codeCollection) {
                     // JENKINS-36700 in success all code should be closed,
                     // however if the browser is too quick there can still be one open
                     this.assert.equal(codeCollection.value.length < 2, true);

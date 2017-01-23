@@ -42,8 +42,8 @@ module.exports = {
             // if we expand, validate that we really did
             if (expand) {
                 // we will have a code tag if expand worked
-                self.waitForElementVisible('code')
-                    .getText('code', function (result) {
+                self.waitForElementVisible('pre')
+                    .getText('pre', function (result) {
                         this.assert.notEqual(null, result.value);
                     });
             }
