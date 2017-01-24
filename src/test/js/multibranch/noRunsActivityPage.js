@@ -22,13 +22,13 @@ module.exports = {
      * Create Multibranch Pipeline Job "noRunsActivityPage" with no branches.
      * @param browser
      */
-    'Create job': (browser) => {
+    'Step 01 - Create job': (browser) => {
         var multibranchCreate = browser.page.multibranchCreate().navigate();
       
         multibranchCreate.createBranch(jobName, pathToRepo);
     },
 
-    'Delete runs': (browser) => {
+    'Step 02 - Delete runs': (browser) => {
         browser.useXpath()
             // Navidate back to main job screen
             .waitForElementVisibleThenClick('//*[@id="breadcrumbs"]/li[3]/a')
@@ -47,7 +47,7 @@ module.exports = {
     /**
      * Make sure that we show the empty state.
      */
-    'Check empty states': (browser) => {
+    'Step 03 - Check empty states': (browser) => {
         var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
 
         blueActivityPage.waitForElementVisible('@emptyStateShoes');
