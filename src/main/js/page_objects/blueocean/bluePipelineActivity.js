@@ -12,7 +12,7 @@ const sanityCheck = pageHelper.sanityCheck;
 
 module.exports = {
     elements: {
-        pipelinesNav: '.global-header nav a[href="/blue/pipelines"]',
+        pipelinesNav: '.Header-topNav nav a[href="/blue/pipelines"]',
         emptyStateShoes: '.empty-state .empty-state-icon.shoes',
         activityTable: '.activity-table',
         activityTableEntries: 'table.activity-table tbody tr',
@@ -46,7 +46,7 @@ module.exports.commands = [{
     assertBasicLayoutOkay: function(jobName) {
         const baseHref = url.viewPipeline('jenkins', (jobName?jobName:this.jobName));
         this.waitForElementVisible('@pipelinesNav');
-        this.waitForElementVisible('nav.page-tabs a');
+        this.waitForElementVisible('.Header-topNav a');
         this.waitForElementVisible('.Site-footer');
         // Test the end of the active url and make sure it's on the
         // expected activity page.

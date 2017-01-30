@@ -14,8 +14,8 @@ module.exports = {
         return this.api.launchUrl + pipelinesUrl;
     },
     elements: {
-        pipelinesNav: '.global-header nav a[href="'+pipelinesUrl+'"]',
-        newPipelineButton: '.page-title a[href="/view/All/newJob"]',
+        pipelinesNav: '.Header-topNav nav a[href="'+pipelinesUrl+'"]',
+        newPipelineButton: '.btn-new-pipeline',
         pipelinesTable: '.pipelines-table',
     }
 };
