@@ -86,7 +86,7 @@ module.exports = {
         
         //check that we see a stage graph: 
         blueRunDetailPage.waitForElementVisible('.progress-spinner.running');                           
-        blueRunDetailPage.waitForElementVisible('.header.running')        
+        blueRunDetailPage.waitForElementVisible('.BasicHeader--running')        
         blueRunDetailPage.waitForElementVisible('.pipeline-node-selected');                  
         blueRunDetailPage.waitForElementVisible('.download-log-button');                  
         blueRunDetailPage.waitForElementVisible('.pipeline-selection-highlight');                    

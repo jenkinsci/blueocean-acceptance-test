@@ -127,7 +127,7 @@ module.exports.commands = [{
     assertStageGraphShows: function() {
       //check results look kosher:
       this.waitForElementVisible('.progress-spinner.running');                           
-      this.waitForElementVisible('.header.running')
+      this.waitForElementVisible('.BasicHeader--running')
       
       this.waitForElementVisible('.pipeline-node-selected');                  
       this.waitForElementVisible('.download-log-button');                  
