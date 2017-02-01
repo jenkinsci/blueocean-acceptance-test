@@ -19,7 +19,7 @@ util.inherits(Cmd, events.EventEmitter);
 const waitForJobRunUnpaused = function (jobName, onBuildUnpaused) {
     var self = this;
 
-    console.log('Waiting for job "' + jobName + '" run to pause.');
+    console.log('Waiting for job "' + jobName + '" run to unpause.');
     sseClient.onJobRunUnpaused(jobName, function(event) {
         console.log('Job "' + jobName + '" unpaused.');
         try {
