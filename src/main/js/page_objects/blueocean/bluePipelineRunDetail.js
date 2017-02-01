@@ -24,7 +24,7 @@ module.exports = {
         emptystate: 'div.empty-state',
         emptystateQueued: 'div.empty-state span.waiting',
         detailTitle: '.ResultPageHeader-main',
-        closeButton: 'a.closeButton',
+        closeButton: '.ResultPageHeader-close',
         activityTable: '.activity-table',
         highlightedGraph: 'g.pipeline-selection-highlight',
         logConsole: 'div.logConsole',
