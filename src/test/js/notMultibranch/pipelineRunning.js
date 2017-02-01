@@ -43,7 +43,12 @@ module.exports = {
         blueActivityPage.waitForElementVisible('@toastOpenButton')
         
         //check it spins and then is done  
-        blueActivityPage.waitForElementVisible('#pipeRun-2');                
+        blueActivityPage.waitForElementVisible('#pipeRun-2');   
+        blueActivityPage.waitForRunSuccessVisible('pipeRun-2');    
+
+        browser.elements('css selector', '.replay-button', function(res) {
+          browser.assert.equal(2, res.value.length, 'Correct number of replay buttons started');          
+        })  
     },
 
 };
