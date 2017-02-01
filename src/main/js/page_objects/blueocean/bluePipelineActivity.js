@@ -134,7 +134,7 @@ module.exports.commands = [{
       this.waitForElementVisible('.pipeline-selection-highlight');                    
       this.waitForElementVisible('.pipeline-connector');     
       this.waitForElementVisible('.pipeline-node-hittarget');     
-      this.waitForElementVisible('.success');  
+      this.waitForElementVisible('.BasicHeader--success');  
 
     },
     
