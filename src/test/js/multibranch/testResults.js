@@ -27,9 +27,14 @@ module.exports = {
     },
 
     'Open acitivty page wait for first run to finish': (browser) => {
+        
+
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName);
+        blueActivityPage.click(".branches");
+        blueActivityPage.click(".activity");
         // validate that we have 3 activities from the previous tests
         blueActivityPage.assertActivitiesToBeEqual(1);
+        
 
         blueActivityPage.waitForRunUnstableVisible(`${jobName}-1`)
     },
