@@ -141,10 +141,11 @@ node ('docker') {
                 // ./start-selenium.sh (above) and ./stop-selenium.sh (below).
                 stage 'run'
                 sh "./run.sh -a=./blueocean-plugin/blueocean/ --no-selenium"
-                sendhipchat(repoUrl, branchName, buildNumber, null)
             } catch (err) {
                 currentBuild.result = "FAILURE"
+            } finally {
                 sendhipchat(repoUrl, branchName, buildNumber, null)
+                step([$class: 'JUnitResultArchiver', testResults: 'target/surefire-reports/**/*.xml'])
             }
         }
         } // configFileProvider
