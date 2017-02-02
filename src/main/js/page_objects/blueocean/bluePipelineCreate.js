@@ -13,13 +13,11 @@ module.exports = {
         return this.api.launchUrl + url.createPipeline();
     },
     elements: {
-        createButton: {
-            selector: '//button[contains(text(), "Create Pipeline")]',
-            locateStrategy: 'xpath',
-        },
-        openPipelineButton: {
-            selector: '.last-step.complete button'
-        },
+        gitCreationButton: '.scm-provider-list .git-creation',
+        repositoryUrlText: '.text-repository-url input',
+        newCredentialTypeSystemSSh: '.credentials-type-picker .RadioButtonGroup-item:nth-child(3)',
+        createButton: '.git-step-connect .button-create-pipeline',
+        openPipelineButton: '.git-step-completed .button-open-pipeline',
     }
 };
 

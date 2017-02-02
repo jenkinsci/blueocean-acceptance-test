@@ -26,20 +26,18 @@ module.exports = {
     },
 
     'Step 01 - Create Pipeline': function (browser) {
-        const pipelineCreate = browser.page.bluePipelineCreate().navigate();
-        // TOOD: migrate to page object
-        pipelineCreate.waitForElementVisible('.scm-provider-list');
-        pipelineCreate.click('.scm-provider-list button:first-child');
-        pipelineCreate.waitForElementVisible('.git-step-connect');
-        pipelineCreate.setValue('.text-repository-url input', pathToRepo);
-        pipelineCreate.click('.credentials-type-picker .RadioButtonGroup-item:nth-child(3)');
-        pipelineCreate.click('@createButton');
-        pipelineCreate.assertCompleted();
+        const create = browser.page.bluePipelineCreate().navigate();
+        create.waitForElementVisible('.scm-provider-list');
+        create.click('@gitCreationButton');
+        create.waitForElementVisible('.git-step-connect');
+        create.setValue('@repositoryUrlText', pathToRepo);
+        create.click('@newCredentialTypeSystemSSh');
+        create.click('@createButton');
+        create.assertCompleted();
     },
     'Step 02 - Check Activity Tab': function (browser) {
-        const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-        blueActivityPage.assertBasicLayoutOkay();
-        // TODO: more asserts on running jobs
-        // browser.pause(15000);
+        const activity = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+        activity.assertBasicLayoutOkay();
+        activity.waitForRunRunningVisible(jobName + '-1');
     }
 };
