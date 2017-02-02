@@ -3,7 +3,7 @@
  * @memberof git
  * @description
  *
- * Tests: test when creating a pipeline from a local Git repo works
+ * Tests: test that creating a pipeline from a local Git repo works
  */
 const git = require("../../../../main/js/api/git");
 const path = require("path");
@@ -16,7 +16,6 @@ const sourceRep = './src/test/resources/multibranch_2';
 module.exports = {
     before: function(browser, done) {
         browser.waitForJobDeleted(jobName, function () {
-            // we creating a git repo in target based on the src repo (see above)
             git.createRepo(sourceRep, pathToRepo)
                 .then(function () {
                     git.createBranch('feature/alpha', pathToRepo)

@@ -1,10 +1,10 @@
 /**
  * @module blueCreate
  * @memberof page_objects
- * @description Represents the "create piepline" page
+ * @description Represents the "create pipeline" page
  *
  * @example
- *   var blueCreatePage = browser.page.blueCreate().navigate();
+ *   var blueCreatePage = browser.page.bluePipelineCreate().navigate();
  * */
 const url = require('../../util/url');
 
@@ -21,13 +21,9 @@ module.exports = {
     }
 };
 
-// Nightwatch commands.
-// http://nightwatchjs.org/guide#writing-commands
-// Seems like we could use a Nightwatch assertions for some of these, but then that would be global.
-// Prefer it this way, local to the page.
 module.exports.commands = [{
     assertCompleted: function() {
-        this.waitForElementVisible('.last-step.complete');
+        this.waitForElementVisible('.git-step-completed');
         this.waitForElementVisible('@openPipelineButton');
     }
 }];
