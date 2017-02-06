@@ -15,7 +15,7 @@ module.exports = {
     /** Create Pipeline Job "runDetailsDeepLink" */
     'Step 01': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline(jobName, 'initialStage.groovy');
+        pipelinesCreate.createPipeline(jobName, 'fastStages.groovy');
     },
     /** Build Pipeline Job*/
     'Step 02': function (browser) {
@@ -30,10 +30,8 @@ module.exports = {
     },
     /** Check Job Blue Ocean Pipeline Activity Page has run */
     'Step 03': function (browser) {
-        const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-        blueActivityPage.waitForRunRunningVisible(jobName + '-1');
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
-        blueRunDetailPage.waitForJobRunEnded(jobName);
+        blueRunDetailPage.waitForElementVisible('.BasicHeader--success');
         blueRunDetailPage.closeModal('/activity');
     },
 };
