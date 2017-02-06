@@ -30,6 +30,8 @@ module.exports = {
     },
     /** Check Job Blue Ocean Pipeline Activity Page has run */
     'Step 03': function (browser) {
+        const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+        blueActivityPage.waitForRunSuccessVisible(jobName + '-1');
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.waitForElementVisible('.BasicHeader--success');
         blueRunDetailPage.closeModal('/activity');
