@@ -30,7 +30,10 @@ module.exports = {
         
 
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName);
+        blueActivityPage.waitForElementVisible(".branches");        
         blueActivityPage.click(".branches");
+        
+        blueActivityPage.waitForElementVisible(".activity");
         blueActivityPage.click(".activity");
         // validate that we have 3 activities from the previous tests
         blueActivityPage.assertActivitiesToBeEqual(1);
