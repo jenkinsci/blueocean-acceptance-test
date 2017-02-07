@@ -6,11 +6,11 @@ node {
 
     parallel firstBranch: {
         sh 'echo `date` Stage 2 - firstBranch www.spiegel.de'
-        sh 'ping -c 4 -i 3 www.spiegel.de || true'
+        sh 'ping -c 7 -i 3 localhost'
 
     }, secondBranch: {
         sh 'echo `date` Stage 2 - secondBranch www.stern.de'
-        sh 'ping -c 6 -i 2 www.stern.de || true'
+        sh 'ping -c 12 -i 2 localhost'
     }
 
     stage "ho"
