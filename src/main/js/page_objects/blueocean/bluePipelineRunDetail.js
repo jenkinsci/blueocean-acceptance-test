@@ -142,6 +142,7 @@ module.exports.commands = [{
             sanityCheck(self, response);
             //console.log(response, expected)
             const title = (response.value);
+            console.log(title);
             self.assert.equal(title.indexOf(expected) > -1, true);
         });
         return self;
