@@ -40,6 +40,6 @@ module.exports = {
         // Check the run is turning to unpaused
         
         blueRunDetailPage.waitForElementNotPresent('.circle-bg.paused');
-        blueRunDetailPage.waitForElementVisible('.circle-bg.success');
+        blueRunDetailPage.waitForElementVisible('.BasicHeader--success');
     }
 };
