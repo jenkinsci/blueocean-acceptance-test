@@ -27,7 +27,7 @@ module.exports = {
     'Step 03': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         
-        blueRunDetailPage.waitForElementVisible('div.header.success');
+        blueRunDetailPage.waitForElementVisible('section.BasicHeader--success');
         
         blueRunDetailPage.clickTab('artifacts');
 

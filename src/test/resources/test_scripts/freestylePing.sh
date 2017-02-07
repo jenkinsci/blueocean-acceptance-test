@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ping -c 10 spiegel.de
+ping -c 10 localhost
