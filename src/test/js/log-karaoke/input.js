@@ -25,9 +25,9 @@ module.exports = {
     'Step 03': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         // Check the run is turning to pause
-        blueActivityPage.waitForElementVisible('.circle-bg.paused');        
-        blueActivityPage.waitForRunPausedVisible(jobName + '-1');
-        
+        blueActivityPage.waitForJobRunPaused(jobName, function () {
+            blueActivityPage.waitForRunPausedVisible(jobName + '-1');
+        });
     },
     /** Check Job Blue Ocean Pipeline Activity Page has run  - then go to the detail page and validate the input form
      * */
@@ -38,8 +38,9 @@ module.exports = {
         // submit the form
         blueRunDetailPage.click('@inputStepSubmit');
         // Check the run is turning to unpaused
-        
-        blueRunDetailPage.waitForElementNotPresent('.circle-bg.paused');
-        blueRunDetailPage.waitForElementVisible('.BasicHeader--success');
+        blueRunDetailPage.waitForJobRunUnpaused(jobName, function () {
+            // wait for job to finish
+            blueRunDetailPage.waitForJobRunEnded(jobName);
+        });
     }
 };

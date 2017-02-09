@@ -9,9 +9,9 @@ const jsdoc = require('gulp-jsdoc3');
 const config = require('./jsdocConfig.json');
 
 if (process.argv.length === 4 && process.argv[2] === '--test') {
-    gulp.task('default', shell.task('nightwatch --retries 5 --suiteRetries 2 ' + process.argv[3].toString()));
+    gulp.task('default', shell.task('nightwatch --suiteRetries 2 ' + process.argv[3].toString()));
 } else {
-    gulp.task('default', shell.task('nightwatch --retries 5 --suiteRetries 2'));
+    gulp.task('default', shell.task('nightwatch --suiteRetries 2'));
 }
 
 gulp.task('doc', function (cb) {
