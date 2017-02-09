@@ -1,4 +1,4 @@
-var diag = require('@jenkins-cd/diag');
+var logging = require('@jenkins-cd/logging');
 
 var debugs = [];
 
@@ -8,7 +8,6 @@ console.debug = console.log;
  */
 function setDEBUG() {
     process.env.DEBUG = debugs.join(',');
-    diag.reloadConfig();
 }
 /**
  * enable debug for a specific category
@@ -35,5 +34,4 @@ exports.disable = function(category) {
 
 if (process.env.LOG_CONFIG) {
     process.env.DEBUG = process.env.LOG_CONFIG;
-    diag.reloadConfig();
 }
