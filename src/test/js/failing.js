@@ -36,31 +36,33 @@ module.exports = {
     // now testing JENKINS-37666
     'Step 03': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(JOB, 'jenkins', 1);
+        
+        blueRunDetailPage.waitForElementVisible('.BasicHeader--failure');
         // we want to analyse the result after the job has finished
-        browser.waitForJobRunEnded(JOB, function() {
-            // the failure should collapse
-            blueRunDetailPage.clickFirstResultItemFailure(false);
-            // test whether the expand works
-            blueRunDetailPage.clickFirstResultItem();
-            // now click again so the result collapse again
-            blueRunDetailPage.clickFirstResultItem(false);
-            // now click the node again and see whether only one code is visible
-            blueRunDetailPage.clickFirstResultItem();
-            // we now need to get all visible code blocks, but there should be no more then one
-            browser.elements('css selector', 'pre', function (codeCollection) {
-                this.assert.equal(typeof codeCollection, "object");
-                this.assert.equal(codeCollection.status, 0);
-                // JENKINS-36700 in fail all code should be closed besides one
-                // however if the browser is too quick there can still be two open
-                this.assert.equal(codeCollection.value.length <= 2, true);
-            });
-            
-            // as it has failed, should get a replay button
-            blueRunDetailPage.waitForElementVisible('.replay-button');
-            
+        
+        // the failure should collapse
+        blueRunDetailPage.clickFirstResultItemFailure(false);
+        // test whether the expand works
+        blueRunDetailPage.clickFirstResultItem();
+        // now click again so the result collapse again
+        blueRunDetailPage.clickFirstResultItem(false);
+        // now click the node again and see whether only one code is visible
+        blueRunDetailPage.clickFirstResultItem();
+        // we now need to get all visible code blocks, but there should be no more then one
+        browser.elements('css selector', 'pre', function (codeCollection) {
+            this.assert.equal(typeof codeCollection, "object");
+            this.assert.equal(codeCollection.status, 0);
+            // JENKINS-36700 in fail all code should be closed besides one
+            // however if the browser is too quick there can still be two open
+            this.assert.equal(codeCollection.value.length <= 2, true);
+        });
+        
+        // as it has failed, should get a replay button
+        blueRunDetailPage.waitForElementVisible('.replay-button');
+        
             
 
-        });
+        
         
     },
     

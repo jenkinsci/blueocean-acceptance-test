@@ -73,7 +73,7 @@ module.exports = {
      * @returns {string}
      */
     tabSelector: function(tabName) {
-        return 'nav.page-tabs a.' + tabName;
+        return 'nav a.' + tabName;
     },
     /**
      * click a certain tab and validate that url has changed

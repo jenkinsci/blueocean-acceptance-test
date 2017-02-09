@@ -86,7 +86,7 @@ module.exports = {
         browser.elements('css selector', 'div.result-item.success', function (collection) {
             const count = collection.value.length;
             // wait for the success update via sse event
-            this.waitForElementVisible('div.header.success')
+            this.waitForElementVisible('.BasicHeader--success');
             blueRunDetailPage.fullLogButtonNotPresent();
             this
                 .elements('css selector', 'div.result-item.success', function (collection2) {

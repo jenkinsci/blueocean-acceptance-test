@@ -23,8 +23,8 @@ module.exports = {
         followAlongOff: '.step-scroll-area.follow-along-off',
         emptystate: 'div.empty-state',
         emptystateQueued: 'div.empty-state span.waiting',
-        detailTitle: 'section.table',
-        closeButton: 'a.closeButton',
+        detailTitle: '.ResultPageHeader-main',
+        closeButton: '.ResultPageHeader-close',
         activityTable: '.activity-table',
         highlightedGraph: 'g.pipeline-selection-highlight',
         logConsole: 'div.logConsole',
@@ -123,7 +123,7 @@ module.exports.commands = [{
     assertTitle: function (expected) {
         const self = this;
         self.waitForElementVisible('@detailTitle');
-        self.getText('@detailTitle', function (response) {
+        self.getText('@detailTitle', function (response) {            
             sanityCheck(self, response);
             const urlProject = (response.value);
             self.assert.equal(urlProject.indexOf(expected) > -1, true);
@@ -386,9 +386,10 @@ module.exports.commands = [{
             ).singleNodeValue;
             // return the scrollHeight to determine whether we moved to the bottom on karaoke
             return cmElem.scrollHeight;
-        }, ['//div[@class="content"]'], function (result) {
-            // sanity checks
+        }, ['//div[@class="FullScreen-contents"]'], function (result) {
+            // sanity checks            
             sanityCheck(self, result);
+            
             // the scrollHeight has to be higher 0 to indicate that we have scrolled
             browser.assert.equal(result.value > 0, true);
             // to make component chain-able we will return self - part 2

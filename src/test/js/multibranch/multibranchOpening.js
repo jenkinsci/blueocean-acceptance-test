@@ -93,6 +93,7 @@ module.exports = {
 
       
          var blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+         blueActivityPage.waitForElementVisible('.branches');
          blueActivityPage.click(".branches");
 
          blueActivityPage.waitForElementVisible('tr[id^="feature"]');
