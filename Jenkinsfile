@@ -155,9 +155,6 @@ node ('docker') {
 }
 
 def sendhipchat(repoUrl, branchName, buildNumber, err) {
-    // disable for now
-    return;
-
     def res = currentBuild.result
     if(res == null) {
         res = "SUCCESS"
