@@ -93,4 +93,11 @@ module.exports = {
             });
         return self;
     },
+    /**
+     * get the url to create a pipeline
+     * @returns {string}
+     */
+    createPipeline: function() {
+        return '/blue/create-pipeline/';
+    },
 };
