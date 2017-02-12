@@ -14,7 +14,7 @@ const sourceRep = './src/test/resources/multibranch_2';
 
 
 module.exports = {
-    before: function(browser, done) {
+    before: !function(browser, done) {
         browser.waitForJobDeleted(jobName, function () {
             git.createRepo(sourceRep, pathToRepo)
                 .then(function () {
@@ -24,7 +24,7 @@ module.exports = {
         });
     },
 
-    'Step 01 - Create Pipeline': function (browser) {
+    'Step 01 - Create Pipeline': !function (browser) {
         const create = browser.page.bluePipelineCreate().navigate();
         create.waitForElementVisible('.scm-provider-list');
         create.click('@gitCreationButton');
@@ -34,7 +34,7 @@ module.exports = {
         create.click('@createButton');
         create.assertCompleted();
     },
-    'Step 02 - Check Activity Tab': function (browser) {
+    'Step 02 - Check Activity Tab': !function (browser) {
         const activity = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         activity.assertBasicLayoutOkay();
         activity.waitForRunSuccessVisible(jobName + '-1');
