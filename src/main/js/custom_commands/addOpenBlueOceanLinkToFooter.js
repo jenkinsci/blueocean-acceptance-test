@@ -32,13 +32,29 @@ Cmd.prototype.command = function () {
             function doTweaks($jquery) {
                 $jquery(function() {
                     var contextUrlDiv = $jquery('#blueocean-context-url');
-                    if (contextUrlDiv.length !== 0) {
+
+                    if (contextUrlDiv.length === 1) {
+                        var tryBlueOceanUrl;
+                        var blueUrl = contextUrlDiv.attr('data-context-url');
+                        var classicUrl = contextUrlDiv.attr('data-classic-url');
+
+                        if (classicUrl) {
+                            var indexOfContext = window.location.href.indexOf(classicUrl);
+                            if (indexOfContext !== -1) {
+                                tryBlueOceanUrl = window.location.href.substring(0, indexOfContext) + blueUrl;
+                            }
+                        }
+                        if (!tryBlueOceanUrl) {
+                            tryBlueOceanUrl = `./blue`;
+                        }
+
                         var footer = $jquery('#footer');
                         var link = $jquery('<a>Open Blue Ocean</a>');
                         link.attr('id', 'open-blueocean-in-context');
-                        link.attr('href', contextUrlDiv.attr('data-context-url'));
+                        link.attr('href', tryBlueOceanUrl);
                         footer.append(link);
                     }
+
                     // Make the emission of the "complete" event (below) a bit
                     // more deterministic.
                     $jquery('body').addClass('open-blueocean-link-added');
