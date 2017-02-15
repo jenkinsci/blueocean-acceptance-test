@@ -37,9 +37,8 @@ module.exports = {
     const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
 
     blueRunDetailPage.assertBasicLayoutOkay();
-    blueRunDetailPage.waitForPipelineStageEvent(jobName, function () {
-        blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
-        blueRunDetailPage.waitForJobRunEnded(jobName);
-    });
+    blueRunDetailPage.waitForElementVisible('.pipeline-node-hittarget');
+    blueRunDetailPage.validateGraph(); // test whether we have a pipeline graph
+    
   },
 };
