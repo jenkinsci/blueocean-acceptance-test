@@ -1,6 +1,6 @@
 const jobName = 'withGitFlow';
 const path = require("path");
-const pathToRepo = path.resolve('./target/test2-project-folder');
+const pathToRepo = path.resolve('./target/testfilter-project-folder');
 const soureRep = './src/test/resources/multibranch_2';
 const git = require("../../../main/js/api/git");
 
