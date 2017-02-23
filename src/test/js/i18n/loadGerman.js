@@ -1,5 +1,5 @@
 const jobName = 'loadGerman';
-const newButtonSelector = '.btn-new-pipeline';
+const newButtonSelector = '.u-flex-grow h1 a';
 
 /** @module loadGerman
  * @memberof i18n
@@ -11,7 +11,7 @@ module.exports = {
         var bluePipelines = browser.page.bluePipelines().navigateLanguage("de");
         bluePipelines.waitForElementVisible(newButtonSelector);
         browser.getText(newButtonSelector, function(response) {
-            browser.assert.equal(response.value, 'Neue Pipeline');
+            browser.assert.equal(response.value, 'Übersicht');
         });        
     },
 
@@ -20,7 +20,7 @@ module.exports = {
         var bluePipelines = browser.page.bluePipelines().navigateLanguage("en");
         bluePipelines.waitForElementVisible(newButtonSelector);
         browser.getText(newButtonSelector, function(response) {
-            browser.assert.equal(response.value, 'New Pipeline');
+            browser.assert.equal(response.value, 'Dashboard');
         });        
     },
     
