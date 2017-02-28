@@ -30,8 +30,7 @@ module.exports.commands = [{
      * @returns {Object} self - nightwatch page object
      */
     assertBasicLayoutOkay: function() {
-        this.waitForElementVisible('@pipelinesNav');
-        this.waitForElementVisible('@newPipelineButton');
+        this.waitForElementVisible('@pipelinesNav');        
         this.waitForElementVisible('@pipelinesTable');
         this.waitForElementVisible('.Site-footer');
     },
