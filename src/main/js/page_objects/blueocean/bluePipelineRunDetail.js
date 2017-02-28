@@ -4,14 +4,15 @@ const pageHelper = require('../../util/pageHelper');
 const sanityCheck = pageHelper.sanityCheck;
 const isCodeBlockVisibleCallback = pageHelper.isCodeBlockVisibleCallback;
 const notEmptyHelper = pageHelper.notEmptyHelper;
-/** @module bluePipelineRunDetails
+
+/**
+ * @module bluePipelineRunDetails
  * @memberof page_objects
- * @description Represents the detail page of a job in blueocean
+ * @description Represents the detail page of a job run in blueocean
  *
  * @example
- *   const blueRunDetailPage = browser.page.bluePipelineRunDetail()
- .forRun(jobNameFreestyle, 'jenkins', 1);
- * */
+ *   const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobNameFreestyle, 'jenkins', 1);
+ */
 module.exports = {
     // selectors
     elements: {
@@ -47,6 +48,7 @@ module.exports = {
         choiceInput: '.Choice',
         stringInput: '.String',
         inputStepSubmit: '.inputStepSubmit',
+        exitToClassicWidget: 'a.rundetails_exit_to_app',
     }
 };
 
@@ -110,6 +112,7 @@ module.exports.commands = [{
         this.waitForElementVisible(url.tabSelector('tests'));
         this.waitForElementVisible(url.tabSelector('artifacts'));
         this.waitForElementVisible('@logHeader');
+        this.waitForElementVisible('@exitToClassicWidget');
         // TODO: add class info to the page content so we can test it
         // Atm there's very little on the page that will allow us to test it.
         // E.g. nothing on the pipeline graph that allows us to find it.
