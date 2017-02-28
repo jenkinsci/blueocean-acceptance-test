@@ -39,7 +39,7 @@ module.exports = {
     /**
      * Create folder structure - "aFolder/bFolder/cFolder"
      */
-    'step 01': function (browser) {
+    'step 01 - create folder': function (browser) {
         // Initial folder create page
         const folderCreate = browser.page.folderCreate().navigate();
         // create nested folder for the project
@@ -48,7 +48,7 @@ module.exports = {
     /**
      * Create multibranch job - "MBPInFolderTree"
      */
-    'step 02': function (browser) {
+    'step 02 - create multibranch job': function (browser) {
         // go to the newItem page
         browser.page.jobUtils().newItem();
         // and then use the multibranchCreate page object to create
@@ -59,7 +59,7 @@ module.exports = {
      * test open blueocean from classic - run details
      * @param browser
      */
-    'step 03': function(browser) {
+    'step 03 - Open Blue Ocean (from a run details)': function(browser) {
         var classicRunPage = browser.page.classicRun();
 
         classicRunPage.navigateToRun('aFolder/job/bFolder/job/cFolder/job/MBPInFolderTree/job/master');
@@ -78,30 +78,39 @@ module.exports = {
         });
     },
     /**
-     * test open blueocean from classic - a normal folder page in classic jenkins.
-     * <p>
-     * It should send the user to the top level blue ocean page (pipelines).
+     * test escape to classic Jenkins from blueocean pipeline page.
      * @param browser
      */
-    'step 04': function(browser) {
-        var classicGeneral = browser.page.classicGeneral();
-
-        // Go to a folder along the path to the MBP, but one
-        // of the parent folders i.e. not the MBP project folder.
-        classicGeneral.navigateToRun('job/aFolder/job/bFolder');
-
-        // make sure the open blue ocean button works. In this case,
-        // it should bring the browser to the main top-level pipelines page.
-        // See https://issues.jenkins-ci.org/browse/JENKINS-39842
-        browser.openBlueOcean();
+    'step 04 - escape to classic Jenkins from pipeline page': function(browser) {
+        const blueMultiBranchPipeline = browser.page.blueMultiBranchPipeline();
+        blueMultiBranchPipeline.forPipeline('aFolder/bFolder/cFolder/MBPInFolderTree');
         browser.url(function (response) {
-            sanityCheck(browser, response);
-            response.value.endsWith('/blue/pipelines');
+            response.value.endsWith('/blue/organizations/jenkins/aFolder%2FbFolder%2FcFolder%2FMBPInFolderTree/activity');
+            blueMultiBranchPipeline.assertBasicLayoutOkay();
 
-            // Make sure the page has all the bits and bobs
-            // See JENKINS-40137
-            const bluePipelines = browser.page.bluePipelines();
-            bluePipelines.assertBasicLayoutOkay();
+            blueMultiBranchPipeline.click('@exitToClassicWidget');
+            browser.waitForElementVisible('#open-blueocean-in-context');
+            browser.url(function (response) {
+                response.value.endsWith('/aFolder/job/bFolder/job/cFolder/job/MBPInFolderTree/');
+            });
+        });
+    },
+    /**
+     * test escape to classic Jenkins from blueocean pipeline run page.
+     * @param browser
+     */
+    'step 05 - escape to classic Jenkins from pipeline run page': function(browser) {
+        const bluePipelineRunDetail = browser.page.bluePipelineRunDetail();
+        bluePipelineRunDetail.navigate(bluePipelineRunDetail.api.launchUrl + '/blue/organizations/jenkins/aFolder%2FbFolder%2FcFolder%2FMBPInFolderTree/detail/feature%2F1/1');
+        browser.url(function (response) {
+            response.value.endsWith('/blue/organizations/jenkins/aFolder%2FbFolder%2FcFolder%2FMBPInFolderTree/detail/feature%2F1/1/pipeline');
+            bluePipelineRunDetail.assertBasicLayoutOkay();
+
+            bluePipelineRunDetail.click('@exitToClassicWidget');
+            browser.waitForElementVisible('#open-blueocean-in-context');
+            browser.url(function (response) {
+                response.value.endsWith('/job/aFolder/job/bFolder/job/cFolder/job/MBPInFolderTree/job/feature%2F1/1/');
+            });
         });
     },
 };
