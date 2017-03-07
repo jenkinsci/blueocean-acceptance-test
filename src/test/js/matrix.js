@@ -15,6 +15,7 @@ module.exports = {
 
         pipelinePage.waitForElementVisible('.pipelineRedirectLink');
 
-        browser.useXpath().waitForElementVisible(`//*/a[@class="pipelineRedirectLink" and contains(@href, "/job/${jobName}/")]`)
+        browser.useXpath().waitForElementVisible(`//*/a[@class="pipelineRedirectLink" and contains(@href, "/job/${jobName}/")]`);
+        browser.useCss();
     }
 }

@@ -54,5 +54,6 @@ module.exports = {
         browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4[contains(text(), "Stacktrace")]')
         browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4[contains(text(), "Standard Error")]')
         browser.useXpath().waitForElementVisible('//div[@class="test-console"]/h4[contains(text(), "Standard Output")]')
+        browser.useCss();
     },
 }

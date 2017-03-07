@@ -38,7 +38,8 @@ module.exports.commands = [{
     assertJob: function(browser, jobName) {
         //don't forget to set it back to using CSS as nightwatch is broken with its fluent/builder api. 
         //and mutates the state of browser.
-        browser.useXpath().waitForElementVisible('//span[contains(text(), "' + jobName + '")]').useCss();
+        browser.useXpath().waitForElementVisible('//span[contains(text(), "' + jobName + '")]');
+        browser.useCss();
     },
     countJobToBeEqual: function(browser, jobName, count) {
         browser.elements('xpath', '//span[contains(text(), "' + jobName + '")]', function (codeCollection) {
