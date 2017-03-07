@@ -35,11 +35,10 @@ module.exports.commands = [{
         this.waitForElementVisible('@pipelinesTable');
         this.waitForElementVisible('.Site-footer');
     },
-    assertJob: function(jobName) {
-        this.waitForElementVisible('.path-text');
-        this.getText('.path-text', function (result) {
-          this.assert.equal(result.value, jobName);
-        });        
+    assertJob: function(browser, jobName) {
+        //don't forget to set it back to using CSS as nightwatch is broken with its fluent/builder api. 
+        //and mutates the state of browser.
+        browser.useXpath().waitForElementVisible('//span[contains(text(), "' + jobName + '")]').useCss();
     },
     countJobToBeEqual: function(browser, jobName, count) {
         browser.elements('xpath', '//span[contains(text(), "' + jobName + '")]', function (codeCollection) {
