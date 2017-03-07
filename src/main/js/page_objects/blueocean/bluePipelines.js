@@ -16,7 +16,7 @@ module.exports = {
     elements: {
         pipelinesNav: '.Header-topNav nav a[href="'+pipelinesUrl+'"]',
         newPipelineButton: '.btn-new-pipeline',
-        pipelinesTable: '.pipelines-table',
+        pipelinesTable: '.JTable',
     }
 };
 
@@ -36,10 +36,13 @@ module.exports.commands = [{
         this.waitForElementVisible('.Site-footer');
     },
     assertJob: function(jobName) {
-        this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]');
+        this.waitForElementVisible('.path-text');
+        this.getText('.path-text', function (result) {
+          this.assert.equal(result.value, jobName);
+        });        
     },
     countJobToBeEqual: function(browser, jobName, count) {
-        browser.elements('css selector', '.pipelines-table tr[data-name="' + jobName + '"]', function (codeCollection) {
+        browser.elements('xpath', '//span[contains(text(), "' + jobName + '")]', function (codeCollection) {
             this.assert.equal(codeCollection.value.length, count);
         });
     }, 
