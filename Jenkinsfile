@@ -51,7 +51,9 @@ node ('docker') {
 
     try {
         // Build an image from the the local Dockerfile
-        def athImg = docker.build('blueocean-ath-builder')
+        sh 'docker build -t blueocean-ath-builder --build-arg GID=$(id -g ${USER}) --build-arg UID=$(id -u ${USER}) .'
+
+        def athImg = docker.image('blueocean-ath-builder')
 
         // fetch Maven configuration managed by Config File Provider plugin
         // to change it, go to Manage Jenkins > Managed files
