@@ -1,24 +1,25 @@
 #!groovy
 
-// only 40 builds
-properties([buildDiscarder(logRotator(artifactNumToKeepStr: '40', numToKeepStr: '40'))])
+def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
+def DEFAULT_BUILD_NUM = 'latest'
+def NO_BUILD_NUM = ''
 
-node ('docker') {
-
-    def DEFAULT_REPO = 'https://github.com/jenkinsci/blueocean-plugin.git'
-    def DEFAULT_BUILD_NUM = 'latest'
-    def NO_BUILD_NUM = ''
-
+properties([
+    // only 40 builds
+    buildDiscarder(logRotator(artifactNumToKeepStr: '40', numToKeepStr: '40')),
     // Allow the pipeline to be built with parameters, defaulting the
     // Blue Ocean branch name to be that of the ATH branch name. If no such branch
     // of Blue Ocean exists, then the ATH will just run against the master branch of
     // Blue Ocean.
-    properties([parameters([
-            string(name: 'BLUEOCEAN_REPO_URL', defaultValue: DEFAULT_REPO, description: 'The Blue Ocean repository against which the tests on this ATH branch will run. If you want to validate a fork, you can change this.'),
-            string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name (on the above repository) against which the tests on this ATH branch will run.'),
-            string(name: 'BUILD_NUM', defaultValue: DEFAULT_BUILD_NUM, description: 'The Blue Ocean build number from the CI server. Used to get pre-assembled Jenkins plugins Vs building (see above repo settings). Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise, leave blank to build the latest code from the branch.<br/><strong>NOTE:</strong> Uses the above BLUEOCEAN_BRANCH_NAME to determine the upstream build Job name from which to get the pre-assembled archives.')
-    ]), pipelineTriggers([])])
+    parameters([
+        string(name: 'BLUEOCEAN_REPO_URL', defaultValue: DEFAULT_REPO, description: 'The Blue Ocean repository against which the tests on this ATH branch will run. If you want to validate a fork, you can change this.'),
+        string(name: 'BLUEOCEAN_BRANCH_NAME', defaultValue: "${env.BRANCH_NAME}", description: 'Blue Ocean branch name (on the above repository) against which the tests on this ATH branch will run.'),
+        string(name: 'BUILD_NUM', defaultValue: DEFAULT_BUILD_NUM, description: 'The Blue Ocean build number from the CI server. Used to get pre-assembled Jenkins plugins Vs building (see above repo settings). Use a valid build number, or "latest" to get artifacts from the latest build. Otherwise, leave blank to build the latest code from the branch.<br/><strong>NOTE:</strong> Uses the above BLUEOCEAN_BRANCH_NAME to determine the upstream build Job name from which to get the pre-assembled archives.')
+    ]),
+    pipelineTriggers([])
+])
 
+node ('docker') {
     def repoUrl;
     def branchName;
     def buildNumber;
