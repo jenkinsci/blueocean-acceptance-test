@@ -1,4 +1,5 @@
-node {
+node {    
     stage 'test'
+    checkout scm
     echo 'test'
 }
