@@ -144,7 +144,7 @@ module.exports = {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.clickTab('artifacts');
         browser.elements('css selector', 'td.download', function (resutlItems) {
-            this.assert.equal(resutlItems.value.length, 2);
+            this.assert.equal(resutlItems.value.length, 1);
         }
     }
 };
