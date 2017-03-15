@@ -143,6 +143,8 @@ module.exports = {
     'Step 09': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.clickTab('artifacts');
-        blueRunDetailPage.validateEmpty();
+        browser.elements('css selector', 'td.download', function (resutlItems) {
+            this.assert.equal(resutlItems.value.length, 2);
+        }
     }
 };
