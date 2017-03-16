@@ -145,6 +145,6 @@ module.exports = {
         blueRunDetailPage.clickTab('artifacts');
         browser.elements('css selector', 'td.download', function (resutlItems) {
             this.assert.equal(resutlItems.value.length, 1);
-        }
+        });
     }
 };
