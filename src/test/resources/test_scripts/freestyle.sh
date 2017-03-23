@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo `date` freeStyle start;
-sleep 2;
+sleep 4;
 echo `date` step 1;
 COUNTER=0
 while [  $COUNTER -lt 10001 ]; do
