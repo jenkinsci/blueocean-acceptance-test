@@ -60,14 +60,14 @@ module.exports = {
                 this.assert.equal('Shell Script', result.value);
             })
         ;
-        // wait for job to finish
-        nodeDetail.waitForJobRunEnded(useCase.name);
         // test whether the expand works
         nodeDetail.clickFirstResultItem();
         // test whether the stage we seeing is highlighted
         nodeDetail.waitForElementVisible('g.pipeline-node-selected');
         // test whether log lines are navigable
         nodeDetail.validateLogConsole(2);
+        // wait for job to finish
+        nodeDetail.waitForJobRunEnded(useCase.name);
     },
 /** Check whether the artifacts tab shows artifacts*/
     'Step 05': function (browser) {
