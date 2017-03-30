@@ -1,24 +1,22 @@
 /**
- * @module runDetailsDeepLink
- * @memberof edgeCases
+ * @module runDetailsFallbackNavigation
+ * @memberof runDetailsModal
  * @description
  *
- * Tests: test whether navigating to Run Details without specifying a tab allows the close button to work correctly.
+ * Tests: test whether navigating directly Run Details without specifying a tab allows the close button to work correctly.
  *
  * REGRESSION covered:
  *
  * @see {@link https://issues.jenkins-ci.org/browse/JENKINS-40662|JENKINS-40662} Deep-linking to Run Details
  * screen with no tab specified causes problem when closing modal
  */
-const jobName = 'runDetailsDeepLink';
+const jobName = 'runDetailsFallbackNavigation';
 module.exports = {
-    /** Create Pipeline Job "runDetailsDeepLink" */
-    'Step 01': function (browser) {
+    'Step 01 - Create Job': function (browser) {
         const pipelinesCreate = browser.page.pipelineCreate().navigate();
-        pipelinesCreate.createPipeline(jobName, 'fastStages.groovy');
+        pipelinesCreate.createPipeline(jobName, 'hello-world.groovy');
     },
-    /** Build Pipeline Job*/
-    'Step 02': function (browser) {
+    'Step 02 - Build Job': function (browser) {
         const pipelinePage = browser.page.jobUtils().forJob(jobName);
         pipelinePage.buildStarted(function () {
             // Reload the job page and check that there was a build done.
@@ -28,12 +26,12 @@ module.exports = {
                 .waitForElementVisible('@executer');
         });
     },
-    /** Check Job Blue Ocean Pipeline Activity Page has run */
-    'Step 03': function (browser) {
+    'Step 03 - Open and Close Run Details': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         blueActivityPage.waitForRunSuccessVisible(jobName + '-1');
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
         blueRunDetailPage.waitForElementVisible('.BasicHeader--success');
-        blueRunDetailPage.closeModal('/activity');
+        blueRunDetailPage.closeModal();
+        blueRunDetailPage.waitForLocationContains('/activity');
     },
 };
