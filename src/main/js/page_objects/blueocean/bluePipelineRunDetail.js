@@ -153,9 +153,8 @@ module.exports.commands = [{
      * Close the modal view
      * @returns {Object} self - nightwatch page object
      */
-    closeModal: function (urlFragment) {
+    closeModal: function () {
         const self = this;
-        const browser = self.api;
         self.waitForElementVisible('@closeButton');
         self.click('@closeButton');
         self.waitForElementNotPresent('.RunDetails-content');
