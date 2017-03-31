@@ -53,7 +53,7 @@ module.exports = {
         runDetails.clickTab('tests');
         runDetails.waitForLocationContains('/tests');
     },
-    'Step 06 - close modal and confirm URL is correct': function () {
+    'Step 06 - close modal and confirm returned to Branches tab': function () {
         runDetails.closeModal();
         runDetails.waitForLocationContains('/branches');
     }
