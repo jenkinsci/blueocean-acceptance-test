@@ -4,6 +4,8 @@ const pathToRepo = path.resolve('./target/' + jobName);
 const soureRep = './src/test/resources/multibranch_2';
 const git = require("../../../main/js/api/git");
 
+var activity, branches, runDetails;
+
 /**
  * @module runDetailsBackwardNavigation
  * @memberof runDetailsModal
@@ -29,23 +31,30 @@ module.exports = {
         var multibranchCreate = browser.page.multibranchCreate().navigate();
         multibranchCreate.createBranch(jobName, pathToRepo);
     },
-    'Step 03 - Open and click around in Run Details': function (browser) {
-        var activity = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
+    'Step 02 - navigate to Activity tab via URL': function (browser) {
+        activity = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
         activity.waitForElementVisible('.Header-pageTabs .branches');
+    },
+    'Step 03 - click to Branches tab': function(browser) {
         activity.click('.Header-pageTabs .branches');
-        var branches = browser.page.bluePipelineBranch();
+        branches = browser.page.bluePipelineBranch();
         branches.waitForElementVisible('tr[id^="master"]');
+    },
+    'Step 04 - click to Run Details': function(browser) {
         branches.click('tr[id^="master"]');
-        var runDetails = browser.page.bluePipelineRunDetail();
+        runDetails = browser.page.bluePipelineRunDetail();
         runDetails.waitForElementVisible('.RunDetailsHeader');
+    },
+    'Step 05 - click around Run Details tabs': function() {
         runDetails.clickTab('changes');
         runDetails.waitForLocationContains('/changes');
         runDetails.clickTab('artifacts');
         runDetails.waitForLocationContains('/artifacts');
         runDetails.clickTab('tests');
         runDetails.waitForLocationContains('/tests');
+    },
+    'Step 06 - close modal and confirm URL is correct': function () {
         runDetails.closeModal();
         runDetails.waitForLocationContains('/branches');
-        browser.pause(15000);
-    },
+    }
 };
