@@ -30,8 +30,7 @@ module.exports = {
         blueRunDetailPage.waitForElementVisible('section.BasicHeader--success');
         
         blueRunDetailPage.clickTab('artifacts');
-
-        browser.assert.containsText('.artifactListingLimited', 'Only showing the first 100 artifacts');
+        blueRunDetailPage.waitForElementVisible('.artifacts-info');
     }
 
 };
