@@ -145,6 +145,10 @@ node ('docker') {
                 sh "./run.sh -a=./blueocean-plugin/blueocean/ --no-selenium"
             } catch (err) {
                 currentBuild.result = "FAILURE"
+
+                if (err.toString().contains('AbortException')) {
+                    currentBuild.result = "ABORTED"
+                }
             } finally {
                 sendhipchat(repoUrl, branchName, buildNumber, null)
                 step([$class: 'JUnitResultArchiver', testResults: 'target/surefire-reports/**/*.xml'])
@@ -185,6 +189,8 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
         color = "GREEN"
     } else if(res == "FAILURE") {
         color = "RED"
+    } else if(res == "ABORTED") {
+        color = "GRAY"
     }
     if(color != null) {
         hipchatSend message: message, color: color
