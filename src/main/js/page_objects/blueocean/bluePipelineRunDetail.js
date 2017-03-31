@@ -151,7 +151,6 @@ module.exports.commands = [{
     },
    /**
      * Close the modal view
-     * @param {String} [urlFragment] expected URL fragment to test for after close.
      * @returns {Object} self - nightwatch page object
      */
     closeModal: function (urlFragment) {
@@ -159,12 +158,7 @@ module.exports.commands = [{
         const browser = self.api;
         self.waitForElementVisible('@closeButton');
         self.click('@closeButton');
-        self.waitForLocationChange();
-
-        if (urlFragment) {
-            browser.assert.urlContains(urlFragment);
-        }
-
+        self.waitForElementNotPresent('.RunDetails-content');
         return self;
     },
     /**
