@@ -168,7 +168,7 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
 
     def shortRepoURL = toShortRepoURL(repoUrl);
     def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
-    message = "ATH: <a href='${currentBuild.absoluteUrl}'>${env.JOB_NAME} #${env.BUILD_NUMBER}</a><br/>"
+    message = "ATH: <a href='${env.RUN_DISPLAY_URL}'>${env.JOB_NAME} #${env.BUILD_NUMBER}</a><br/>"
     message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a>"
     if (buildNumber == '') {
         message += ' (HPIs built from branch source)<br/>'
