@@ -22,7 +22,7 @@ module.exports = {
         fullLog: 'div.fullLog a',
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
-        emptystate: 'div.empty-state',
+        runDetailsEmpty: '.RunDetailsEmpty',
         emptystateQueued: 'div.empty-state span.waiting',
         detailTitle: '.ResultPageHeader-main',
         closeButton: '.ResultPageHeader-close',
@@ -249,7 +249,7 @@ module.exports.commands = [{
      */
     validateEmpty: function () {
         const self = this;
-        self.waitForElementVisible('@emptystate');
+        self.waitForElementVisible('@runDetailsEmpty');
         return self;
     },
     /**

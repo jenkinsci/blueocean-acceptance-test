@@ -77,6 +77,6 @@ module.exports = {
             .validateNotEmptyArtifacts(1)
             .waitForElementVisible('@artifactTable');
         blueRunDetailPage.clickTab('changes');
-        blueRunDetailPage.waitForElementVisible('@emptystate');
+        blueRunDetailPage.validateEmpty();
     }
 };
