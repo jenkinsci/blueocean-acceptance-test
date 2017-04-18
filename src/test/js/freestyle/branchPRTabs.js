@@ -13,7 +13,7 @@ module.exports = {
         
         blueActivityPage.clickTab('branches');
      
-        blueActivityPage.assert.containsText('.empty-state-content', 'Branches are unsupported');       
+        blueActivityPage.assert.containsText('.PlaceholderContent.Unsupported', 'Branches are unsupported');       
     },
 
     'Step 03': function (browser) {
@@ -21,6 +21,6 @@ module.exports = {
         
         blueActivityPage.clickTab('pr');
      
-        blueActivityPage.assert.containsText('.empty-state-content', 'Pull Requests are unsupported');       
+        blueActivityPage.assert.containsText('.PlaceholderContent.Unsupported', 'Pull request runs only work with the Multibranch Pipeline job type');       
     }
 };

@@ -13,7 +13,7 @@ const sanityCheck = pageHelper.sanityCheck;
 module.exports = {
     elements: {
         pipelinesNav: '.Header-topNav nav a[href="/blue/pipelines"]',
-        emptyStateShoes: '.empty-state .empty-state-icon.shoes',
+        emptyStateShoes: '.PlaceholderContent.NoRuns',
         activityTable: '.activity-table',
         activityTableEntries: 'table.activity-table tbody tr',
         runButton: 'a.run-button',

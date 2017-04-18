@@ -145,6 +145,10 @@ node ('docker') {
                 sh "./run.sh -a=./blueocean-plugin/blueocean/ --no-selenium"
             } catch (err) {
                 currentBuild.result = "FAILURE"
+
+                if (err.toString().contains('AbortException')) {
+                    currentBuild.result = "ABORTED"
+                }
             } finally {
                 sendhipchat(repoUrl, branchName, buildNumber, null)
                 step([$class: 'JUnitResultArchiver', testResults: 'target/surefire-reports/**/*.xml'])
@@ -164,7 +168,7 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
 
     def shortRepoURL = toShortRepoURL(repoUrl);
     def repoBranchURL = toRepoBranchURL(repoUrl, branchName);
-    message = "ATH: <a href='${currentBuild.absoluteUrl}'>${env.JOB_NAME} #${env.BUILD_NUMBER}</a><br/>"
+    message = "ATH: <a href='${env.RUN_DISPLAY_URL}'>${env.JOB_NAME} #${env.BUILD_NUMBER}</a><br/>"
     message += "- run against: <a href='${repoBranchURL}'>${shortRepoURL}:${branchName}</a>"
     if (buildNumber == '') {
         message += ' (HPIs built from branch source)<br/>'
@@ -185,6 +189,8 @@ def sendhipchat(repoUrl, branchName, buildNumber, err) {
         color = "GREEN"
     } else if(res == "FAILURE") {
         color = "RED"
+    } else if(res == "ABORTED") {
+        color = "GRAY"
     }
     if(color != null) {
         hipchatSend message: message, color: color
