@@ -28,8 +28,8 @@ module.exports = {
         // assert basic page style
         blueRunDetailPage.assertBasicLayoutOkay();
         blueRunDetailPage
-            .waitForElementVisible('pre')
-            .fullLogButtonNotPresent();
+            .waitForElementVisible('pre');
+            
 
         // when run ends, we update the run so log button should be present
         blueRunDetailPage.waitForJobRunEnded('hijo')
