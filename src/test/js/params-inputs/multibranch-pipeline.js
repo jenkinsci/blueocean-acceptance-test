@@ -1,5 +1,5 @@
-/** @module parametrisedPipeline
- * @memberof log-karaoke
+/** @module multibranch-pipeline
+ * @memberof params-inputs
  * @description
  *
  * Tests: covering basic parameters in runButton
