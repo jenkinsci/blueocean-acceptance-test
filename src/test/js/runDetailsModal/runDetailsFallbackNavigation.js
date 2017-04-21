@@ -28,8 +28,9 @@ module.exports = {
     },
     'Step 03 - Open and Close Run Details': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob(jobName, 'jenkins');
-        blueActivityPage.waitForRunSuccessVisible(jobName + '-1');
+        blueActivityPage.waitForRunRunningVisible(jobName + '-1');
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun(jobName, 'jenkins', 1);
+        blueRunDetailPage.waitForJobRunEnded(jobName);
         blueRunDetailPage.waitForElementVisible('.BasicHeader--success');
         blueRunDetailPage.closeModal();
         blueRunDetailPage.waitForLocationContains('/activity');
