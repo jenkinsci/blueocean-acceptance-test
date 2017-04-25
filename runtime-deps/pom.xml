@@ -58,17 +58,6 @@
     <properties>
         <jenkins.version>2.7.3</jenkins.version>
     </properties>
-    <dependencies>
-        <!--
-        Add dependencies that all of our tests need, but are not provided via
-        the Blue Ocean Aggregator plugin.
-        -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-aggregator</artifactId>
-            <version>2.4</version>
-        </dependency>
-    </dependencies>
     <profiles>
         <profile>
             <id>with-blueocean-deps</id>
