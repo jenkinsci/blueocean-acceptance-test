@@ -24,7 +24,6 @@ module.exports = {
         pipelinePage.buildStarted(function() {
             // Reload the job page and check that there is a build started.
             pipelinePage
-                .waitForElementVisible('div#pipeline-box')
                 .forRun(1)
                 .waitForElementVisible('@executer');
         });
