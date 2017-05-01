@@ -70,9 +70,13 @@ module.exports = {
                 blueActivityPage2.assertActivitiesToBeEqual(2);
                 blueActivityPage2.waitForRunSuccessVisible(`${jobName}-2`)
 
+
                 // Look for commit on 2nd run.
                 browser.useXpath().waitForElementVisible(`//tr[@id="${jobName}-2"]/*/a/code[text()="${commitId.slice(0,7)}"]`);
-                browser.useXpath().waitForElementVisible(`//tr[@id="${jobName}-2"]/*/a/span[text()="somefile created"]`);
+                
+                browser.useCss();
+                blueActivityPage.assert.containsText('.RunMessageCellInner', 'somefile created');
+                blueActivityPage.assert.containsText('.Lozenge', '2 commits');
              
                 done();
             });
