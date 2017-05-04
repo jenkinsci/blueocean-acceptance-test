@@ -90,7 +90,7 @@ module.exports = {
             this
                 .elements('css selector', 'div.result-item.success', function (collection2) {
                     const count2 = collection2.value.length;
-                    this.assert.notEqual(count, count2);
+                    this.assert.equal(count !== count2, true);
                 })
                 .elements('css selector', 'pre', function (codeCollection) {
                     // JENKINS-36700 in success all code should be closed,
