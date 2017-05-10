@@ -33,7 +33,7 @@ module.exports = {
 
         bluePipelinesPage.navigate();
         bluePipelinesPage.assertBasicLayoutOkay();
-        bluePipelinesPage.assertJob('my-pipeline');
+        bluePipelinesPage.assertJob(browser, 'my-pipeline');
     },
 
     /**

@@ -16,7 +16,7 @@ module.exports = {
     elements: {
         pipelinesNav: '.Header-topNav nav a[href="'+pipelinesUrl+'"]',
         newPipelineButton: '.btn-new-pipeline',
-        pipelinesTable: '.pipelines-table',
+        pipelinesTable: '.JTable',
     }
 };
 
@@ -35,11 +35,15 @@ module.exports.commands = [{
         this.waitForElementVisible('@pipelinesTable');
         this.waitForElementVisible('.Site-footer');
     },
-    assertJob: function(jobName) {
-        this.waitForElementVisible('.pipelines-table tr[data-name="' + jobName + '"]');
+    assertJob: function(browser, jobName) {
+        //don't forget to set it back to using CSS as nightwatch is broken with its fluent/builder api. 
+         //and mutates the state of browser.
+        browser.useXpath().waitForElementVisible('//span[contains(text(), "' + jobName + '")]');
+        browser.useCss();      
+      
     },
     countJobToBeEqual: function(browser, jobName, count) {
-        browser.elements('css selector', '.pipelines-table tr[data-name="' + jobName + '"]', function (codeCollection) {
+        browser.elements('xpath', '//span[contains(text(), "' + jobName + '")]', function (codeCollection) {
             this.assert.equal(codeCollection.value.length, count);
         });
     }, 
