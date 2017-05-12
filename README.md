@@ -1,3 +1,5 @@
+# Note: This code has migrated into https://github.com/jenkinsci/blueocean-plugin/tree/master/acceptance-tests as part of the main repo and pipeline. CONSIDER THIS RETIRED!
+
 Acceptance tests for Blue Ocean
 
 # Prepare your system
