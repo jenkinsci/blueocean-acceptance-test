@@ -22,7 +22,7 @@ module.exports = {
         fullLog: 'div.fullLog a',
         followAlongOn: '.step-scroll-area.follow-along-on',
         followAlongOff: '.step-scroll-area.follow-along-off',
-        emptystate: 'div.empty-state',
+        runDetailsEmpty: '.RunDetailsEmpty',
         emptystateQueued: 'div.empty-state span.waiting',
         detailTitle: '.ResultPageHeader-main',
         closeButton: '.ResultPageHeader-close',
@@ -151,20 +151,13 @@ module.exports.commands = [{
     },
    /**
      * Close the modal view
-     * @param {String} [urlFragment] expected URL fragment to test for after close.
      * @returns {Object} self - nightwatch page object
      */
-    closeModal: function (urlFragment) {
+    closeModal: function () {
         const self = this;
-        const browser = self.api;
         self.waitForElementVisible('@closeButton');
         self.click('@closeButton');
-        self.waitForLocationChange();
-
-        if (urlFragment) {
-            browser.assert.urlContains(urlFragment);
-        }
-
+        self.waitForElementNotPresent('.RunDetails-content');
         return self;
     },
     /**
@@ -255,7 +248,7 @@ module.exports.commands = [{
      */
     validateEmpty: function () {
         const self = this;
-        self.waitForElementVisible('@emptystate');
+        self.waitForElementVisible('@runDetailsEmpty');
         return self;
     },
     /**

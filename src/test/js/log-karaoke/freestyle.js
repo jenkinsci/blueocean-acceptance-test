@@ -18,21 +18,24 @@ module.exports = {
                 .waitForElementVisible('@executer');
         })
     },
-/** Check Job Blue Ocean Activity Page has run*/
+/** Check Job Blue Ocean Activity Page has run
+  * Check Job Blue Ocean run detail page - karaoke*/
     'Step 03': function (browser) {
         const blueActivityPage = browser.page.bluePipelineActivity().forJob('hijo', 'jenkins');
         // Check the run itself
         blueActivityPage.waitForRunRunningVisible('hijo-1');
-    },
-/** Check Job Blue Ocean run detail page - karaoke*/
-    'Step 04': function (browser) {
         const blueRunDetailPage = browser.page.bluePipelineRunDetail().forRun('hijo', 'jenkins', 1);
         // assert basic page style
         blueRunDetailPage.assertBasicLayoutOkay();
+        blueRunDetailPage
+            .waitForElementVisible('pre');
+            
 
+        // when run ends, we update the run so log button should be present
         blueRunDetailPage.waitForJobRunEnded('hijo')
             .waitForElementVisible('pre')
-            .fullLogButtonNotPresent();
+            .clickFullLog();
+
     },
 /** Check whether a log which exceed 150kb contains a link to full log and if clicked it disappear*/
     'Step 05': function (browser) {
