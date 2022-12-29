@@ -70,7 +70,7 @@
                 <dependency>
                     <groupId>io.jenkins.blueocean</groupId>
                     <artifactId>blueocean</artifactId>
-                    <version>1.0.0-b08-SNAPSHOT</version>
+                    <version>1.23.3</version>
                 </dependency>
             </dependencies>
         </profile>
